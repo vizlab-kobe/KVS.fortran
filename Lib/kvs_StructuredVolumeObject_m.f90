@@ -56,6 +56,18 @@ module kvs_StructuredVolumeObject_m
        integer( C_int ), value :: nvalues
      end subroutine C_kvs_StructuredVolumeObject_setValues
 
+     subroutine C_kvs_StructuredVolumeObject_updateMinMaxCoords ( this )&
+          bind( C, name="StructuredVolumeObject_updateMinMaxCoords" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_StructuredVolumeObject_updateMinMaxCoords
+
+     subroutine C_kvs_StructuredVolumeObject_updateMinMaxValues ( this )&
+          bind( C, name="StructuredVolumeObject_updateMinMaxValues" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_StructuredVolumeObject_updateMinMaxValues
+
   end interface
 
   ! Interface
@@ -83,12 +95,24 @@ module kvs_StructuredVolumeObject_m
      module procedure F_kvs_StructuredVolumeObject_setValues
   end interface kvs_StructuredVolumeObject_setValues
 
+  interface kvs_StructuredVolumeObject_updateMinMaxCoords
+     module procedure F_kvs_StructuredVolumeObject_updateMinMaxCoords
+  end interface kvs_StructuredVolumeObject_updateMinMaxCoords
+
+  interface kvs_StructuredVolumeObject_updateMinMaxValues
+     module procedure F_kvs_StructuredVolumeObject_updateMinMaxValues
+  end interface kvs_StructuredVolumeObject_updateMinMaxValues
+
   ! Public interface
   public :: kvs_StructuredVolumeObject
   public :: kvs_StructuredVolumeObject_new
   public :: kvs_StructuredVolumeObject_delete
+  public :: kvs_StructuredVolumeObject_setGridTypeToUniform
   public :: kvs_StructuredVolumeObject_setResolution
+  public :: kvs_StructuredVolumeObject_setVeclen
   public :: kvs_StructuredVolumeObject_setValues
+  public :: kvs_StructuredVolumeObject_updateMinMaxCoords
+  public :: kvs_StructuredVolumeObject_updateMinMaxValues
 
 contains
 
@@ -127,5 +151,15 @@ contains
     integer( C_int ), intent( in ) :: nvalues
     call C_kvs_StructuredVolumeObject_setValues( this%object, values, nvalues )
   end subroutine F_kvs_StructuredVolumeObject_setValues
+
+  subroutine F_kvs_StructuredVolumeObject_updateMinMaxCoords ( this )
+    type( kvs_StructuredVolumeObject ), intent( in ) :: this
+    call C_kvs_StructuredVolumeObject_updateMinMaxCoords( this%object )
+  end subroutine F_kvs_StructuredVolumeObject_updateMinMaxCoords
+
+  subroutine F_kvs_StructuredVolumeObject_updateMinMaxValues ( this )
+    type( kvs_StructuredVolumeObject ), intent( in ) :: this
+    call C_kvs_StructuredVolumeObject_updateMinMaxValues( this%object )
+  end subroutine F_kvs_StructuredVolumeObject_updateMinMaxValues
 
 end module kvs_StructuredVolumeObject_m

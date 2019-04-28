@@ -13,6 +13,7 @@ void StructuredVolumeObject_delete( kvs::StructuredVolumeObject* self )
 {
     delete self;
 }
+
 void StructuredVolumeObject_setGridTypeToUniform( kvs::StructuredVolumeObject* self )
 {
     self->setGridTypeToUniform();
@@ -31,6 +32,16 @@ void StructuredVolumeObject_setVeclen( kvs::StructuredVolumeObject* self, int ve
 void StructuredVolumeObject_setValues( kvs::StructuredVolumeObject* self, float* values, int nvalues )
 {
     self->setValues( kvs::ValueArray<float>( values, nvalues ) );
+}
+
+void StructuredVolumeObject_updateMinMaxCoords( kvs::StructuredVolumeObject* self )
+{
+    self->updateMinMaxCoords();
+}
+
+void StructuredVolumeObject_updateMinMaxValues( kvs::StructuredVolumeObject* self )
+{
+    self->updateMinMaxValues();
 }
 
 }
