@@ -53,4 +53,25 @@
        import
        type( C_ptr ), value :: this
      end subroutine C_kvs_StructuredVolumeObject_updateMinMaxValues
+
+     subroutine C_kvs_StructuredVolumeObject_print ( this )&
+          bind( C, name="StructuredVolumeObject_print" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_StructuredVolumeObject_print
+
+     subroutine C_kvs_StructuredVolumeObject_read( this, filename )&
+          bind( C, name="StructuredVolumeObject_read" )
+       import
+       type( C_ptr ), value :: this
+       character( len=1, kind=C_char ), intent( in ) :: filename(*)
+     end subroutine C_kvs_StructuredVolumeObject_read
+
+     subroutine C_kvs_StructuredVolumeObject_write( this, filename )&
+          bind( C, name="StructuredVolumeObject_write" )
+       import
+       type( C_ptr ), value :: this
+       character( len=1, kind=C_char ), intent( in ) :: filename(*)
+     end subroutine C_kvs_StructuredVolumeObject_write
+
   end interface

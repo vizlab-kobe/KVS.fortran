@@ -1,6 +1,8 @@
 module kvs_Isosurface_m
   use iso_c_binding
   use kvs_Vec3_m
+  use kvs_StructuredVolumeObject_m
+  use kvs_PolygonObject_m
   implicit none
 
   private
@@ -15,6 +17,7 @@ module kvs_Isosurface_m
      final :: kvs_Isosurface_finalize ! Destructor
      procedure :: delete => kvs_Isosurface_delete
      procedure :: setIsolevel => kvs_Isosurface_setIsolevel
+     procedure :: exec => kvs_Isosurface_exec
   end type kvs_Isosurface
 
   interface kvs_Isosurface ! Constructor
@@ -51,5 +54,13 @@ contains
     real( C_float ), intent( in ) :: isolevel
     call C_kvs_Isosurface_setIsolevel( this % ptr, isolevel )
   end subroutine kvs_Isosurface_setIsolevel
+
+  function kvs_Isosurface_exec( this, volume )
+    implicit none
+    class( kvs_Isosurface ), intent( in ) :: this
+    class( kvs_StructuredVolumeObject ), intent( in ) :: volume
+    type( kvs_PolygonObject ) :: kvs_Isosurface_exec
+    kvs_Isosurface_exec = kvs_PolygonObject( C_kvs_Isosurface_exec( this % ptr, volume % get() ) )
+  end function kvs_Isosurface_exec
 
 end module kvs_Isosurface_m

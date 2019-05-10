@@ -53,4 +53,24 @@ void StructuredVolumeObject_updateMinMaxValues( kvs::StructuredVolumeObject* sel
     self->updateMinMaxValues();
 }
 
+void StructuredVolumeObject_print( kvs::StructuredVolumeObject* self )
+{
+    kvsMessageDebug() << "StructuredVolumeObject_print is called." << std::endl;
+    self->print( std::cout );
+}
+
+void StructuredVolumeObject_read( kvs::StructuredVolumeObject* self, const char* filename )
+{
+    kvsMessageDebug() << "StructuredVolumeObject_read is called." << std::endl;
+    self->read( std::string( filename ) );
+}
+
+void StructuredVolumeObject_write( kvs::StructuredVolumeObject* self, const char* filename )
+{
+    kvsMessageDebug() << "StructuredVolumeObject_write is called." << std::endl;
+    const bool ascii = true;
+    const bool external = false;
+    self->write( std::string( filename ), ascii, external );
+}
+
 }

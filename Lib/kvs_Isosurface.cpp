@@ -23,4 +23,9 @@ void Isosurface_setIsolevel( kvs::Isosurface* self, float isolevel )
     self->setIsolevel( isolevel );
 }
 
+kvs::PolygonObject* Isosurface_exec( kvs::Isosurface* self, kvs::VolumeObjectBase* volume )
+{
+    return self->exec( volume );
+}
+
 }

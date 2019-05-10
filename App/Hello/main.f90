@@ -8,16 +8,18 @@ program main
   integer, parameter :: veclen = 1
   integer, parameter :: nvalues = dimx * dimy * dimz * veclen
   real, dimension(:), allocatable :: values
-
-  type(kvs_Vec3i) :: resolution
-  type(kvs_StructuredVolumeObject) :: volume
-
+  ! Volume object
+  type( kvs_Vec3i ) :: resolution
+  type( kvs_StructuredVolumeObject ) :: volume
+  ! Isosurface mapper
   real, parameter :: isolevel = 128
-  type(kvs_Isosurface) :: isosurface
+  type( kvs_Isosurface ) :: isosurface
+  ! Polygon object
+  type( kvs_PolygonObject ) :: polygon
 
-  resolution%x = dimx
-  resolution%y = dimy
-  resolution%z = dimz
+  resolution % x = dimx
+  resolution % y = dimy
+  resolution % z = dimz
 
   allocate( values( nvalues ) )
   values = (/0, 10, 0, 50, 255, 200, 0, 100, 0, 50, 0, 150, 0, 0, 0, 150, 0, 50, 0, 255, 0, 50, 10, 50, 0, 255, 0/)
@@ -28,10 +30,18 @@ program main
   call volume % setVeclen( veclen )
   call volume % setValues( values, nvalues )
   call volume % updateMinMaxValues()
-  call volume % delete()
+  call volume % print()
+  call volume % write( "output_volume.kvsml" )
 
   isosurface = kvs_Isosurface()
   call isosurface % setIsolevel( isolevel )
+
+  polygon = isosurface % exec( volume )
+  call polygon % print()
+  call polygon % write( "output_polygon.kvsml" )
+
+  call volume % delete()
+  call polygon % delete()
   call isosurface % delete()
 
 end program main
