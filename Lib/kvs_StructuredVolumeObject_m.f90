@@ -12,7 +12,8 @@ module kvs_StructuredVolumeObject_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_StructuredVolumeObject_delete ! Destructor
+     final :: kvs_StructuredVolumeObject_finalize ! Destructor
+     procedure :: delete => kvs_StructuredVolumeObject_delete
      procedure :: setGridTypeToUniform => kvs_StructuredVolumeObject_setGridTypeToUniform
      procedure :: setResolution => kvs_StructuredVolumeObject_setResolution
      procedure :: setVeclen => kvs_StructuredVolumeObject_setVeclen
@@ -33,9 +34,18 @@ contains
     kvs_StructuredVolumeObject_new%ptr = C_kvs_StructuredVolumeObject_new()
   end function kvs_StructuredVolumeObject_new
 
-  subroutine kvs_StructuredVolumeObject_delete( this )
+  subroutine kvs_StructuredVolumeObject_finalize( this )
     implicit none
     type( kvs_StructuredVolumeObject ) :: this
+    if ( c_associated( this % ptr ) ) then
+       call C_kvs_StructuredVolumeObject_delete( this%ptr )
+       this%ptr = C_NULL_ptr
+    end if
+  end subroutine kvs_StructuredVolumeObject_finalize
+
+  subroutine kvs_StructuredVolumeObject_delete( this )
+    implicit none
+    class( kvs_StructuredVolumeObject ) :: this
     call C_kvs_StructuredVolumeObject_delete( this%ptr )
     this%ptr = C_NULL_ptr
   end subroutine kvs_StructuredVolumeObject_delete

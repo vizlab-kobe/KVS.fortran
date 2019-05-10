@@ -28,8 +28,10 @@ program main
   call volume % setVeclen( veclen )
   call volume % setValues( values, nvalues )
   call volume % updateMinMaxValues()
+  call volume % delete()
 
   isosurface = kvs_Isosurface()
   call isosurface % setIsolevel( isolevel )
+  call isosurface % delete()
 
 end program main
