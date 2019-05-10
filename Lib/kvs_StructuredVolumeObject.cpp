@@ -11,7 +11,7 @@ kvs::StructuredVolumeObject* StructuredVolumeObject_new()
 
 void StructuredVolumeObject_delete( kvs::StructuredVolumeObject* self )
 {
-    delete self;
+    if ( self ) delete self;
 }
 
 void StructuredVolumeObject_setGridTypeToUniform( kvs::StructuredVolumeObject* self )

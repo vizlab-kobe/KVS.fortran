@@ -3,46 +3,34 @@ module kvs_PolygonObject_m
   implicit none
 
   private
+  include "kvs_PolygonObject_c.f90"
+
+  ! Class definition
   public :: kvs_PolygonObject
-
-  ! C interface
-  interface
-     function C_kvs_PolygonObject_new() bind( C, name="PolygonObject_new" )
-       import
-       type( C_ptr ) :: C_kvs_PolygonObject_new
-     end function C_kvs_PolygonObject_new
-
-     subroutine C_kvs_PolygonObject_delete( this ) bind( C, name="PolygonObject_delete" )
-       import
-       type( C_ptr ), value :: this
-     end subroutine C_kvs_PolygonObject_delete
-  end interface
-
-  ! Type definition
   type kvs_PolygonObject
      private
-     type( C_ptr ) :: object = C_NULL_ptr
+     type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: F_kvs_PolygonObject_delete
+     final :: kvs_PolygonObject_delete ! Destructor
   end type kvs_PolygonObject
 
-  interface kvs_PolygonObject
-     procedure F_kvs_PolygonObject_new
+  interface kvs_PolygonObject ! Constructor
+     procedure kvs_PolygonObject_new
   end interface kvs_PolygonObject
 
 contains
-  ! Fortran interface
-  function F_kvs_PolygonObject_new()
-    implicit none
-    type( kvs_PolygonObject ) :: F_kvs_PolygonObject_new
-    F_kvs_PolygonObject_new%object = C_kvs_PolygonObject_new()
-  end function F_kvs_PolygonObject_new
 
-  subroutine F_kvs_PolygonObject_delete( this )
+  function kvs_PolygonObject_new()
+    implicit none
+    type( kvs_PolygonObject ) :: kvs_PolygonObject_new
+    kvs_PolygonObject_new%ptr = C_kvs_PolygonObject_new()
+  end function kvs_PolygonObject_new
+
+  subroutine kvs_PolygonObject_delete( this )
     implicit none
     type( kvs_PolygonObject ) :: this
-    call C_kvs_PolygonObject_delete( this%object )
-    this%object = C_NULL_ptr
-  end subroutine F_kvs_PolygonObject_delete
+    call C_kvs_PolygonObject_delete( this%ptr )
+    this%ptr = C_NULL_ptr
+  end subroutine kvs_PolygonObject_delete
 
 end module kvs_PolygonObject_m

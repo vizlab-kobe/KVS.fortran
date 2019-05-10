@@ -11,7 +11,7 @@ kvs::PolygonObject* PolygonObject_new()
 
 void PolygonObject_delete( kvs::PolygonObject* self )
 {
-    delete self;
+    if ( self ) delete self;
 }
 
 }

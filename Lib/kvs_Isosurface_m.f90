@@ -4,75 +4,42 @@ module kvs_Isosurface_m
   implicit none
 
   private
+  include "kvs_Isosurface_c.f90"
 
-  ! Type
+  ! Class definition
+  public :: kvs_Isosurface
   type kvs_Isosurface
      private
-     type( C_ptr ) :: mapper = C_NULL_ptr
+     type( C_ptr ) :: ptr = C_NULL_ptr
+   contains
+     final :: kvs_Isosurface_delete ! Destructor
+     procedure :: setIsolevel => kvs_Isosurface_setIsolevel
   end type kvs_Isosurface
 
-  ! C interface
-  interface
-
-     function C_kvs_Isosurface_new () result( this )&
-          bind( C, name="Isosurface_new" )
-       import
-       type( C_ptr ) :: this
-     end function C_kvs_Isosurface_new
-
-     subroutine C_kvs_Isosurface_delete ( this )&
-          bind( C, name="Isosurface_delete" )
-       import
-       type( C_ptr ), value :: this
-     end subroutine C_kvs_Isosurface_delete
-
-     subroutine C_kvs_Isosurface_setIsolevel ( this, isolevel )&
-          bind( C, name="Isosurface_setIsolevel" )
-       import
-       type( C_ptr ), value :: this
-       real( C_float ), value :: isolevel
-     end subroutine C_kvs_Isosurface_setIsolevel
-
-  end interface
-
-  ! Interface
-  interface kvs_Isosurface_new
-     module procedure F_kvs_Isosurface_new
-  end interface kvs_Isosurface_new
-
-  interface kvs_Isosurface_delete
-     module procedure F_kvs_Isosurface_delete
-  end interface kvs_Isosurface_delete
-
-  interface kvs_Isosurface_setIsolevel
-     module procedure F_kvs_Isosurface_setIsolevel
-  end interface kvs_Isosurface_setIsolevel
-
-  ! Public interface
-  public :: kvs_Isosurface
-  public :: kvs_Isosurface_new
-  public :: kvs_Isosurface_delete
-  public :: kvs_Isosurface_setIsolevel
+  interface kvs_Isosurface ! Constructor
+     procedure kvs_Isosurface_new
+  end interface kvs_Isosurface
 
 contains
 
-  ! F interface
-  subroutine F_kvs_Isosurface_new ( this )
-    type( kvs_Isosurface ), intent( out ) :: this
-    this%mapper = C_kvs_Isosurface_new()
-  end subroutine F_kvs_Isosurface_new
+  function kvs_Isosurface_new()
+    implicit none
+    type( kvs_Isosurface ) :: kvs_Isosurface_new
+    kvs_Isosurface_new%ptr = C_kvs_Isosurface_new()
+  end function kvs_Isosurface_new
 
-  subroutine F_kvs_Isosurface_delete ( this )
+  subroutine kvs_Isosurface_delete( this )
+    implicit none
     type( kvs_Isosurface ), intent( inout ) :: this
-    call C_kvs_Isosurface_delete( this%mapper )
-    this%mapper = C_NULL_ptr
-  end subroutine F_kvs_Isosurface_delete
+    call C_kvs_Isosurface_delete( this%ptr )
+    this%ptr = C_NULL_ptr
+  end subroutine kvs_Isosurface_delete
 
-  subroutine F_kvs_Isosurface_setIsolevel ( this, isolevel )
-    type( kvs_Isosurface ), intent( inout ) :: this
+  subroutine kvs_Isosurface_setIsolevel( this, isolevel )
+    implicit none
+    class( kvs_Isosurface ), intent( in ) :: this
     real( C_float ), intent( in ) :: isolevel
-    call C_kvs_Isosurface_setIsolevel( this%mapper, isolevel )
-  end subroutine F_kvs_Isosurface_setIsolevel
+    call C_kvs_Isosurface_setIsolevel( this%ptr, isolevel )
+  end subroutine kvs_Isosurface_setIsolevel
 
 end module kvs_Isosurface_m
-

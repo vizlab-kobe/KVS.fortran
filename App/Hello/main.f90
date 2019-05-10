@@ -22,19 +22,14 @@ program main
   allocate( values( nvalues ) )
   values = (/0, 10, 0, 50, 255, 200, 0, 100, 0, 50, 0, 150, 0, 0, 0, 150, 0, 50, 0, 255, 0, 50, 10, 50, 0, 255, 0/)
 
-!  call vis_ExternalFaces( values, size, dimx, dimy, dimz )
-!  deallocate( values )
+  volume = kvs_StructuredVolumeObject()
+  call volume % setGridTypeToUniform()
+  call volume % setResolution( resolution )
+  call volume % setVeclen( veclen )
+  call volume % setValues( values, nvalues )
+  call volume % updateMinMaxValues()
 
-  call kvs_StructuredVolumeObject_new( volume )
-  call kvs_StructuredVolumeObject_setGridTypeToUniform( volume )
-  call kvs_StructuredVolumeObject_setResolution( volume, resolution )
-  call kvs_StructuredVolumeObject_setVeclen( volume, veclen )
-  call kvs_StructuredVolumeObject_setValues( volume, values, nvalues )
-  call kvs_StructuredVolumeObject_updateMinMaxValues( volume )
-  call kvs_StructuredVolumeObject_delete( volume )
-
-  call kvs_Isosurface_new( isosurface )
-  call kvs_Isosurface_setIsolevel( isosurface, isolevel )
-  call kvs_Isosurface_delete( isosurface )
+  isosurface = kvs_Isosurface()
+  call isosurface % setIsolevel( isolevel )
 
 end program main
