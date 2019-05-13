@@ -15,7 +15,7 @@ extern "C"
 
 kvs::ScreenBase* Screen_new()
 {
-    kvsMessageDebug() << "Screen_new is called." << std::endl;
+//    kvsMessageDebug() << "Screen_new is called." << std::endl;
 #if defined( KVS_SUPPORT_OSMESA )
     return new kvs::osmesa::Screen();
 #elif defined( KVS_SUPPORT_GLUT )
@@ -27,13 +27,13 @@ kvs::ScreenBase* Screen_new()
 
 void Screen_delete( kvs::ScreenBase* self )
 {
-    kvsMessageDebug() << "Screen_delete is called." << std::endl;
+//    kvsMessageDebug() << "Screen_delete is called." << std::endl;
     if ( self ) delete self;
 }
 
 void Screen_registerObject( kvs::ScreenBase* self, kvs::ObjectBase* object, kvs::RendererBase* renderer )
 {
-    kvsMessageDebug() << "Screen_registerObject is called." << std::endl;
+//    kvsMessageDebug() << "Screen_registerObject is called." << std::endl;
 #if defined( KVS_SUPPORT_OSMESA )
     kvs::osmesa::Screen* screen = reinterpret_cast<kvs::osmesa::Screen*>( self );
     screen->registerObject( object, renderer );
@@ -49,7 +49,7 @@ void Screen_registerObject( kvs::ScreenBase* self, kvs::ObjectBase* object, kvs:
 
 void Screen_draw( kvs::ScreenBase* self )
 {
-    kvsMessageDebug() << "Screen_draw is called." << std::endl;
+//    kvsMessageDebug() << "Screen_draw is called." << std::endl;
 #if defined( KVS_SUPPORT_OSMESA )
     kvs::osmesa::Screen* screen = reinterpret_cast<kvs::osmesa::Screen*>( self );
     screen->draw();
@@ -64,7 +64,7 @@ void Screen_draw( kvs::ScreenBase* self )
 
 kvs::ColorImage* Screen_capture( kvs::ScreenBase* self )
 {
-    kvsMessageDebug() << "Screen_capture is called." << std::endl;
+//    kvsMessageDebug() << "Screen_capture is called." << std::endl;
 #if defined( KVS_SUPPORT_OSMESA )
     kvs::osmesa::Screen* screen = reinterpret_cast<kvs::osmesa::Screen*>( self );
     screen->draw();
