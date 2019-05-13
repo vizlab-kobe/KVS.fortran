@@ -8,6 +8,7 @@ program main
   integer, parameter :: veclen = 1
   integer, parameter :: nvalues = dimx * dimy * dimz * veclen
   real, dimension(:), allocatable :: values
+
   ! Volume object
   type( kvs_Vec3i ) :: resolution
   type( kvs_StructuredVolumeObject ) :: volume
@@ -16,6 +17,10 @@ program main
   type( kvs_Isosurface ) :: isosurface
   ! Polygon object
   type( kvs_PolygonObject ) :: polygon
+  ! Color image
+  type( kvs_ColorImage ) :: image
+  ! Screen
+  type( kvs_Screen ) :: screen
 
   resolution % x = dimx
   resolution % y = dimy
@@ -40,8 +45,17 @@ program main
   call polygon % print()
   call polygon % write( "output_polygon.kvsml" )
 
+  screen = kvs_Screen()
+  call screen % registerObject( polygon % get() )
+  call screen % draw()
+
+  image = screen % capture()
+  call image % write( "output_image.bmp" )
+
   call volume % delete()
-  call polygon % delete()
+!  call polygon % delete() ! doesn't need to be deleted
   call isosurface % delete()
+  call image % delete()
+  call screen % delete()
 
 end program main
