@@ -41,6 +41,9 @@ void Screen_registerObject( kvs::ScreenBase* self, kvs::ObjectBase* object, kvs:
 #if defined( KVS_SUPPORT_OSMESA )
     kvs::osmesa::Screen* screen = reinterpret_cast<kvs::osmesa::Screen*>( self );
     screen->registerObject( object, renderer );
+#elif defined( KVS_SUPPORT_EGL )
+    kvs::egl::Screen* screen = reinterpret_cast<kvs::egl::Screen*>( self );
+    screen->registerObject( object, renderer );
 #elif defined( KVS_SUPPORT_GLUT )
     kvs::glut::Screen* screen = reinterpret_cast<kvs::glut::Screen*>( self );
     screen->registerObject( object, renderer );
