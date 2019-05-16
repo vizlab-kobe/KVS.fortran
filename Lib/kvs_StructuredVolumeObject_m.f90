@@ -39,10 +39,15 @@ contains
     kvs_StructuredVolumeObject_get = this % ptr
   end function kvs_StructuredVolumeObject_get
 
-  function kvs_StructuredVolumeObject_new()
+  function kvs_StructuredVolumeObject_new( other )
     implicit none
     type( kvs_StructuredVolumeObject ) :: kvs_StructuredVolumeObject_new
-    kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_new()
+    type( C_ptr ), optional :: other
+    if ( present( other ) ) then
+       kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_copy( other )
+    else
+       kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_new()
+    end if
   end function kvs_StructuredVolumeObject_new
 
   subroutine kvs_StructuredVolumeObject_finalize( this )

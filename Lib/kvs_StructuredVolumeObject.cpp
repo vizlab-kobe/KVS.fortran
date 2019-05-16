@@ -78,4 +78,12 @@ size_t StructuredVolumeObject_numberOfNodes( kvs::StructuredVolumeObject* self )
     return self->numberOfNodes();
 }
 
+kvs::StructuredVolumeObject* StructuredVolumeObject_copy( kvs::StructuredVolumeObject* other )
+{
+//    kvsMessageDebug() << "StructuredVolumeObject_copy is called." << std::endl;
+    kvs::StructuredVolumeObject* volume = new kvs::StructuredVolumeObject();
+    volume->shallowCopy( *other );
+    return volume;
+}
+
 }
