@@ -12,7 +12,7 @@ module kvs_Screen_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_Screen_finalize ! Destructor
+!     final :: kvs_Screen_finalize ! Destructor
      procedure :: delete => kvs_Screen_delete
      procedure :: registerObject => kvs_Screen_registerObject
      procedure :: draw => kvs_Screen_draw

@@ -11,7 +11,7 @@ module kvs_PolygonObject_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_PolygonObject_finalize ! Destructor
+!     final :: kvs_PolygonObject_finalize ! Destructor
      procedure :: get => kvs_PolygonObject_get
      procedure :: delete => kvs_PolygonObject_delete
      procedure :: print => kvs_PolygonObject_print

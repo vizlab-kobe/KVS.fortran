@@ -12,7 +12,7 @@ module kvs_StructuredVolumeObject_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_StructuredVolumeObject_finalize ! Destructor
+!     final :: kvs_StructuredVolumeObject_finalize ! Destructor
      procedure :: get => kvs_StructuredVolumeObject_get
      procedure :: delete => kvs_StructuredVolumeObject_delete
      procedure :: setGridTypeToUniform => kvs_StructuredVolumeObject_setGridTypeToUniform

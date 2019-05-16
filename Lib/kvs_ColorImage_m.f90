@@ -11,7 +11,7 @@ module kvs_ColorImage_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_ColorImage_finalize ! Destructor
+!     final :: kvs_ColorImage_finalize ! Destructor
      procedure :: delete => kvs_ColorImage_delete
      procedure :: read => kvs_ColorImage_read
      procedure :: write => kvs_ColorImage_write

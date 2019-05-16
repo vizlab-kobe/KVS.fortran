@@ -14,7 +14,7 @@ module kvs_Isosurface_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_Isosurface_finalize ! Destructor
+!     final :: kvs_Isosurface_finalize ! Destructor
      procedure :: delete => kvs_Isosurface_delete
      procedure :: setIsolevel => kvs_Isosurface_setIsolevel
      procedure :: exec => kvs_Isosurface_exec
