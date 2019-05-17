@@ -74,4 +74,11 @@
        character( len=1, kind=C_char ), intent( in ) :: filename(*)
      end subroutine C_kvs_StructuredVolumeObject_write
 
+     function C_kvs_StructuredVolumeObject_numberOfNodes( this )&
+          bind( C, name="StructuredVolumeObject_numberOfNodes" )
+       import
+       type( C_ptr ), value :: this
+       integer( C_size_t ) :: C_kvs_StructuredVolumeObject_numberOfNodes
+     end function C_kvs_StructuredVolumeObject_numberOfNodes
+
   end interface

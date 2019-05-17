@@ -73,4 +73,9 @@ void StructuredVolumeObject_write( kvs::StructuredVolumeObject* self, const char
     self->write( std::string( filename ), ascii, external );
 }
 
+size_t StructuredVolumeObject_numberOfNodes( kvs::StructuredVolumeObject* self )
+{
+    return self->numberOfNodes();
+}
+
 }

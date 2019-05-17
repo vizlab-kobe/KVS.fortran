@@ -121,4 +121,10 @@ contains
     call C_kvs_StructuredVolumeObject_write( this % ptr, filename )
   end subroutine kvs_StructuredVolumeObject_write
 
+  integer( C_size_t ) function kvs_StructuredVolumeObject_numberOfNodes( this )
+    implicit none
+    class( kvs_StructuredVolumeObject ) :: this
+    kvs_StructuredVolumeObject_numberOfNodes = C_kvs_StructuredVolumeObject_numberOfNodes( this % ptr )
+  end function kvs_StructuredVolumeObject_numberOfNodes
+
 end module kvs_StructuredVolumeObject_m
