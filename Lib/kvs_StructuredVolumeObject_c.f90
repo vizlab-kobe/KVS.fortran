@@ -81,4 +81,11 @@
        integer( C_size_t ) :: C_kvs_StructuredVolumeObject_numberOfNodes
      end function C_kvs_StructuredVolumeObject_numberOfNodes
 
+     function C_kvs_StructuredVolumeObject_copy( other )&
+          bind( C, name="StructuredVolumeObject_copy" )
+       import
+       type( C_ptr ) :: C_kvs_StructuredVolumeObject_copy
+       type( C_ptr ), value :: other
+     end function C_kvs_StructuredVolumeObject_copy
+
   end interface

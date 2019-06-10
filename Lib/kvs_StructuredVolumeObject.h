@@ -15,4 +15,5 @@ void StructuredVolumeObject_print( kvs::StructuredVolumeObject* self );
 void StructuredVolumeObject_read( kvs::StructuredVolumeObject* self, const char* filename );
 void StructuredVolumeObject_write( kvs::StructuredVolumeObject* self, const char* filename );
 size_t StructuredVolumeObject_numberOfNodes( kvs::StructuredVolumeObject* self );
+kvs::StructuredVolumeObject* StructuredVolumeObject_copy( kvs::StructuredVolumeObject* other );
 }
