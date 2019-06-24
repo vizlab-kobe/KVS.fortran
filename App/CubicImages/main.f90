@@ -21,6 +21,12 @@ program main
   type( kvs_ColorImage ) :: image
   ! Screen
   type( kvs_Screen ) :: screen
+
+  type( kvs_StructuredVolumeObject ) :: volume2
+  type( kvs_TornadoVolumeData ) :: tornado2
+  type( kvs_Vec3i ) :: vec2
+
+  type( kvs_Bounds ) :: bounds
   
 
   resolution % x = dimx
@@ -47,7 +53,8 @@ program main
   call polygon % print()
   call polygon % write( "output_polygon.kvsml" )
 
-  screen = kvs_Screen()
+  ! Bounds 
+  call screen % registerObject( polygon % get(), bounds % get() )
   call screen % registerObject( polygon % get() )
   call screen % draw()
 
