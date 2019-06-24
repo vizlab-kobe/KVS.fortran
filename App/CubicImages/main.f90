@@ -53,7 +53,8 @@ program main
   call polygon % print()
   call polygon % write( "output_polygon.kvsml" )
 
-  ! Bounds 
+  screen = kvs_Screen()
+  bounds = kvs_Bounds()
   call screen % registerObject( polygon % get(), bounds % get() )
   call screen % registerObject( polygon % get() )
   call screen % draw()
