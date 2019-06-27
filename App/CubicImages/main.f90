@@ -27,6 +27,9 @@ program main
   type( kvs_Vec3i ) :: vec2
 
   type( kvs_Bounds ) :: bounds
+
+  type( kvs_ArrowGlyph ) :: arrowglyph
+    type( kvs_TransferFunction ) :: tfunc
   
 
   resolution % x = dimx
@@ -53,20 +56,32 @@ program main
   call polygon % print()
   call polygon % write( "output_polygon.kvsml" )
 
+  vec2 % x = 32
+  vec2 % y = 32
+  vec2 % z = 32
+  tornado2 = kvs_TornadoVolumeData(vec2)
+  volume2 = tornado2 % exec()
+
   screen = kvs_Screen()
   bounds = kvs_Bounds()
-  call screen % registerObject( polygon % get(), bounds % get() )
-  call screen % registerObject( polygon % get() )
+  arrowglyph = kvs_ArrowGlyph()
+  tfunc = kvs_TransferFunction()
+  call arrowglyph % setType( 0 )
+  call arrowglyph % setTransferFunction( tfunc )
+  call screen % registerObject( volume2 % get(), arrowglyph % get())
+!  call screen % registerObject( polygon % get(), bounds % get() )
+!  call screen % registerObject( polygon % get() )
   call screen % draw()
 
   image = screen % capture()
   call image % write( "output_image.bmp" )
 
-  call volume % delete()
 !  call polygon % delete() ! doesn't need to be deleted
   call isosurface % delete()
   call image % delete()
   call screen % delete()
+  !call volume2 % delete()
+
 
   contains
   function GenerateStreamlines()
