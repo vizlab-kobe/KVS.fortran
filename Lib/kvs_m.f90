@@ -13,4 +13,5 @@ module kvs_m
   use kvs_Timer_m
   use kvs_PointObject_m
   use kvs_Bounds_m
+  use kvs_ArrowGlyph_m
 end module kvs_m
