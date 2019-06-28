@@ -29,7 +29,9 @@ program main
   type( kvs_Bounds ) :: bounds
 
   type( kvs_ArrowGlyph ) :: arrowglyph
-    type( kvs_TransferFunction ) :: tfunc
+  type( kvs_TransferFunction ) :: tfunc
+  type( kvs_OrthoSlice ) :: orthoslice
+
   
 
   resolution % x = dimx
@@ -39,14 +41,14 @@ program main
   allocate( values( nvalues ) )
   values = (/0, 10, 0, 50, 255, 200, 0, 100, 0, 50, 0, 150, 0, 0, 0, 150, 0, 50, 0, 255, 0, 50, 10, 50, 0, 255, 0/)
 
-  !volume = kvs_StructuredVolumeObject()
-  !call volume % setGridTypeToUniform()
-  !call volume % setResolution( resolution )
-  !call volume % setVeclen( veclen )
-  !call volume % setValues( values, nvalues )
-  !call volume % updateMinMaxValues()
-  !call volume % print()
-  !call volume % write( "output_volume.kvsml" )
+  volume = kvs_StructuredVolumeObject()
+  call volume % setGridTypeToUniform()
+  call volume % setResolution( resolution )
+  call volume % setVeclen( veclen )
+  call volume % setValues( values, nvalues )
+  call volume % updateMinMaxValues()
+  call volume % print()
+  call volume % write( "output_volume.kvsml" )
 
   !isosurface = kvs_Isosurface()
   !call isosurface % setIsolevel( isolevel )
@@ -66,11 +68,15 @@ program main
   bounds = kvs_Bounds()
   arrowglyph = kvs_ArrowGlyph()
   tfunc = kvs_TransferFunction()
+  orthoslice = kvs_OrthoSlice()
+  call orthoslice % setPlane(0.0, 2)
+  polygon = orthoslice % exec( volume )
   call arrowglyph % setType( 0 )
+
   call arrowglyph % setTransferFunction( tfunc )
-  call screen % registerObject( volume2 % get(), arrowglyph % get())
+  !call screen % registerObject( polygon % get(), bounds % get())
 !  call screen % registerObject( polygon % get(), bounds % get() )
-!  call screen % registerObject( polygon % get() )
+  call screen % registerObject( polygon % get() )
   call screen % draw()
 
   image = screen % capture()
