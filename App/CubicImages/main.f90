@@ -31,7 +31,12 @@ program main
   type( kvs_ArrowGlyph ) :: arrowglyph
   type( kvs_TransferFunction ) :: tfunc
   type( kvs_OrthoSlice ) :: orthoslice
+  type( kvs_SlicePlane) :: sliceplane
 
+  real, dimension(3) :: point
+  
+  real, dimension(3) :: normal
+  normal(1) = 1.0
   
 
   resolution % x = dimx
@@ -70,7 +75,10 @@ program main
   tfunc = kvs_TransferFunction()
   orthoslice = kvs_OrthoSlice()
   call orthoslice % setPlane(0.0, 2)
-  polygon = orthoslice % exec( volume )
+  ! polygon = orthoslice % exec( volume )
+  sliceplane = kvs_SlicePlane()
+  call sliceplane % setPlane( point, normal )
+  polygon = sliceplane % exec( volume )
   call arrowglyph % setType( 0 )
 
   call arrowglyph % setTransferFunction( tfunc )
