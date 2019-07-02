@@ -5,6 +5,7 @@
 #include <kvs/egl/Screen>
 #elif defined( KVS_SUPPORT_GLUT )
 #include <kvs/glut/Screen>
+#include <kvs/Camera>
 #else
 #warning "Screen class is not found in KVS."
 #endif
