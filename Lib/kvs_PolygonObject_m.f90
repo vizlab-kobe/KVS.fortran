@@ -67,15 +67,15 @@ contains
   subroutine kvs_PolygonObject_read( this, filename )
     implicit none
     class( kvs_PolygonObject ) :: this
-    character( len=1, kind=C_char ), intent( in ) :: filename(*)
-    call C_kvs_PolygonObject_read( this % ptr, filename )
+    character( len=*, kind=C_char ), intent( in ) :: filename
+    call C_kvs_PolygonObject_read( this % ptr, filename // C_null_char )
   end subroutine kvs_PolygonObject_read
 
   subroutine kvs_PolygonObject_write( this, filename )
     implicit none
     class( kvs_PolygonObject ) :: this
-    character( len=1, kind=C_char ), intent( in ) :: filename(*)
-    call C_kvs_PolygonObject_write( this % ptr, filename )
+    character( len=*, kind=C_char ), intent( in ) :: filename
+    call C_kvs_PolygonObject_write( this % ptr, filename // C_null_char )
   end subroutine kvs_PolygonObject_write
 
 end module kvs_PolygonObject_m

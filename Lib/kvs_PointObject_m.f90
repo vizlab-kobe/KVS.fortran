@@ -68,15 +68,15 @@ contains
   subroutine kvs_PointObject_read( this, filename )
     implicit none
     class( kvs_PointObject ) :: this
-    character( len=1, kind=C_char ), intent( in ) :: filename(*)
-    call C_kvs_PointObject_read( this % ptr, filename )
+    character( len=*, kind=C_char ), intent( in ) :: filename
+    call C_kvs_PointObject_read( this % ptr, filename // C_null_char )
   end subroutine kvs_PointObject_read
 
   subroutine kvs_PointObject_write( this, filename )
     implicit none
     class( kvs_PointObject ) :: this
-    character( len=1, kind=C_char ), intent( in ) :: filename(*)
-    call C_kvs_PointObject_write( this % ptr, filename )
+    character( len=*, kind=C_char ), intent( in ) :: filename
+    call C_kvs_PointObject_write( this % ptr, filename // C_null_char )
   end subroutine kvs_PointObject_write
 
   subroutine kvs_PointObject_setCoords( this, coords, size )
