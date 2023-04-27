@@ -15,6 +15,7 @@ module kvs_TornadoVolumeData_m
    contains
      final :: kvs_TornadoVolumeData_destroy ! Destructor
      procedure :: delete => kvs_TornadoVolumeData_delete
+     procedure :: setResolution => kvs_TornadoVolumeData_setResolution
      procedure :: setTime => kvs_TornadoVolumeData_setTime
      procedure :: exec => kvs_TornadoVolumeData_exec
   end type kvs_TornadoVolumeData
@@ -36,26 +37,32 @@ contains
     end if
   end subroutine kvs_TornadoVolumeData_destroy
 
-  function kvs_TornadoVolumeData_new ( resolution, other )
+  function kvs_TornadoVolumeData_new( other )
     implicit none
     type( kvs_TornadoVolumeData ) :: kvs_TornadoVolumeData_new
-    type( kvs_Vec3i ), intent( in ) :: resolution
     type( C_ptr ), optional :: other
     if ( present( other ) ) then
        kvs_TornadoVolumeData_new % ptr = C_kvs_TornadoVolumeData_copy( other )
     else
-       kvs_TornadoVolumeData_new % ptr = C_kvs_TornadoVolumeData_new( resolution%x, resolution%y, resolution%z )
+       kvs_TornadoVolumeData_new % ptr = C_kvs_TornadoVolumeData_new()
     end if
   end function kvs_TornadoVolumeData_new
 
-  subroutine kvs_TornadoVolumeData_delete ( this )
+  subroutine kvs_TornadoVolumeData_delete( this )
     implicit none
     class( kvs_TornadoVolumeData ) ::this
     call C_kvs_TornadoVolumeData_delete( this%ptr )
     this%ptr = C_NULL_ptr
   end subroutine kvs_TornadoVolumeData_delete
 
-  subroutine kvs_TornadoVolumeData_setTime ( this, time )
+  subroutine kvs_TornadoVolumeData_setResolution( this, dimx, dimy, dimz )
+    implicit none
+    class( kvs_TornadoVolumeData ) ::this
+    integer, intent( in ) :: dimx, dimy, dimz
+    call C_kvs_TornadoVolumeData_setResolution( this % ptr, dimx, dimy, dimz )
+  end subroutine kvs_TornadoVolumeData_setResolution
+
+  subroutine kvs_TornadoVolumeData_setTime( this, time )
     implicit none
     class( kvs_TornadoVolumeData ) ::this
     integer, intent( in ) :: time

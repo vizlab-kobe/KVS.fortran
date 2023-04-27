@@ -1,9 +1,10 @@
   ! C interface
   interface
 
-     function C_kvs_Screen_new()&
+     function C_kvs_Screen_new( app )&
           bind( C, name="Screen_new" )
        import
+       type( C_ptr ), value :: app
        type( C_ptr ) :: C_kvs_Screen_new
      end function C_kvs_Screen_new
 
@@ -20,6 +21,24 @@
        type( C_ptr ), value :: object
        type( C_ptr ), value :: renderer
      end subroutine C_kvs_Screen_registerObject
+
+     subroutine C_kvs_Screen_create( this )&
+          bind( C, name="Screen_create" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_Screen_create
+
+     subroutine C_kvs_Screen_show( this )&
+          bind( C, name="Screen_show" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_Screen_show
+
+     subroutine C_kvs_Screen_hide( this )&
+          bind( C, name="Screen_hide" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_Screen_hide
 
      subroutine C_kvs_Screen_draw( this )&
           bind( C, name="Screen_draw" )

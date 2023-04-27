@@ -1,12 +1,14 @@
 #include "kvs_TornadoVolumeData.h"
+#include <kvs/Vector3>
+#include <kvs/StructuredVolumeObject>
 
 
 extern "C"
 {
 
-kvs::TornadoVolumeData* TornadoVolumeData_new(int dimx, int dimy, int dimz)
+kvs::TornadoVolumeData* TornadoVolumeData_new()
 {
-    return new kvs::TornadoVolumeData( kvs::Vec3u( dimx, dimy, dimz ) );
+    return new kvs::TornadoVolumeData();
 }
 
 kvs::TornadoVolumeData* TornadoVolumeData_copy( kvs::TornadoVolumeData* other )
@@ -19,6 +21,11 @@ kvs::TornadoVolumeData* TornadoVolumeData_copy( kvs::TornadoVolumeData* other )
 void TornadoVolumeData_delete( kvs::TornadoVolumeData* self )
 {
     if ( self ) delete self;
+}
+
+void TornadoVolumeData_setResolution( kvs::TornadoVolumeData* self, int dimx, int dimy, int dimz )
+{
+    self->setResolution( kvs::Vec3u( dimx, dimy, dimz ) );
 }
 
 void TornadoVolumeData_setTime( kvs::TornadoVolumeData* self, int time )

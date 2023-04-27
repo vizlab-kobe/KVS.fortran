@@ -1,11 +1,13 @@
 module kvs_m
   use kvs_Vec3_m
   use kvs_ColorImage_m
+  use kvs_Application_m
   use kvs_Screen_m
   use kvs_PolygonObject_m
   use kvs_StructuredVolumeObject_m
   use kvs_Isosurface_m
   use kvs_LineObject_m
+  use kvs_HydrogenVolumeData_m
   use kvs_TornadoVolumeData_m
   use kvs_TransferFunction_m
   use kvs_Streamline_m

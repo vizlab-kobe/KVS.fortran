@@ -1,6 +1,7 @@
 module kvs_Screen_m
   use iso_c_binding
   use kvs_ColorImage_m
+  use kvs_Application_m
   implicit none
 
   private
@@ -12,9 +13,13 @@ module kvs_Screen_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-!     final :: kvs_Screen_finalize ! Destructor
+     final :: kvs_Screen_destroy ! Destructor
+     procedure :: get => kvs_Screen_get
      procedure :: delete => kvs_Screen_delete
      procedure :: registerObject => kvs_Screen_registerObject
+     procedure :: create => kvs_Screen_create
+     procedure :: show => kvs_Screen_show
+     procedure :: hide => kvs_Screen_hide
      procedure :: draw => kvs_Screen_draw
      procedure :: capture => kvs_Screen_capture
   end type kvs_Screen
@@ -36,10 +41,18 @@ contains
     endif
   end subroutine kvs_Screen_destroy
 
-  function kvs_Screen_new()
+  function kvs_Screen_get( this )
     implicit none
+    class( kvs_Screen ) :: this
+    type( C_ptr ) :: kvs_Screen_get
+    kvs_Screen_get = this % ptr
+  end function kvs_Screen_get
+
+  function kvs_Screen_new( app )
+    implicit none
+    type( kvs_Application ) :: app
     type( kvs_Screen ) :: kvs_Screen_new
-    kvs_Screen_new % ptr = C_kvs_Screen_new()
+    kvs_Screen_new % ptr = C_kvs_Screen_new( app % get() )
   end function kvs_Screen_new
 
   subroutine kvs_Screen_delete( this )
@@ -60,6 +73,24 @@ contains
        call C_kvs_Screen_registerObject( this % ptr, object, C_NULL_ptr );
     end if
   end subroutine kvs_Screen_registerObject
+
+  subroutine kvs_Screen_create( this )
+    implicit none
+    class( kvs_Screen ) :: this
+    call C_kvs_Screen_create( this % ptr )
+  end subroutine kvs_Screen_create
+
+  subroutine kvs_Screen_show( this )
+    implicit none
+    class( kvs_Screen ) :: this
+    call C_kvs_Screen_show( this % ptr )
+  end subroutine kvs_Screen_show
+
+  subroutine kvs_Screen_hide( this )
+    implicit none
+    class( kvs_Screen ) :: this
+    call C_kvs_Screen_hide( this % ptr )
+  end subroutine kvs_Screen_hide
 
   subroutine kvs_Screen_draw( this )
     implicit none

@@ -1,12 +1,9 @@
   ! C interface
   interface
 
-     function C_kvs_TornadoVolumeData_new ( dimx, dimy, dimz )&
+     function C_kvs_TornadoVolumeData_new()&
           bind( C, name="TornadoVolumeData_new" )
        import
-       integer( C_int ), value :: dimx
-       integer( C_int ), value :: dimy
-       integer( C_int ), value :: dimz
        type( C_ptr ) :: C_kvs_TornadoVolumeData_new
      end function C_kvs_TornadoVolumeData_new
 
@@ -22,6 +19,13 @@
        import
        type( C_ptr ), value :: this
      end subroutine C_kvs_TornadoVolumeData_delete
+
+     subroutine C_kvs_TornadoVolumeData_setResolution ( this, dimx, dimy, dimz )&
+          bind( C, name="TornadoVolumeData_setResolution" )
+       import
+       type( C_ptr ), value :: this
+       integer( C_int ), value :: dimx, dimy, dimz
+     end subroutine C_kvs_TornadoVolumeData_setResolution
 
      subroutine C_kvs_TornadoVolumeData_setTime ( this, time )&
           bind( C, name="TornadoVolumeData_setTime" )
