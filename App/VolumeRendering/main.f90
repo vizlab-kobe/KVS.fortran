@@ -6,8 +6,6 @@ program main
   type( kvs_Screen ) :: screen
   type( kvs_HydrogenVolumeData ) :: data
   type( kvs_StructuredVolumeObject ) :: volume
-  type( kvs_PolygonObject ) :: polygon
-  type( kvs_Isosurface ) :: isosurface
   type( kvs_Bounds ) :: bounds
 
   app = kvs_Application()
@@ -21,14 +19,10 @@ program main
   volume = data % exec()
   call data % delete()
 
-  isosurface = kvs_Isosurface()
-  call isosurface % setIsolevel( 90.0 )
-
-  polygon = isosurface % exec( volume )
   bounds = kvs_Bounds()
 
-  call screen % registerObject( polygon % get(), bounds % get() )
-  call screen % registerObject( polygon % get() )
+  call screen % registerObject( volume % get(), bounds % get() )
+  call screen % registerObject( volume % get() )
 
   call app % run()
 

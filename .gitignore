@@ -33,3 +33,4 @@
 App/Hello/Hello
 *.kvs
 App/Isosurface/Isosurface
+App/VolumeRendering/VolumeRendering
