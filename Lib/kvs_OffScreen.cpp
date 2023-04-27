@@ -1,5 +1,4 @@
-#include "kvs_Screen.h"
-#include <kvs/Application>
+#include "kvs_OffScreen.h"
 #include <kvs/ObjectBase>
 #include <kvs/RendererBase>
 #include <kvs/ColorImage>
@@ -10,19 +9,19 @@
 extern "C"
 {
 
-kvs::Screen* Screen_new( kvs::Application* app )
+kvs::OffScreen* OffScreen_new()
 {
-    return new kvs::Screen( app );
+    return new kvs::OffScreen();
 }
 
-void Screen_delete( kvs::Screen* self )
+void OffScreen_delete( kvs::OffScreen* self )
 {
     if ( self ) delete self;
 }
 
-void Screen_registerObject( kvs::Screen* self, kvs::ObjectBase* object, kvs::RendererBase* renderer )
+void OffScreen_registerObject( kvs::OffScreen* self, kvs::ObjectBase* object, kvs::RendererBase* renderer )
 {
-#if defined( KVS_SUPPORT_GLUT ) || defined( KVS_SUPPORT_GLFW ) || defined( KVS_SUPPORT_QT )
+#if defined( KVS_SUPPORT_OSMESA ) || defined( KVS_SUPPORT_EGL )
     self->registerObject( object, renderer );
 #else
     kvs::IgnoreUnusedVariable( self );
@@ -31,27 +30,27 @@ void Screen_registerObject( kvs::Screen* self, kvs::ObjectBase* object, kvs::Ren
 #endif
 }
 
-void Screen_create( kvs::Screen* self )
+void OffScreen_create( kvs::OffScreen* self )
 {
     self->create();
 }
 
-void Screen_show( kvs::Screen* self )
+void OffScreen_show( kvs::OffScreen* self )
 {
     self->show();
 }
 
-void Screen_hide( kvs::Screen* self )
+void OffScreen_hide( kvs::OffScreen* self )
 {
     self->hide();
 }
 
-void Screen_draw( kvs::Screen* self )
+void OffScreen_draw( kvs::OffScreen* self )
 {
     self->draw();
 }
 
-kvs::ColorImage* Screen_capture( kvs::Screen* self )
+kvs::ColorImage* OffScreen_capture( kvs::OffScreen* self )
 {
     self->draw();
     auto* image = new kvs::ColorImage();
