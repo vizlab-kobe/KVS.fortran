@@ -1,5 +1,6 @@
   ! C interface
   interface
+
      function C_kvs_Bounds_new()&
           bind( C, name="Bounds_new" )
        import
@@ -12,32 +13,32 @@
        type( C_ptr ), value :: this
      end subroutine C_kvs_Bounds_delete
 
-     subroutine C_kvs_Bounds_setType( this, boundsType )&
+     subroutine C_kvs_Bounds_setType( this, bounds_type )&
           bind( C, name="Bounds_setType" )
        import
        type( C_ptr ), value :: this
-       integer( C_int ), value :: boundsType
+       integer( C_int ), value :: bounds_type
      end subroutine C_kvs_Bounds_setType
 
-     subroutine C_kvs_Bounds_setLineWidth( this, lineWidth )&
+     subroutine C_kvs_Bounds_setLineWidth( this, width )&
           bind( C, name="Bounds_setLineWidth" )
        import
        type( C_ptr ), value :: this
-       real( C_float ), value :: lineWidth
+       real( C_float ), value :: width
      end subroutine C_kvs_Bounds_setLineWidth
 
-     subroutine C_kvs_Bounds_setCornerScale( this, cornerScale )&
+     subroutine C_kvs_Bounds_setCornerScale( this, scale )&
           bind( C, name="Bounds_setCornerScale" )
        import
        type( C_ptr ), value :: this
-       real( C_float ), value :: cornerScale
+       real( C_float ), value :: scale
      end subroutine C_kvs_Bounds_setCornerScale
 
-     subroutine C_kvs_Bounds_setCircleDivision( this, circleDivision )&
+     subroutine C_kvs_Bounds_setCircleDivision( this, division )&
           bind( C, name="Bounds_setCircleDivision" )
        import
        type( C_ptr ), value :: this
-       real( C_float ), value :: circleDivision
+       real( C_float ), value :: division
      end subroutine C_kvs_Bounds_setCircleDivision
 
      subroutine C_kvs_Bounds_enableAntiAliasing( this )&
@@ -84,6 +85,5 @@
        import
        type( C_ptr ), value :: this
      end subroutine C_kvs_Bounds_disableShading
-
 
   end interface

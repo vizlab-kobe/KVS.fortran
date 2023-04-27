@@ -11,17 +11,28 @@ module kvs_ColorImage_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-!     final :: kvs_ColorImage_finalize ! Destructor
+     final :: kvs_ColorImage_destroy ! Destructor
      procedure :: delete => kvs_ColorImage_delete
      procedure :: read => kvs_ColorImage_read
      procedure :: write => kvs_ColorImage_write
   end type kvs_ColorImage
 
-  interface kvs_ColorImage ! Constructor
+  ! Constructor
+  interface kvs_ColorImage
      procedure kvs_ColorImage_new
   end interface kvs_ColorImage
 
 contains
+
+  ! Destructor
+  subroutine kvs_ColorImage_destroy( this )
+    implicit none
+    type( kvs_ColorImage ) :: this
+    if ( c_associated( this % ptr ) ) then
+       call C_kvs_ColorImage_delete( this % ptr )
+       this % ptr = C_NULL_ptr
+    endif
+  end subroutine kvs_ColorImage_destroy
 
   function kvs_ColorImage_new( other )
     implicit none
@@ -33,15 +44,6 @@ contains
        kvs_ColorImage_new % ptr = C_kvs_ColorImage_new()
     end if
   end function kvs_ColorImage_new
-
-  subroutine kvs_ColorImage_finalize( this )
-    implicit none
-    type( kvs_ColorImage ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_ColorImage_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_ColorImage_finalize
 
   subroutine kvs_ColorImage_delete( this )
     implicit none
@@ -65,4 +67,3 @@ contains
   end subroutine kvs_ColorImage_write
 
 end module kvs_ColorImage_m
-

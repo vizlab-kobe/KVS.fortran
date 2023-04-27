@@ -16,15 +16,16 @@ void Timer_delete( kvs::Timer* self )
 
 void Timer_start( kvs::Timer* self)
 {
-  self->start();
+    self->start();
 }
 
 void Timer_stop( kvs::Timer* self)
 {
-  self->stop();
+    self->stop();
 }
 double Timer_sec( kvs::Timer* self)
 {
-  return self->sec();
+    return self->sec();
 }
-}
+
+} // end of extern "C"

@@ -15,32 +15,34 @@ module kvs_SlicePlane_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-!     final :: kvs_SlicePlane_finalize ! Destructor
+     final :: kvs_SlicePlane_destroy ! Destructor
      procedure :: delete => kvs_SlicePlane_delete
      procedure :: setPlane => kvs_SlicePlane_setPlane
      procedure :: exec => kvs_SlicePlane_exec
   end type kvs_SlicePlane
 
-  interface kvs_SlicePlane ! Constructor
+  ! Constructor
+  interface kvs_SlicePlane
      procedure kvs_SlicePlane_new
   end interface kvs_SlicePlane
 
 contains
 
-  function kvs_SlicePlane_new()
-    implicit none
-    type( kvs_SlicePlane ) :: kvs_SlicePlane_new
-    kvs_SlicePlane_new % ptr = C_kvs_SlicePlane_new()
-  end function kvs_SlicePlane_new
-
-  subroutine kvs_SlicePlane_finalize( this )
+  ! Destructor
+  subroutine kvs_SlicePlane_destroy( this )
     implicit none
     type( kvs_SlicePlane ) :: this
     if ( c_associated( this % ptr ) ) then
        call C_kvs_SlicePlane_delete( this % ptr )
        this % ptr = C_NULL_ptr
     endif
-  end subroutine kvs_SlicePlane_finalize
+  end subroutine kvs_SlicePlane_destroy
+
+  function kvs_SlicePlane_new()
+    implicit none
+    type( kvs_SlicePlane ) :: kvs_SlicePlane_new
+    kvs_SlicePlane_new % ptr = C_kvs_SlicePlane_new()
+  end function kvs_SlicePlane_new
 
   subroutine kvs_SlicePlane_delete( this )
     implicit none
@@ -54,14 +56,14 @@ contains
     class( kvs_SlicePlane ), intent( in ) :: this
     real( c_float ), dimension(:), target, intent( in ) :: point
     real( c_float ), dimension(:), target, intent( in ) :: normal
-    call C_kvs_SlicePlane_setPlane( this % ptr, c_loc(point), c_loc(normal) )
+    call C_kvs_SlicePlane_setPlane( this % ptr, c_loc( point ), c_loc( normal ) )
   end subroutine kvs_SlicePlane_setPlane
 
-  subroutine kvs_SlicePlane_setTransferFunction( this, tf )
+  subroutine kvs_SlicePlane_setTransferFunction( this, tfunc )
     implicit none
     class( kvs_SlicePlane ), intent( in ) :: this
-    type( kvs_TransferFunction ), intent( in ) :: tf
-    call C_kvs_SlicePlane_setTransferFunction( this % ptr, tf % get() )
+    type( kvs_TransferFunction ), intent( in ) :: tfunc
+    call C_kvs_SlicePlane_setTransferFunction( this % ptr, tfunc % get() )
   end subroutine kvs_SlicePlane_setTransferFunction
 
   function kvs_SlicePlane_exec( this, volume )

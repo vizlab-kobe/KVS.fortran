@@ -12,18 +12,29 @@ module kvs_Tubeline_m
   type kvs_Tubeline
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
-  contains
-     final :: kvs_Tubeline_finalize ! Destructor
+   contains
+     final :: kvs_Tubeline_destroy ! Destructor
      procedure :: get => kvs_Tubeline_get
      procedure :: delete => kvs_Tubeline_delete
      procedure :: exec => kvs_Tubeline_exec
   end type kvs_Tubeline
 
-  interface kvs_Tubeline ! Constructor
-    procedure kvs_Tubeline_new
+  ! Constructor
+  interface kvs_Tubeline
+     procedure kvs_Tubeline_new
   end interface kvs_Tubeline
 
-  contains
+contains
+
+  ! Destructor
+  subroutine kvs_Tubeline_destroy( this )
+    implicit none
+    type( kvs_Tubeline ) :: this
+    if ( c_associated( this % ptr ) ) then
+       call C_kvs_Tubeline_delete( this % ptr )
+       this % ptr = C_NULL_ptr
+    end if
+  end subroutine kvs_Tubeline_destroy
 
   function kvs_Tubeline_get( this )
     implicit none
@@ -43,15 +54,6 @@ module kvs_Tubeline_m
     end if
   end function kvs_Tubeline_new
 
-  subroutine kvs_Tubeline_finalize( this )
-    implicit none
-    type( kvs_Tubeline ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_Tubeline_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_Tubeline_finalize
-
   subroutine kvs_Tubeline_delete( this )
     implicit none
     class( kvs_Tubeline ) :: this
@@ -59,13 +61,19 @@ module kvs_Tubeline_m
     this % ptr = C_NULL_ptr
   end subroutine kvs_Tubeline_delete
 
-  function kvs_Tubeline_exec( this, line, ndivs )
+  subroutine kvs_Tubeline_setNumbferOfDivisions( this, ndivs )
+    implicit none
+    class( kvs_Tubeline ), intent( in ) :: this
+    integer( C_int ), intent( in ) :: ndivs
+    call C_kvs_Tubeline_setNumberOfDivisions( this % ptr, ndivs )
+  end subroutine kvs_Tubeline_setNumbferOfDivisions
+
+  function kvs_Tubeline_exec( this, line )
     implicit none
     class( kvs_Tubeline ), intent( in ) :: this
     type( kvs_LineObject ) :: line
-    integer( C_int ), value :: ndivs
     type( kvs_PolygonObject ) :: kvs_Tubeline_exec
-    kvs_Tubeline_exec = kvs_PolygonObject(C_kvs_Tubeline_exec( this % ptr, line % get(), ndivs ))
+    kvs_Tubeline_exec = kvs_PolygonObject( C_kvs_Tubeline_exec( this % ptr, line % get() ) )
   end function kvs_Tubeline_exec
 
 end module kvs_Tubeline_m

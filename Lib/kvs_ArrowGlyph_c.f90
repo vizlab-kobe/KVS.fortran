@@ -1,5 +1,6 @@
   ! C interface
   interface
+
      function C_kvs_ArrowGlyph_new()&
           bind( C, name="ArrowGlyph_new" )
        import
@@ -12,40 +13,52 @@
        type( C_ptr ), value :: this
      end subroutine C_kvs_ArrowGlyph_delete
 
-     subroutine C_kvs_ArrowGlyph_setType( this, arrowType )&
-          bind( C, name="ArrowGlyph_setType" )
+     subroutine C_kvs_ArrowGlyph_setArrowType( this, arrow_type )&
+          bind( C, name="ArrowGlyph_setArrowType" )
        import
        type( C_ptr ), value :: this
-       integer( C_int ), value :: arrowType
-     end subroutine C_kvs_ArrowGlyph_setType
+       integer( C_int ), value :: arrow_type
+     end subroutine C_kvs_ArrowGlyph_setArrowType
+
+     subroutine C_kvs_ArrowGlyph_setArrowTypeToLine( this )&
+          bind( C, name="ArrowGlyph_setArrowTypeToLine" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_ArrowGlyph_setArrowTypeToLine
+
+     subroutine C_kvs_ArrowGlyph_setArrowTypeToTube( this )&
+          bind( C, name="ArrowGlyph_setArrowTypeToTube" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_ArrowGlyph_setArrowTypeToTube
 
      ! GlyphBase
-     subroutine C_kvs_ArrowGlyph_setSizeMode( this, sizeMode )&
+     subroutine C_kvs_ArrowGlyph_setSizeMode( this, mode )&
           bind( C, name="ArrowGlyph_setSizeMode" )
        import
        type( C_ptr ), value :: this
-       integer( C_int ), value :: sizeMode
+       integer( C_int ), value :: mode
      end subroutine C_kvs_ArrowGlyph_setSizeMode
 
-     subroutine C_kvs_ArrowGlyph_setDirectionMode( this, directionMode )&
+     subroutine C_kvs_ArrowGlyph_setDirectionMode( this, mode )&
           bind( C, name="ArrowGlyph_setDirectionMode" )
        import
        type( C_ptr ), value :: this
-       integer( C_int ), value :: directionMode
+       integer( C_int ), value :: mode
      end subroutine C_kvs_ArrowGlyph_setDirectionMode
 
-     subroutine C_kvs_ArrowGlyph_setColorMode( this, colorMode )&
+     subroutine C_kvs_ArrowGlyph_setColorMode( this, mode )&
           bind( C, name="ArrowGlyph_setColorMode" )
        import
        type( C_ptr ), value :: this
-       integer( C_int ), value :: colorMode
+       integer( C_int ), value :: mode
      end subroutine C_kvs_ArrowGlyph_setColorMode
 
-     subroutine C_kvs_ArrowGlyph_setOpacityMode( this, opacityMode )&
+     subroutine C_kvs_ArrowGlyph_setOpacityMode( this, mode )&
           bind( C, name="ArrowGlyph_setOpacityMode" )
        import
        type( C_ptr ), value :: this
-       integer( C_int ), value :: opacityMode
+       integer( C_int ), value :: mode
      end subroutine C_kvs_ArrowGlyph_setOpacityMode
 
      subroutine C_kvs_ArrowGlyph_setCoords( this, coords, size )&
@@ -95,11 +108,11 @@
        real( C_float ), value :: scale
      end subroutine C_kvs_ArrowGlyph_setScale
 
-     subroutine C_kvs_ArrowGlyph_setTransferFunction( this, tfunc_ptr )&
+     subroutine C_kvs_ArrowGlyph_setTransferFunction( this, tfunc )&
           bind( C, name="ArrowGlyph_setTransferFunction" )
        import
        type( C_ptr ), value :: this
-       type( C_ptr ), value :: tfunc_ptr
+       type( C_ptr ), value :: tfunc
      end subroutine C_kvs_ArrowGlyph_setTransferFunction
 
      ! RendererBase
@@ -114,6 +127,5 @@
        import
        type( C_ptr ), value :: this
      end subroutine C_kvs_ArrowGlyph_disableShading
-
 
   end interface

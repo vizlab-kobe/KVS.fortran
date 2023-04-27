@@ -1,5 +1,6 @@
   ! C interface
   interface
+
      function C_kvs_SlicePlane_new()&
           bind( C, name="SlicePlane_new" )
        import
@@ -20,11 +21,11 @@
        type( C_ptr ), value :: normal
      end subroutine C_kvs_SlicePlane_setPlane
 
-     subroutine C_kvs_SlicePlane_setTransferFunction( this, tf )&
+     subroutine C_kvs_SlicePlane_setTransferFunction( this, tfunc )&
           bind( C, name="SlicePlane_setTransferFunction" )
        import
        type( C_ptr ), value :: this
-       type( C_ptr ), value :: tf
+       type( C_ptr ), value :: tfunc
      end subroutine C_kvs_SlicePlane_setTransferFunction
 
      function C_kvs_SlicePlane_exec( this, volume )&
@@ -34,4 +35,5 @@
        type( C_ptr ), value :: volume
        type( C_ptr ) :: C_kvs_SlicePlane_exec
      end function C_kvs_SlicePlane_exec
+
   end interface

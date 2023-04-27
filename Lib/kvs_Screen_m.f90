@@ -19,26 +19,28 @@ module kvs_Screen_m
      procedure :: capture => kvs_Screen_capture
   end type kvs_Screen
 
-  interface kvs_Screen ! Constructor
+  ! Constructor
+  interface kvs_Screen
      procedure kvs_Screen_new
   end interface kvs_Screen
 
 contains
 
-  function kvs_Screen_new()
-    implicit none
-    type( kvs_Screen ) :: kvs_Screen_new
-    kvs_Screen_new % ptr = C_kvs_Screen_new()
-  end function kvs_Screen_new
-
-  subroutine kvs_Screen_finalize( this )
+  ! Destructor
+  subroutine kvs_Screen_destroy( this )
     implicit none
     type( kvs_Screen ) :: this
     if ( c_associated( this % ptr ) ) then
        call C_kvs_Screen_delete( this % ptr )
        this % ptr = C_NULL_ptr
     endif
-  end subroutine kvs_Screen_finalize
+  end subroutine kvs_Screen_destroy
+
+  function kvs_Screen_new()
+    implicit none
+    type( kvs_Screen ) :: kvs_Screen_new
+    kvs_Screen_new % ptr = C_kvs_Screen_new()
+  end function kvs_Screen_new
 
   subroutine kvs_Screen_delete( this )
     implicit none
@@ -47,15 +49,15 @@ contains
     this % ptr = C_NULL_ptr
   end subroutine kvs_Screen_delete
 
-  subroutine kvs_Screen_registerObject( this, object_ptr, renderer_ptr )
+  subroutine kvs_Screen_registerObject( this, object, renderer )
     implicit none
     class( kvs_Screen ) :: this
-    type( C_ptr ) :: object_ptr
-    type( C_ptr ), optional :: renderer_ptr
-    if ( present( renderer_ptr ) ) then
-       call C_kvs_Screen_registerObject( this % ptr, object_ptr, renderer_ptr )
+    type( C_ptr ) :: object
+    type( C_ptr ), optional :: renderer
+    if ( present( renderer ) ) then
+       call C_kvs_Screen_registerObject( this % ptr, object, renderer )
     else
-       call C_kvs_Screen_registerObject( this % ptr, object_ptr, C_NULL_ptr );
+       call C_kvs_Screen_registerObject( this % ptr, object, C_NULL_ptr );
     end if
   end subroutine kvs_Screen_registerObject
 

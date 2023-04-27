@@ -10,8 +10,8 @@ module kvs_Timer_m
   type kvs_Timer
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
-  contains
-     final :: kvs_Timer_finalize ! Destructor
+   contains
+     final :: kvs_Timer_destroy ! Destructor
      procedure :: get => kvs_Timer_get
      procedure :: delete => kvs_Timer_delete
      procedure :: start => kvs_Timer_start
@@ -19,11 +19,22 @@ module kvs_Timer_m
      procedure :: sec => kvs_Timer_sec
   end type kvs_Timer
 
-  interface kvs_Timer ! Constructor
-    procedure kvs_Timer_new
+  ! Constructor
+  interface kvs_Timer
+     procedure kvs_Timer_new
   end interface kvs_Timer
 
-  contains
+contains
+
+  ! Destructor
+  subroutine kvs_Timer_destroy( this )
+    implicit none
+    type( kvs_Timer ) :: this
+    if ( c_associated( this % ptr ) ) then
+       call C_kvs_Timer_delete( this % ptr )
+       this % ptr = C_NULL_ptr
+    end if
+  end subroutine kvs_Timer_destroy
 
   function kvs_Timer_get( this )
     implicit none
@@ -37,15 +48,6 @@ module kvs_Timer_m
     type( kvs_Timer ) :: kvs_Timer_new
     kvs_Timer_new % ptr = C_kvs_Timer_new()
   end function kvs_Timer_new
-
-  subroutine kvs_Timer_finalize( this )
-    implicit none
-    type( kvs_Timer ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_Timer_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_Timer_finalize
 
   subroutine kvs_Timer_delete( this )
     implicit none
@@ -66,7 +68,7 @@ module kvs_Timer_m
     call C_kvs_Timer_stop( this % ptr )
   end subroutine kvs_Timer_stop
 
-  real(C_double) function kvs_Timer_sec( this )
+  real( C_double ) function kvs_Timer_sec( this )
     implicit none
     class( kvs_Timer ) :: this
     kvs_Timer_sec = C_kvs_Timer_sec( this % ptr )

@@ -11,7 +11,7 @@ kvs::TransferFunction* TransferFunction_new()
 
 void TransferFunction_delete( kvs::TransferFunction* self )
 {
-    delete self;
+    if ( self ) delete self;
 }
 
-}
+} // end of extern "C"

@@ -10,17 +10,28 @@ module kvs_TransferFunction_m
   type kvs_TransferFunction
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
-  contains
-     final :: kvs_TransferFunction_finalize ! Destructor
+   contains
+     final :: kvs_TransferFunction_destroy ! Destructor
      procedure :: get => kvs_TransferFunction_get
      procedure :: delete => kvs_TransferFunction_delete
   end type kvs_TransferFunction
 
-  interface kvs_TransferFunction ! Constructor
-    procedure kvs_TransferFunction_new
+  ! Constructor
+  interface kvs_TransferFunction
+     procedure kvs_TransferFunction_new
   end interface kvs_TransferFunction
 
-  contains
+contains
+
+  ! Destructor
+  subroutine kvs_TransferFunction_destroy( this )
+    implicit none
+    type( kvs_TransferFunction ) :: this
+    if ( c_associated( this % ptr ) ) then
+       call C_kvs_TransferFunction_delete( this % ptr )
+       this % ptr = C_NULL_ptr
+    end if
+  end subroutine kvs_TransferFunction_destroy
 
   function kvs_TransferFunction_get( this )
     implicit none
@@ -32,17 +43,8 @@ module kvs_TransferFunction_m
   function kvs_TransferFunction_new()
     implicit none
     type( kvs_TransferFunction ) :: kvs_TransferFunction_new
-     kvs_TransferFunction_new % ptr = C_kvs_TransferFunction_new()
+    kvs_TransferFunction_new % ptr = C_kvs_TransferFunction_new()
   end function kvs_TransferFunction_new
-
-  subroutine kvs_TransferFunction_finalize( this )
-    implicit none
-    type( kvs_TransferFunction ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_TransferFunction_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_TransferFunction_finalize
 
   subroutine kvs_TransferFunction_delete( this )
     implicit none

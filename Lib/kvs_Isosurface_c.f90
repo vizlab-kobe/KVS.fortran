@@ -1,5 +1,6 @@
   ! C interface
   interface
+
      function C_kvs_Isosurface_new()&
           bind( C, name="Isosurface_new" )
        import
@@ -19,6 +20,13 @@
        real( C_float ), value :: isolevel
      end subroutine C_kvs_Isosurface_setIsolevel
 
+     subroutine C_kvs_Isosurface_setTransferFunction( this, tfunc )&
+          bind( C, name="Isosurface_setIsolevel" )
+       import
+       type( C_ptr ), value :: this
+       type( C_ptr ), value :: tfunc
+     end subroutine C_kvs_Isosurface_setTransferFunction
+
      function C_kvs_Isosurface_exec( this, volume )&
           bind( C, name="Isosurface_exec" )
        import
@@ -26,4 +34,5 @@
        type( C_ptr ), value :: volume
        type( C_ptr ) :: C_kvs_Isosurface_exec
      end function C_kvs_Isosurface_exec
+
   end interface

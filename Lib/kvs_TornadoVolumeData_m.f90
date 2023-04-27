@@ -10,20 +10,31 @@ module kvs_TornadoVolumeData_m
   ! Class definition
   public :: kvs_TornadoVolumeData
   type kvs_TornadoVolumeData
-    private
-    type( C_ptr ) :: ptr = C_NULL_ptr
-  contains
-    final :: kvs_TornadoVolumeData_finalize ! Destructor
+     private
+     type( C_ptr ) :: ptr = C_NULL_ptr
+   contains
+     final :: kvs_TornadoVolumeData_destroy ! Destructor
      procedure :: delete => kvs_TornadoVolumeData_delete
      procedure :: setTime => kvs_TornadoVolumeData_setTime
      procedure :: exec => kvs_TornadoVolumeData_exec
   end type kvs_TornadoVolumeData
 
+  ! Constructor
   interface kvs_TornadoVolumeData
-    procedure kvs_TornadoVolumeData_new
+     procedure kvs_TornadoVolumeData_new
   end interface kvs_TornadoVolumeData
 
-  contains
+contains
+
+  ! Destructor
+  subroutine kvs_TornadoVolumeData_destroy( this )
+    implicit none
+    type( kvs_TornadoVolumeData ) :: this
+    if ( c_associated( this % ptr ) ) then
+       call C_kvs_TornadoVolumeData_delete( this % ptr )
+       this % ptr = C_NULL_ptr
+    end if
+  end subroutine kvs_TornadoVolumeData_destroy
 
   function kvs_TornadoVolumeData_new ( resolution, other )
     implicit none
@@ -39,26 +50,17 @@ module kvs_TornadoVolumeData_m
 
   subroutine kvs_TornadoVolumeData_delete ( this )
     implicit none
-    class (kvs_TornadoVolumeData) ::this
+    class( kvs_TornadoVolumeData ) ::this
     call C_kvs_TornadoVolumeData_delete( this%ptr )
     this%ptr = C_NULL_ptr
   end subroutine kvs_TornadoVolumeData_delete
 
   subroutine kvs_TornadoVolumeData_setTime ( this, time )
     implicit none
-    class (kvs_TornadoVolumeData) ::this
+    class( kvs_TornadoVolumeData ) ::this
     integer, intent( in ) :: time
     call C_kvs_TornadoVolumeData_setTime( this % ptr, time )
   end subroutine kvs_TornadoVolumeData_setTime
-
-  subroutine kvs_TornadoVolumeData_finalize( this )
-    implicit none
-    type( kvs_TornadoVolumeData ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_TornadoVolumeData_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_TornadoVolumeData_finalize
 
   function kvs_TornadoVolumeData_exec( this )
     implicit none

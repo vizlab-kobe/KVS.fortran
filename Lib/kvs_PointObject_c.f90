@@ -1,5 +1,6 @@
   ! C interface
   interface
+
      function C_kvs_PointObject_new()&
           bind( C, name="PointObject_new" )
        import
@@ -46,4 +47,5 @@
        type( C_ptr ), value :: coords
        integer( C_int ), value :: size
      end subroutine C_kvs_PointObject_setCoords
+
   end interface

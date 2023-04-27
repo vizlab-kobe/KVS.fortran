@@ -3,7 +3,9 @@
 
 extern "C"
 {
+
 kvs::StructuredVolumeObject* StructuredVolumeObject_new();
+kvs::StructuredVolumeObject* StructuredVolumeObject_copy( kvs::StructuredVolumeObject* other );
 void StructuredVolumeObject_delete( kvs::StructuredVolumeObject* self );
 void StructuredVolumeObject_setGridTypeToUniform( kvs::StructuredVolumeObject* self );
 void StructuredVolumeObject_setResolution( kvs::StructuredVolumeObject* self, int dimx, int dimy, int dimz );
@@ -15,5 +17,5 @@ void StructuredVolumeObject_print( kvs::StructuredVolumeObject* self );
 void StructuredVolumeObject_read( kvs::StructuredVolumeObject* self, const char* filename );
 void StructuredVolumeObject_write( kvs::StructuredVolumeObject* self, const char* filename );
 size_t StructuredVolumeObject_numberOfNodes( kvs::StructuredVolumeObject* self );
-kvs::StructuredVolumeObject* StructuredVolumeObject_copy( kvs::StructuredVolumeObject* other );
-}
+
+} // end of extern "C"

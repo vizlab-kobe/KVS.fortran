@@ -11,18 +11,29 @@ module kvs_PolygonObject_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-!     final :: kvs_PolygonObject_finalize ! Destructor
+     final :: kvs_PolygonObject_destroy ! Destructor
      procedure :: get => kvs_PolygonObject_get
      procedure :: delete => kvs_PolygonObject_delete
      procedure :: print => kvs_PolygonObject_print
      procedure :: write => kvs_PolygonObject_write
   end type kvs_PolygonObject
 
-  interface kvs_PolygonObject ! Constructor
+  ! Constructor
+  interface kvs_PolygonObject
      procedure kvs_PolygonObject_new
   end interface kvs_PolygonObject
 
 contains
+
+  ! Destructor
+  subroutine kvs_PolygonObject_destroy( this )
+    implicit none
+    type( kvs_PolygonObject ) :: this
+    if ( c_associated( this % ptr ) ) then
+       call C_kvs_PolygonObject_delete( this % ptr )
+       this % ptr = C_NULL_ptr
+    end if
+  end subroutine kvs_PolygonObject_destroy
 
   function kvs_PolygonObject_get( this )
     implicit none
@@ -41,15 +52,6 @@ contains
        kvs_PolygonObject_new % ptr = C_kvs_PolygonObject_new()
     end if
   end function kvs_PolygonObject_new
-
-  subroutine kvs_PolygonObject_finalize( this )
-    implicit none
-    type( kvs_PolygonObject ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_PolygonObject_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_PolygonObject_finalize
 
   subroutine kvs_PolygonObject_delete( this )
     implicit none

@@ -1,5 +1,6 @@
   ! C interface
   interface
+
      function C_kvs_OrthoSlice_new()&
           bind( C, name="OrthoSlice_new" )
        import
@@ -12,19 +13,19 @@
        type( C_ptr ), value :: this
      end subroutine C_kvs_OrthoSlice_delete
 
-     subroutine C_kvs_OrthoSlice_setPlane( this, pos, axis )&
+     subroutine C_kvs_OrthoSlice_setPlane( this, position, axis )&
           bind( C, name="OrthoSlice_setPlane" )
        import
        type( C_ptr ), value :: this
-       real( C_float ), value :: pos
-       integer( c_int ), value :: axis
+       real( C_float ), value :: position
+       integer( C_int ), value :: axis
      end subroutine C_kvs_OrthoSlice_setPlane
 
-     subroutine C_kvs_OrthoSlice_setTransferFunction( this, tf )&
+     subroutine C_kvs_OrthoSlice_setTransferFunction( this, tfunc )&
           bind( C, name="OrthoSlice_setTransferFunction" )
        import
        type( C_ptr ), value :: this
-       type( C_ptr ), value :: tf
+       type( C_ptr ), value :: tfunc
      end subroutine C_kvs_OrthoSlice_setTransferFunction
 
      function C_kvs_OrthoSlice_exec( this, volume )&
@@ -34,4 +35,5 @@
        type( C_ptr ), value :: volume
        type( C_ptr ) :: C_kvs_OrthoSlice_exec
      end function C_kvs_OrthoSlice_exec
+
   end interface

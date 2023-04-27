@@ -11,7 +11,7 @@ module kvs_PointObject_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-!     final :: kvs_PointObject_finalize ! Destructor
+     final :: kvs_PointObject_destroy ! Destructor
      procedure :: get => kvs_PointObject_get
      procedure :: delete => kvs_PointObject_delete
      procedure :: print => kvs_PointObject_print
@@ -19,11 +19,22 @@ module kvs_PointObject_m
      procedure :: setCoords => kvs_PointObject_setCoords
   end type kvs_PointObject
 
-  interface kvs_PointObject ! Constructor
+  ! Constructor
+  interface kvs_PointObject
      procedure kvs_PointObject_new
   end interface kvs_PointObject
 
 contains
+
+  ! Destructor
+  subroutine kvs_PointObject_destroy( this )
+    implicit none
+    type( kvs_PointObject ) :: this
+    if ( c_associated( this % ptr ) ) then
+       call C_kvs_PointObject_delete( this % ptr )
+       this % ptr = C_NULL_ptr
+    end if
+  end subroutine kvs_PointObject_destroy
 
   function kvs_PointObject_get( this )
     implicit none
@@ -42,15 +53,6 @@ contains
        kvs_PointObject_new % ptr = C_kvs_PointObject_new()
     end if
   end function kvs_PointObject_new
-
-  subroutine kvs_PointObject_finalize( this )
-    implicit none
-    type( kvs_PointObject ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_PointObject_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_PointObject_finalize
 
   subroutine kvs_PointObject_delete( this )
     implicit none
@@ -84,8 +86,7 @@ contains
     class( kvs_PointObject ) :: this
     real, dimension(:), target :: coords
     integer :: size
-
-    call C_kvs_PointObject_setCoords( this % ptr, c_loc(coords), size )
+    call C_kvs_PointObject_setCoords( this % ptr, c_loc( coords ), size )
   end subroutine kvs_PointObject_setCoords
 
 end module kvs_PointObject_m

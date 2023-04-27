@@ -15,33 +15,35 @@ module kvs_OrthoSlice_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-!     final :: kvs_OrthoSlice_finalize ! Destructor
+     final :: kvs_OrthoSlice_destroy ! Destructor
      procedure :: delete => kvs_OrthoSlice_delete
      procedure :: setPlane => kvs_OrthoSlice_setPlane
      procedure :: setTransferFunction => kvs_OrthoSlice_setTransferFunction
      procedure :: exec => kvs_OrthoSlice_exec
   end type kvs_OrthoSlice
 
-  interface kvs_OrthoSlice ! Constructor
+  ! Constructor
+  interface kvs_OrthoSlice
      procedure kvs_OrthoSlice_new
   end interface kvs_OrthoSlice
 
 contains
 
-  function kvs_OrthoSlice_new()
-    implicit none
-    type( kvs_OrthoSlice ) :: kvs_OrthoSlice_new
-    kvs_OrthoSlice_new % ptr = C_kvs_OrthoSlice_new()
-  end function kvs_OrthoSlice_new
-
-  subroutine kvs_OrthoSlice_finalize( this )
+  ! Destructor
+  subroutine kvs_OrthoSlice_destroy( this )
     implicit none
     type( kvs_OrthoSlice ) :: this
     if ( c_associated( this % ptr ) ) then
        call C_kvs_OrthoSlice_delete( this % ptr )
        this % ptr = C_NULL_ptr
     endif
-  end subroutine kvs_OrthoSlice_finalize
+  end subroutine kvs_OrthoSlice_destroy
+
+  function kvs_OrthoSlice_new()
+    implicit none
+    type( kvs_OrthoSlice ) :: kvs_OrthoSlice_new
+    kvs_OrthoSlice_new % ptr = C_kvs_OrthoSlice_new()
+  end function kvs_OrthoSlice_new
 
   subroutine kvs_OrthoSlice_delete( this )
     implicit none
@@ -50,19 +52,19 @@ contains
     this % ptr = C_NULL_ptr
   end subroutine kvs_OrthoSlice_delete
 
-  subroutine kvs_OrthoSlice_setPlane( this, pos, axis )
+  subroutine kvs_OrthoSlice_setPlane( this, position, axis )
     implicit none
     class( kvs_OrthoSlice ), intent( in ) :: this
-    real( C_float ), intent( in ) :: pos
+    real( C_float ), intent( in ) :: position
     integer( c_int ), intent( in ) :: axis
-    call C_kvs_OrthoSlice_setPlane( this % ptr, pos, axis )
+    call C_kvs_OrthoSlice_setPlane( this % ptr, position, axis )
   end subroutine kvs_OrthoSlice_setPlane
 
-  subroutine kvs_OrthoSlice_setTransferFunction( this, tf )
+  subroutine kvs_OrthoSlice_setTransferFunction( this, tfunc )
     implicit none
     class( kvs_OrthoSlice ), intent( in ) :: this
-    type( kvs_TransferFunction ), intent( in ) :: tf
-    call C_kvs_OrthoSlice_setTransferFunction( this % ptr, tf % get() )
+    type( kvs_TransferFunction ), intent( in ) :: tfunc
+    call C_kvs_OrthoSlice_setTransferFunction( this % ptr, tfunc % get() )
   end subroutine kvs_OrthoSlice_setTransferFunction
 
   function kvs_OrthoSlice_exec( this, volume )

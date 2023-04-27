@@ -12,11 +12,12 @@ module kvs_ArrowGlyph_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-!     final :: kvs_ArrowGlyph_finalize ! Destructor
+     final :: kvs_ArrowGlyph_destroy
      procedure :: delete => kvs_ArrowGlyph_delete
      procedure :: get => kvs_ArrowGlyph_get
-     procedure :: setType => kvs_ArrowGlyph_setType
-     
+     procedure :: setArrowType => kvs_ArrowGlyph_setArrowType
+     procedure :: setArrowTypeToLine => kvs_ArrowGlyph_setArrowTypeToLine
+     procedure :: setArrowTypeToTube => kvs_ArrowGlyph_setArrowTypeToTube
      ! GlyphBase
      procedure :: setSizeMode => kvs_ArrowGlyph_setSizeMode
      procedure :: setDirectionMode => kvs_ArrowGlyph_setDirectionMode
@@ -29,21 +30,32 @@ module kvs_ArrowGlyph_m
      procedure :: setOpacities => kvs_ArrowGlyph_setOpacities
      procedure :: setScale => kvs_ArrowGlyph_setScale
      procedure :: setTransferFunction => kvs_ArrowGlyph_setTransferFunction
-     
      ! RendererBase
      procedure :: enableShading => kvs_ArrowGlyph_enableShading
      procedure :: disableShading => kvs_ArrowGlyph_disableShading
   end type kvs_ArrowGlyph
 
+  ! Arrow type
   enum,bind(c)
-    enumerator :: Box=0, Corner = 1, Circle = 2
+     enumerator :: Line=0, Tube = 1
   end enum
 
-  interface kvs_ArrowGlyph ! Constructor
+  ! Constructor
+  interface kvs_ArrowGlyph
      procedure kvs_ArrowGlyph_new
   end interface kvs_ArrowGlyph
 
 contains
+
+  ! Destructor
+  subroutine kvs_ArrowGlyph_destroy( this )
+    implicit none
+    type( kvs_ArrowGlyph ) :: this
+    if ( c_associated( this % ptr ) ) then
+       call C_kvs_ArrowGlyph_delete( this % ptr )
+       this % ptr = C_NULL_ptr
+    endif
+  end subroutine kvs_ArrowGlyph_destroy
 
   function kvs_ArrowGlyph_get( this )
     implicit none
@@ -58,15 +70,6 @@ contains
     kvs_ArrowGlyph_new % ptr = C_kvs_ArrowGlyph_new()
   end function kvs_ArrowGlyph_new
 
-  subroutine kvs_ArrowGlyph_finalize( this )
-    implicit none
-    type( kvs_ArrowGlyph ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_ArrowGlyph_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_ArrowGlyph_finalize
-
   subroutine kvs_ArrowGlyph_delete( this )
     implicit none
     class( kvs_ArrowGlyph ) :: this
@@ -74,39 +77,51 @@ contains
     this % ptr = C_NULL_ptr
   end subroutine kvs_ArrowGlyph_delete
 
-  subroutine kvs_ArrowGlyph_setType( this, boundsType )
+  subroutine kvs_ArrowGlyph_setArrowType( this, arrow_type )
     implicit none
     class( kvs_ArrowGlyph ), intent( in ) :: this
-    integer( C_int ), intent( in ) :: boundsType
-    call C_kvs_ArrowGlyph_setType( this % ptr, boundsType )
-  end subroutine kvs_ArrowGlyph_setType
+    integer( C_int ), intent( in ) :: arrow_type
+    call C_kvs_ArrowGlyph_setArrowType( this % ptr, arrow_type )
+  end subroutine kvs_ArrowGlyph_setArrowType
 
-  subroutine kvs_ArrowGlyph_setSizeMode( this, sizeMode )
+  subroutine kvs_ArrowGlyph_setArrowTypeToLine( this )
     implicit none
     class( kvs_ArrowGlyph ), intent( in ) :: this
-    integer( C_int ), intent( in ) :: sizeMode
-    call C_kvs_ArrowGlyph_setSizeMode( this % ptr, sizeMode )
+    call C_kvs_ArrowGlyph_setArrowTypeToLine( this % ptr )
+  end subroutine kvs_ArrowGlyph_setArrowTypeToLine
+
+  subroutine kvs_ArrowGlyph_setArrowTypeToTube( this )
+    implicit none
+    class( kvs_ArrowGlyph ), intent( in ) :: this
+    call C_kvs_ArrowGlyph_setArrowTypeToTube( this % ptr )
+  end subroutine kvs_ArrowGlyph_setArrowTypeToTube
+
+  subroutine kvs_ArrowGlyph_setSizeMode( this, mode )
+    implicit none
+    class( kvs_ArrowGlyph ), intent( in ) :: this
+    integer( C_int ), intent( in ) :: mode
+    call C_kvs_ArrowGlyph_setSizeMode( this % ptr, mode )
   end subroutine kvs_ArrowGlyph_setSizeMode
 
-  subroutine kvs_ArrowGlyph_setDirectionMode( this, directionMode )
+  subroutine kvs_ArrowGlyph_setDirectionMode( this, mode )
     implicit none
     class( kvs_ArrowGlyph ), intent( in ) :: this
-    integer( C_int ), intent( in ) :: directionMode
-    call C_kvs_ArrowGlyph_setDirectionMode( this % ptr, directionMode )
+    integer( C_int ), intent( in ) :: mode
+    call C_kvs_ArrowGlyph_setDirectionMode( this % ptr, mode )
   end subroutine kvs_ArrowGlyph_setDirectionMode
 
-  subroutine kvs_ArrowGlyph_setColorMode( this, colorMode )
+  subroutine kvs_ArrowGlyph_setColorMode( this, mode )
     implicit none
     class( kvs_ArrowGlyph ), intent( in ) :: this
-    integer( C_int ), intent( in ) :: colorMode
-    call C_kvs_ArrowGlyph_setColorMode( this % ptr, colorMode )
+    integer( C_int ), intent( in ) :: mode
+    call C_kvs_ArrowGlyph_setColorMode( this % ptr, mode )
   end subroutine kvs_ArrowGlyph_setColorMode
 
-  subroutine kvs_ArrowGlyph_setOpacityMode( this, opacityMode )
+  subroutine kvs_ArrowGlyph_setOpacityMode( this, mode )
     implicit none
     class( kvs_ArrowGlyph ), intent( in ) :: this
-    integer( C_int ), intent( in ) :: opacityMode
-    call C_kvs_ArrowGlyph_setOpacityMode( this % ptr, opacityMode )
+    integer( C_int ), intent( in ) :: mode
+    call C_kvs_ArrowGlyph_setOpacityMode( this % ptr, mode )
   end subroutine kvs_ArrowGlyph_setOpacityMode
 
   subroutine kvs_ArrowGlyph_setCoords( this, coords, size )
@@ -114,7 +129,6 @@ contains
     class( kvs_ArrowGlyph ) :: this
     real, dimension(:), target :: coords
     integer :: size
-
     call C_kvs_ArrowGlyph_setCoords( this % ptr, c_loc(coords), size )
   end subroutine kvs_ArrowGlyph_setCoords
 
@@ -123,7 +137,6 @@ contains
     class( kvs_ArrowGlyph ) :: this
     real, dimension(:), target :: sizes
     integer :: size
-
     call C_kvs_ArrowGlyph_setSizes( this % ptr, c_loc(sizes), size )
   end subroutine kvs_ArrowGlyph_setSizes
 
@@ -132,7 +145,6 @@ contains
     class( kvs_ArrowGlyph ) :: this
     real, dimension(:), target :: directions
     integer :: size
-
     call C_kvs_ArrowGlyph_setDirections( this % ptr, c_loc(directions), size )
   end subroutine kvs_ArrowGlyph_setDirections
 
@@ -141,7 +153,6 @@ contains
     class( kvs_ArrowGlyph ) :: this
     integer, dimension(:), target :: colors
     integer :: size
-
     call C_kvs_ArrowGlyph_setColors( this % ptr, c_loc(colors), size )
   end subroutine kvs_ArrowGlyph_setColors
 

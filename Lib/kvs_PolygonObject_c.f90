@@ -1,5 +1,6 @@
   ! C interface
   interface
+
      function C_kvs_PolygonObject_new()&
           bind( C, name="PolygonObject_new" )
        import
@@ -38,4 +39,5 @@
        type( C_ptr ), value :: this
        character( len=1, kind=C_char ), intent( in ) :: filename(*)
      end subroutine C_kvs_PolygonObject_write
+
   end interface

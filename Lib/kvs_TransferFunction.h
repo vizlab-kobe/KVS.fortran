@@ -4,6 +4,8 @@
 
 extern "C"
 {
+
 kvs::TransferFunction* TransferFunction_new();
 void TransferFunction_delete( kvs::TransferFunction* self );
-}
+
+} // end of extern "C"

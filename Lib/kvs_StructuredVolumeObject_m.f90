@@ -12,7 +12,7 @@ module kvs_StructuredVolumeObject_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-!     final :: kvs_StructuredVolumeObject_finalize ! Destructor
+     final :: kvs_StructuredVolumeObject_destroy ! Destructor
      procedure :: get => kvs_StructuredVolumeObject_get
      procedure :: delete => kvs_StructuredVolumeObject_delete
      procedure :: setGridTypeToUniform => kvs_StructuredVolumeObject_setGridTypeToUniform
@@ -26,11 +26,22 @@ module kvs_StructuredVolumeObject_m
      procedure :: write => kvs_StructuredVolumeObject_write
   end type kvs_StructuredVolumeObject
 
-  interface kvs_StructuredVolumeObject ! Constructor
+  ! Constructor
+  interface kvs_StructuredVolumeObject
      procedure kvs_StructuredVolumeObject_new
   end interface kvs_StructuredVolumeObject
 
 contains
+
+  ! Destructor
+  subroutine kvs_StructuredVolumeObject_destroy( this )
+    implicit none
+    type( kvs_StructuredVolumeObject ) :: this
+    if ( c_associated( this % ptr ) ) then
+       call C_kvs_StructuredVolumeObject_delete( this % ptr )
+       this % ptr = C_NULL_ptr
+    end if
+  end subroutine kvs_StructuredVolumeObject_destroy
 
   function kvs_StructuredVolumeObject_get( this )
     implicit none
@@ -49,15 +60,6 @@ contains
        kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_new()
     end if
   end function kvs_StructuredVolumeObject_new
-
-  subroutine kvs_StructuredVolumeObject_finalize( this )
-    implicit none
-    type( kvs_StructuredVolumeObject ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_StructuredVolumeObject_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_StructuredVolumeObject_finalize
 
   subroutine kvs_StructuredVolumeObject_delete( this )
     implicit none

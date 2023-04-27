@@ -3,6 +3,7 @@ module kvs_Isosurface_m
   use kvs_Vec3_m
   use kvs_StructuredVolumeObject_m
   use kvs_PolygonObject_m
+  use kvs_TransferFunction_m
   implicit none
 
   private
@@ -14,32 +15,34 @@ module kvs_Isosurface_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-!     final :: kvs_Isosurface_finalize ! Destructor
+     final :: kvs_Isosurface_destroy ! Destructor
      procedure :: delete => kvs_Isosurface_delete
      procedure :: setIsolevel => kvs_Isosurface_setIsolevel
      procedure :: exec => kvs_Isosurface_exec
   end type kvs_Isosurface
 
-  interface kvs_Isosurface ! Constructor
+  ! Constructor
+  interface kvs_Isosurface
      procedure kvs_Isosurface_new
   end interface kvs_Isosurface
 
 contains
 
-  function kvs_Isosurface_new()
-    implicit none
-    type( kvs_Isosurface ) :: kvs_Isosurface_new
-    kvs_Isosurface_new % ptr = C_kvs_Isosurface_new()
-  end function kvs_Isosurface_new
-
-  subroutine kvs_Isosurface_finalize( this )
+  ! Destructor
+  subroutine kvs_Isosurface_destroy( this )
     implicit none
     type( kvs_Isosurface ) :: this
     if ( c_associated( this % ptr ) ) then
        call C_kvs_Isosurface_delete( this % ptr )
        this % ptr = C_NULL_ptr
     endif
-  end subroutine kvs_Isosurface_finalize
+  end subroutine kvs_Isosurface_destroy
+
+  function kvs_Isosurface_new()
+    implicit none
+    type( kvs_Isosurface ) :: kvs_Isosurface_new
+    kvs_Isosurface_new % ptr = C_kvs_Isosurface_new()
+  end function kvs_Isosurface_new
 
   subroutine kvs_Isosurface_delete( this )
     implicit none
@@ -54,6 +57,13 @@ contains
     real( C_float ), intent( in ) :: isolevel
     call C_kvs_Isosurface_setIsolevel( this % ptr, isolevel )
   end subroutine kvs_Isosurface_setIsolevel
+
+  subroutine kvs_Isosurface_setTransferFunction( this, tfunc )
+    implicit none
+    class( kvs_Isosurface ), intent( in ) :: this
+    type( kvs_TransferFunction ), intent( in ) :: tfunc
+    call C_kvs_Isosurface_setTransferFunction( this % ptr, tfunc % get() )
+  end subroutine kvs_Isosurface_setTransferFunction
 
   function kvs_Isosurface_exec( this, volume )
     implicit none

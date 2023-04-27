@@ -1,5 +1,6 @@
   ! C interface
   interface
+
      function C_kvs_Screen_new()&
           bind( C, name="Screen_new" )
        import
@@ -32,4 +33,5 @@
        type( C_ptr ), value :: this
        type( C_ptr ) :: C_kvs_Screen_capture
      end function C_kvs_Screen_capture
+
   end interface
