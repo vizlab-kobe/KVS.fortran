@@ -42,14 +42,14 @@ contains
     kvs_RayCastingRenderer_get = this % ptr
   end function kvs_RayCastingRenderer_get
 
-  function kvs_RayCastingRenderer_new( sw )
+  function kvs_RayCastingRenderer_new( glsl )
     implicit none
     type( kvs_RayCastingRenderer ) :: kvs_RayCastingRenderer_new
-    logical, optional :: sw
-    if ( present( sw ) ) then
-       kvs_RayCastingRenderer_new % ptr = C_kvs_RayCastingRenderer_new( .false. )
+    logical, optional :: glsl
+    if ( present( glsl ) ) then
+       kvs_RayCastingRenderer_new % ptr = C_kvs_RayCastingRenderer_new( glsl )
     else
-       kvs_RayCastingRenderer_new % ptr = C_kvs_RayCastingRenderer_new( sw )
+       kvs_RayCastingRenderer_new % ptr = C_kvs_RayCastingRenderer_new( .true. )
     end if
   end function kvs_RayCastingRenderer_new
 

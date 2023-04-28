@@ -5,10 +5,10 @@
 extern "C"
 {
 
-kvs::VolumeRendererBase* RayCastingRenderer_new( bool sw )
+kvs::VolumeRendererBase* RayCastingRenderer_new( bool glsl )
 {
-    if ( sw ) { return new kvs::RayCastingRenderer(); }
-    return new kvs::glsl::RayCastingRenderer();
+    if ( glsl ) { return new kvs::glsl::RayCastingRenderer(); }
+    return new kvs::RayCastingRenderer();
 }
 
 void RayCastingRenderer_delete( kvs::VolumeRendererBase* self )

@@ -1,11 +1,11 @@
   ! C interface
   interface
 
-     function C_kvs_RayCastingRenderer_new( sw )&
+     function C_kvs_RayCastingRenderer_new( glsl )&
           bind( C, name="RayCastingRenderer_new" )
        import
        type( C_ptr ) :: C_kvs_RayCastingRenderer_new
-       logical :: sw
+       logical :: glsl
      end function C_kvs_RayCastingRenderer_new
 
      subroutine C_kvs_RayCastingRenderer_delete( this )&
