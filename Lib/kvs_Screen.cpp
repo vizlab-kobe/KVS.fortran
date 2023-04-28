@@ -12,7 +12,11 @@ extern "C"
 
 kvs::Screen* Screen_new( kvs::Application* app )
 {
+#if defined( KVS_SUPPORT_GLUT ) || defined( KVS_SUPPORT_GLFW ) || defined( KVS_SUPPORT_QT )
     return new kvs::Screen( app );
+#else
+    return nullptr;
+#endif
 }
 
 void Screen_delete( kvs::Screen* self )
