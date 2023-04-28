@@ -7,6 +7,7 @@ program main
   type( kvs_HydrogenVolumeData ) :: data
   type( kvs_StructuredVolumeObject ) :: volume
   type( kvs_Bounds ) :: bounds
+  type( kvs_RayCastingRenderer ) :: renderer
 
   app = kvs_Application()
 
@@ -20,9 +21,10 @@ program main
   call data % delete()
 
   bounds = kvs_Bounds()
+  renderer = kvs_RayCastingRenderer()
 
   call screen % registerObject( volume % get(), bounds % get() )
-  call screen % registerObject( volume % get() )
+  call screen % registerObject( volume % get(), renderer % get() )
 
   call app % run()
 
