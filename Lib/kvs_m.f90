@@ -19,5 +19,7 @@ module kvs_m
   use kvs_ArrowGlyph_m
   use kvs_OrthoSlice_m
   use kvs_SlicePlane_m
+  use kvs_PointRenderer_m
+  use kvs_LineRenderer_m
   use kvs_RayCastingRenderer_m
 end module kvs_m
