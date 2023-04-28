@@ -9,6 +9,7 @@ program main
   type( kvs_PolygonObject ) :: polygon
   type( kvs_Isosurface ) :: isosurface
   type( kvs_Bounds ) :: bounds
+  type( kvs_PolygonRenderer ) :: renderer
 
   app = kvs_Application()
 
@@ -26,9 +27,10 @@ program main
 
   polygon = isosurface % exec( volume )
   bounds = kvs_Bounds()
+  renderer = kvs_PolygonRenderer()
 
   call screen % registerObject( polygon % get(), bounds % get() )
-  call screen % registerObject( polygon % get() )
+  call screen % registerObject( polygon % get(), renderer % get() )
 
   call app % run()
 

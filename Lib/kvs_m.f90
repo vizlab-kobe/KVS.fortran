@@ -21,5 +21,6 @@ module kvs_m
   use kvs_SlicePlane_m
   use kvs_PointRenderer_m
   use kvs_LineRenderer_m
+  use kvs_PolygonRenderer_m
   use kvs_RayCastingRenderer_m
 end module kvs_m
