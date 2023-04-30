@@ -13,4 +13,18 @@
        type( C_ptr ), value :: this
      end subroutine C_kvs_TransferFunction_delete
 
+     subroutine C_kvs_TransferFunction_read( this, filename )&
+          bind( C, name="TransferFunction_read" )
+       import
+       type( C_ptr ), value :: this
+       character( len=1, kind=C_char ), intent( in ) :: filename(*)
+     end subroutine C_kvs_TransferFunction_read
+
+     subroutine C_kvs_TransferFunction_write( this, filename )&
+          bind( C, name="TransferFunction_write" )
+       import
+       type( C_ptr ), value :: this
+       character( len=1, kind=C_char ), intent( in ) :: filename(*)
+     end subroutine C_kvs_TransferFunction_write
+
   end interface

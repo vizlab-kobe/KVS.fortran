@@ -8,6 +8,8 @@ program main
   type( kvs_StructuredVolumeObject ) :: volume
   type( kvs_Bounds ) :: bounds
   type( kvs_RayCastingRenderer ) :: renderer
+  type( kvs_ColorMap ) :: cmap
+  type( kvs_TransferFunction ) :: tfunc
 
   app = kvs_Application()
 
@@ -19,6 +21,8 @@ program main
 
   volume = data % exec()
   call data % delete()
+
+!  cmap = kvs_ColorMap_Rainbow( 256 )
 
   bounds = kvs_Bounds()
   renderer = kvs_RayCastingRenderer()
