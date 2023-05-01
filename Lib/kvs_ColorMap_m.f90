@@ -24,6 +24,24 @@ module kvs_ColorMap_m
      procedure kvs_ColorMap_new
   end interface kvs_ColorMap
 
+  ! Colormap functions
+  public :: kvs_ColorMap_Rainbow
+  public :: kvs_ColorMap_CoolWarm
+  public :: kvs_ColorMap_BrewerBrBG
+  public :: kvs_ColorMap_BrewerPiYG
+  public :: kvs_ColorMap_BrewerPRGn
+  public :: kvs_ColorMap_BrewerPuOr
+  public :: kvs_ColorMap_BrewerRdBu
+  public :: kvs_ColorMap_BrewerRdGy
+  public :: kvs_ColorMap_BrewerRdYlBu
+  public :: kvs_ColorMap_BrewerRdYlGn
+  public :: kvs_ColorMap_BrewerSpectral
+  public :: kvs_ColorMap_Viridis
+  public :: kvs_ColorMap_Plasma
+  public :: kvs_ColorMap_Inferno
+  public :: kvs_ColorMap_Magma
+  public :: kvs_ColorMap_Cividis
+
 contains
 
   ! Destructor

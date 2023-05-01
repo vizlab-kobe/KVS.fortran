@@ -22,10 +22,13 @@ program main
   volume = data % exec()
   call data % delete()
 
-!  cmap = kvs_ColorMap_Rainbow( 256 )
+  cmap = kvs_ColorMap_CoolWarm()
+  tfunc = kvs_TransferFunction()
+  call tfunc % setColorMap( cmap )
 
   bounds = kvs_Bounds()
   renderer = kvs_RayCastingRenderer()
+  call renderer % setTransferFunction( tfunc )
 
   call screen % registerObject( volume % get(), bounds % get() )
   call screen % registerObject( volume % get(), renderer % get() )

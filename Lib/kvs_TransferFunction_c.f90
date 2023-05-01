@@ -27,4 +27,18 @@
        character( len=1, kind=C_char ), intent( in ) :: filename(*)
      end subroutine C_kvs_TransferFunction_write
 
+     subroutine C_kvs_TransferFunction_setColorMap( this, cmap )&
+          bind( C, name="TransferFunction_setColorMap" )
+       import
+       type( C_ptr ), value :: this
+       type( C_ptr ), value :: cmap
+     end subroutine C_kvs_TransferFunction_setColorMap
+
+     subroutine C_kvs_TransferFunction_setRange( this, min_value, max_value )&
+          bind( C, name="TransferFunction_setRange" )
+       import
+       type( C_ptr ),   value :: this
+       real( C_float ), value :: min_value, max_value
+     end subroutine C_kvs_TransferFunction_setRange
+
   end interface

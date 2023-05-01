@@ -1,5 +1,6 @@
 module kvs_TransferFunction_m
   use iso_c_binding
+  use kvs_ColorMap_m
   implicit none
 
   private
@@ -14,6 +15,8 @@ module kvs_TransferFunction_m
      final :: kvs_TransferFunction_destroy ! Destructor
      procedure :: get => kvs_TransferFunction_get
      procedure :: delete => kvs_TransferFunction_delete
+     procedure :: setColorMap => kvs_TransferFunction_setColorMap
+     procedure :: setRange => kvs_TransferFunction_setRange
   end type kvs_TransferFunction
 
   ! Constructor
@@ -52,5 +55,19 @@ contains
     call C_kvs_TransferFunction_delete( this % ptr )
     this % ptr = C_NULL_ptr
   end subroutine kvs_TransferFunction_delete
+
+  subroutine kvs_TransferFunction_setColorMap( this, cmap )
+    implicit none
+    class( kvs_TransferFunction ), intent( in ) :: this
+    type( kvs_ColorMap ), intent( in ) :: cmap
+    call C_kvs_TransferFunction_setColorMap( this % ptr, cmap % get() )
+  end subroutine kvs_TransferFunction_setColorMap
+
+  subroutine kvs_TransferFunction_setRange( this, min_value, max_value )
+    implicit none
+    class( kvs_TransferFunction ), intent( in ) :: this
+    real( C_float ), intent( in ) :: min_value, max_value
+    call C_kvs_TransferFunction_setRange( this % ptr, min_value, max_value )
+  end subroutine kvs_TransferFunction_setRange
 
 end module kvs_TransferFunction_m
