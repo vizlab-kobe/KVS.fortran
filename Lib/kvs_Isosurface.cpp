@@ -1,4 +1,4 @@
-#include "kvs_Isosurface.h"
+#include <kvs/Isosurface>
 #include <kvs/Message>
 #include <kvs/TransferFunction>
 

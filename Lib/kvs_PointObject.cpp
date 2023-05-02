@@ -1,4 +1,4 @@
-#include "kvs_PointObject.h"
+#include <kvs/PointObject>
 #include <kvs/Message>
 
 

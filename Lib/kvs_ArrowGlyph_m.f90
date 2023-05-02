@@ -3,9 +3,6 @@ module kvs_ArrowGlyph_m
   use kvs_TransferFunction_m
   implicit none
 
-!  private
-!  include "kvs_ArrowGlyph_c.f90"
-
   ! Class definition
   public :: kvs_ArrowGlyph
   type kvs_ArrowGlyph
@@ -45,7 +42,7 @@ module kvs_ArrowGlyph_m
      procedure kvs_ArrowGlyph_new
   end interface kvs_ArrowGlyph
 
-  ! Private C interfaces
+  ! C interfaces
   private
   interface
      function C_kvs_ArrowGlyph_new()&

@@ -6,9 +6,6 @@ module kvs_OrthoSlice_m
   use kvs_TransferFunction_m
   implicit none
 
-!  private
-!  include "kvs_OrthoSlice_c.f90"
-
   ! Class definition
   public :: kvs_OrthoSlice
   type kvs_OrthoSlice

@@ -2,9 +2,6 @@ module kvs_PolygonRenderer_m
   use iso_c_binding
   implicit none
 
-!  private
-!  include "kvs_PolygonRenderer_c.f90"
-
   ! Class definition
   public :: kvs_PolygonRenderer
   type kvs_PolygonRenderer

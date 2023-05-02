@@ -4,9 +4,6 @@ module kvs_TornadoVolumeData_m
   use kvs_StructuredVolumeObject_m
   implicit none
 
-!  private
-!  include "kvs_TornadoVolumeData_c.f90"
-
   ! Class definition
   public :: kvs_TornadoVolumeData
   type kvs_TornadoVolumeData

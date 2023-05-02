@@ -1,4 +1,4 @@
-#include "kvs_Bounds.h"
+#include <kvs/Bounds>
 #include <kvs/Message>
 
 

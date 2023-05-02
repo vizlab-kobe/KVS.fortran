@@ -1,4 +1,4 @@
-#include "kvs_ColorMap.h"
+#include <kvs/ColorMap>
 
 
 extern "C"

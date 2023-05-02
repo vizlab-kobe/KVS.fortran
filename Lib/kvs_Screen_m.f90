@@ -4,9 +4,6 @@ module kvs_Screen_m
   use kvs_Application_m
   implicit none
 
-!  private
-!  include "kvs_Screen_c.f90"
-
   ! Class definition
   public :: kvs_Screen
   type kvs_Screen
@@ -31,7 +28,7 @@ module kvs_Screen_m
 
   ! C interfaces
   private
-  interface
+    interface
      function C_kvs_Screen_new( app )&
           bind( C, name="Screen_new" )
        import

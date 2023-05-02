@@ -1,4 +1,4 @@
-#include "kvs_RayCastingRenderer.h"
+#include <kvs/RayCastingRenderer>
 #include <kvs/TransferFunction>
 
 

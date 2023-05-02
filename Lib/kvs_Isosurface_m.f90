@@ -6,9 +6,6 @@ module kvs_Isosurface_m
   use kvs_TransferFunction_m
   implicit none
 
-!  private
-!  include "kvs_Isosurface_c.f90"
-
   ! Class definition
   public :: kvs_Isosurface
   type kvs_Isosurface

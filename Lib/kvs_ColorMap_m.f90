@@ -2,9 +2,6 @@ module kvs_ColorMap_m
   use iso_c_binding
   implicit none
 
-!  private
-!  include "kvs_ColorMap_c.f90"
-
   ! Class definition
   public :: kvs_ColorMap
   type kvs_ColorMap
@@ -42,7 +39,7 @@ module kvs_ColorMap_m
   public :: kvs_ColorMap_Magma
   public :: kvs_ColorMap_Cividis
 
-  ! Private C interfaces
+  ! C interfaces
   private
     interface
      function C_kvs_ColorMap_new() result( this )&

@@ -20,7 +20,7 @@ module kvs_Application_m
      procedure kvs_Application_new
   end interface kvs_Application
 
-  ! Private C interfaces
+  ! C interfaces
   private
   interface
      function C_kvs_Application_new()&

@@ -2,9 +2,6 @@ module kvs_PointObject_m
   use iso_c_binding
   implicit none
 
-!  private
-!  include "kvs_PointObject_c.f90"
-
   ! Class definition
   public :: kvs_PointObject
   type kvs_PointObject

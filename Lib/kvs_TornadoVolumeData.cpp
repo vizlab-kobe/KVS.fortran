@@ -1,4 +1,4 @@
-#include "kvs_TornadoVolumeData.h"
+#include <kvs/TornadoVolumeData>
 #include <kvs/Vector3>
 #include <kvs/StructuredVolumeObject>
 

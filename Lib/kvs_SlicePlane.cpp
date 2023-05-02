@@ -1,4 +1,4 @@
-#include "kvs_SlicePlane.h"
+#include <kvs/SlicePlane>
 #include <kvs/Message>
 #include <kvs/Vector3>
 #include <kvs/TransferFunction>

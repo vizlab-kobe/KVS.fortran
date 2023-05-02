@@ -1,4 +1,4 @@
-#include "kvs_TransferFunction.h"
+#include <kvs/TransferFunction>
 #include <kvs/ColorMap>
 
 

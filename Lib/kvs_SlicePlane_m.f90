@@ -6,9 +6,6 @@ module kvs_SlicePlane_m
   use kvs_TransferFunction_m
   implicit none
 
-!  private
-!  include "kvs_SlicePlane_c.f90"
-
   ! Class definition
   public :: kvs_SlicePlane
   type kvs_SlicePlane

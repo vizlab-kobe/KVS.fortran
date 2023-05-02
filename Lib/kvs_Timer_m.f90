@@ -2,9 +2,6 @@ module kvs_Timer_m
   use iso_c_binding
   implicit none
 
-!  private
-!  include "kvs_Timer_c.f90"
-
   ! Class definition
   public :: kvs_Timer
   type kvs_Timer

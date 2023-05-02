@@ -1,4 +1,4 @@
-#include "kvs_LineObject.h"
+#include <kvs/LineObject>
 
 
 extern "C"

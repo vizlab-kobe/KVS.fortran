@@ -3,9 +3,6 @@ module kvs_StructuredVolumeObject_m
   use kvs_Vec3_m
   implicit none
 
-!  private
-!  include "kvs_StructuredVolumeObject_c.f90"
-
   ! Class definition
   public :: kvs_StructuredVolumeObject
   type kvs_StructuredVolumeObject

@@ -2,9 +2,6 @@ module kvs_PolygonObject_m
   use iso_c_binding
   implicit none
 
-!  private
-!  include "kvs_PolygonObject_c.f90"
-
   ! Class definition
   public :: kvs_PolygonObject
   type kvs_PolygonObject

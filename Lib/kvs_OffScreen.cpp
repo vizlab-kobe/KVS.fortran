@@ -1,4 +1,4 @@
-#include "kvs_OffScreen.h"
+#include <kvs/OffScreen>
 #include <kvs/ObjectBase>
 #include <kvs/RendererBase>
 #include <kvs/ColorImage>

@@ -1,4 +1,4 @@
-#include "kvs_ArrowGlyph.h"
+#include <kvs/ArrowGlyph>
 
 
 extern "C"

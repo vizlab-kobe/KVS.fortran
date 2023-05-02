@@ -1,4 +1,4 @@
-#include "kvs_Application.h"
+#include <kvs/Application>
 #include <kvs/Screen>
 #include <kvs/IgnoreUnusedVariable>
 

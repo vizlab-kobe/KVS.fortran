@@ -3,9 +3,6 @@ module kvs_TransferFunction_m
   use kvs_ColorMap_m
   implicit none
 
-!  private
-!  include "kvs_TransferFunction_c.f90"
-
   ! Class definition
   public :: kvs_TransferFunction
   type kvs_TransferFunction

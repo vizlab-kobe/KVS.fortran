@@ -4,9 +4,6 @@ module kvs_Tubeline_m
   use kvs_PolygonObject_m
   implicit none
 
-!  private
-!  include "kvs_Tubeline_c.f90"
-
   ! Class definition
   public :: kvs_Tubeline
   type kvs_Tubeline

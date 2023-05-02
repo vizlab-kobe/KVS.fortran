@@ -3,9 +3,6 @@ module kvs_RayCastingRenderer_m
   use kvs_TransferFunction_m
   implicit none
 
-!  private
-!  include "kvs_RayCastingRenderer_c.f90"
-
   ! Class definition
   public :: kvs_RayCastingRenderer
   type kvs_RayCastingRenderer

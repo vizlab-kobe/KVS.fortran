@@ -1,4 +1,6 @@
-#include "kvs_Tubeline.h"
+#include <kvs/Tubeline>
+#include <kvs/LineObject>
+#include <kvs/PolygonObject>
 
 
 extern "C"

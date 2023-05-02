@@ -1,4 +1,4 @@
-#include "kvs_HydrogenVolumeData.h"
+#include <kvs/HydrogenVolumeData>
 #include <kvs/Vector3>
 #include <kvs/StructuredVolumeObject>
 

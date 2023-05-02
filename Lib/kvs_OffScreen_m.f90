@@ -3,9 +3,6 @@ module kvs_OffScreen_m
   use kvs_ColorImage_m
   implicit none
 
-!  private
-!  include "kvs_OffScreen_c.f90"
-
   ! Class definition
   public :: kvs_OffScreen
   type kvs_OffScreen

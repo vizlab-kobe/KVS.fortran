@@ -2,9 +2,6 @@ module kvs_LineObject_m
   use iso_c_binding
   implicit none
 
-!  private
-!  include "kvs_LineObject_c.f90"
-
   ! Class definition
   public :: kvs_LineObject
   type kvs_LineObject

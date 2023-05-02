@@ -1,4 +1,4 @@
-#include "kvs_ColorImage.h"
+#include <kvs/ColorImage>
 #include <kvs/Message>
 
 

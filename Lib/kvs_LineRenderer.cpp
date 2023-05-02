@@ -1,4 +1,4 @@
-#include "kvs_LineRenderer.h"
+#include <kvs/LineRenderer>
 
 
 extern "C"

@@ -1,4 +1,4 @@
-#include "kvs_PolygonObject.h"
+#include <kvs/PolygonObject>
 #include <kvs/Message>
 
 

@@ -2,9 +2,6 @@ module kvs_LineRenderer_m
   use iso_c_binding
   implicit none
 
-!  private
-!  include "kvs_LineRenderer_c.f90"
-
   ! Class definition
   public :: kvs_LineRenderer
   type kvs_LineRenderer

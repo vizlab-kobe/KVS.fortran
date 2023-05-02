@@ -4,9 +4,6 @@ module kvs_HydrogenVolumeData_m
   use kvs_StructuredVolumeObject_m
   implicit none
 
-!  private
-!  include "kvs_HydrogenVolumeData_c.f90"
-
   ! Class definition
   public :: kvs_HydrogenVolumeData
   type kvs_HydrogenVolumeData

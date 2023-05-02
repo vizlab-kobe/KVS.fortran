@@ -2,9 +2,6 @@ module kvs_PointRenderer_m
   use iso_c_binding
   implicit none
 
-!  private
-!  include "kvs_PointRenderer_c.f90"
-
   ! Class definition
   public :: kvs_PointRenderer
   type kvs_PointRenderer

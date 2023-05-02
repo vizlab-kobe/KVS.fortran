@@ -6,9 +6,6 @@ module kvs_Streamline_m
   use kvs_LineObject_m
   implicit none
 
-!  private
-!  include "kvs_Streamline_c.f90"
-
   ! Class definition
   public :: kvs_Streamline
   type kvs_Streamline

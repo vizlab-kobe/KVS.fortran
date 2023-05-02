@@ -1,4 +1,4 @@
-#include "kvs_Screen.h"
+#include <kvs/Screen>
 #include <kvs/Application>
 #include <kvs/ObjectBase>
 #include <kvs/RendererBase>

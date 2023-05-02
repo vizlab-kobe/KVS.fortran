@@ -1,4 +1,4 @@
-#include "kvs_PointRenderer.h"
+#include <kvs/PointRenderer>
 
 
 extern "C"

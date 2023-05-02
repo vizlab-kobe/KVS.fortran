@@ -1,4 +1,6 @@
-#include "kvs_OrthoSlice.h"
+#include <kvs/OrthoSlice>
+#include <kvs/Vector3>
+#include <kvs/TransferFunction>
 #include <kvs/Message>
 
 

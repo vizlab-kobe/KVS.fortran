@@ -3,9 +3,6 @@ module kvs_Bounds_m
   use kvs_LineObject_m
   implicit none
 
-!  private
-!  include "kvs_Bounds_c.f90"
-
   ! Class definition
   public :: kvs_Bounds
   type kvs_Bounds
@@ -37,6 +34,7 @@ module kvs_Bounds_m
      procedure kvs_Bounds_new
   end interface kvs_Bounds
 
+  ! C interfaces
   private
     interface
      function C_kvs_Bounds_new()&

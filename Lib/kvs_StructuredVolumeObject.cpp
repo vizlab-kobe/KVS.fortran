@@ -1,4 +1,4 @@
-#include "kvs_StructuredVolumeObject.h"
+#include <kvs/StructuredVolumeObject>
 #include <kvs/Message>
 
 

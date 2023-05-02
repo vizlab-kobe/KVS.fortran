@@ -1,4 +1,4 @@
-#include "kvs_PolygonRenderer.h"
+#include <kvs/PolygonRenderer>
 
 
 extern "C"

@@ -1,4 +1,4 @@
-#include "kvs_Streamline.h"
+#include <kvs/Streamline>
 #include <kvs/VolumeObjectBase>
 #include <kvs/PointObject>
 #include <kvs/TransferFunction>
