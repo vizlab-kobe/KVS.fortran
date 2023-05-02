@@ -1,6 +1,7 @@
 module kvs_TransferFunction_m
   use iso_c_binding
   use kvs_ColorMap_m
+  use kvs_OpacityMap_m
   implicit none
 
   ! Class definition
@@ -13,6 +14,7 @@ module kvs_TransferFunction_m
      procedure :: get => kvs_TransferFunction_get
      procedure :: delete => kvs_TransferFunction_delete
      procedure :: setColorMap => kvs_TransferFunction_setColorMap
+     procedure :: setOpacityMap => kvs_TransferFunction_setOpacityMap
      procedure :: setRange => kvs_TransferFunction_setRange
   end type kvs_TransferFunction
 
@@ -56,6 +58,13 @@ module kvs_TransferFunction_m
        type( C_ptr ), value :: this
        type( C_ptr ), value :: cmap
      end subroutine C_kvs_TransferFunction_setColorMap
+
+     subroutine C_kvs_TransferFunction_setOpacityMap( this, omap )&
+          bind( C, name="TransferFunction_setOpacityMap" )
+       import
+       type( C_ptr ), value :: this
+       type( C_ptr ), value :: omap
+     end subroutine C_kvs_TransferFunction_setOpacityMap
 
      subroutine C_kvs_TransferFunction_setRange( this, min_value, max_value )&
           bind( C, name="TransferFunction_setRange" )
@@ -103,6 +112,13 @@ contains
     type( kvs_ColorMap ), intent( in ) :: cmap
     call C_kvs_TransferFunction_setColorMap( this % ptr, cmap % get() )
   end subroutine kvs_TransferFunction_setColorMap
+
+  subroutine kvs_TransferFunction_setOpacityMap( this, omap )
+    implicit none
+    class( kvs_TransferFunction ), intent( in ) :: this
+    type( kvs_OpacityMap ), intent( in ) :: omap
+    call C_kvs_TransferFunction_setOpacityMap( this % ptr, omap % get() )
+  end subroutine kvs_TransferFunction_setOpacityMap
 
   subroutine kvs_TransferFunction_setRange( this, min_value, max_value )
     implicit none

@@ -11,6 +11,7 @@ module kvs_m
   use kvs_HydrogenVolumeData_m
   use kvs_TornadoVolumeData_m
   use kvs_ColorMap_m
+  use kvs_OpacityMap_m
   use kvs_TransferFunction_m
   use kvs_Streamline_m
   use kvs_Tubeline_m

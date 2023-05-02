@@ -1,5 +1,6 @@
 #include <kvs/TransferFunction>
 #include <kvs/ColorMap>
+#include <kvs/OpacityMap>
 
 
 extern "C"
@@ -28,6 +29,11 @@ void TransferFunction_write( kvs::TransferFunction* self, const char* filename )
 void TransferFunction_setColorMap( kvs::TransferFunction* self, const kvs::ColorMap* cmap )
 {
     self->setColorMap( *cmap );
+}
+
+void TransferFunction_setOpacityMap( kvs::TransferFunction* self, const kvs::OpacityMap* omap )
+{
+    self->setOpacityMap( *omap );
 }
 
 void TransferFunction_setRange(
