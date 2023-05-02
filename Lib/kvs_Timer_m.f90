@@ -2,8 +2,8 @@ module kvs_Timer_m
   use iso_c_binding
   implicit none
 
-  private
-  include "kvs_Timer_c.f90"
+!  private
+!  include "kvs_Timer_c.f90"
 
   ! Class definition
   public :: kvs_Timer
@@ -23,6 +23,41 @@ module kvs_Timer_m
   interface kvs_Timer
      procedure kvs_Timer_new
   end interface kvs_Timer
+
+  ! C interfaces
+  private
+  interface
+     function C_kvs_Timer_new () result( this )&
+          bind( C, name="Timer_new" )
+       import
+       type( C_ptr ) :: this
+     end function C_kvs_Timer_new
+
+     subroutine C_kvs_Timer_delete ( this )&
+          bind( C, name="Timer_delete" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_Timer_delete
+
+     subroutine C_kvs_Timer_start ( this )&
+          bind( C, name="Timer_start" )
+       import
+       type( C_ptr ) :: this
+     end subroutine C_kvs_Timer_start
+
+     subroutine C_kvs_Timer_stop ( this )&
+          bind( C, name="Timer_stop" )
+       import
+       type( C_ptr ) :: this
+     end subroutine C_kvs_Timer_stop
+
+     function C_kvs_Timer_sec (this)&
+          bind( C, name="Timer_sec" )
+       import
+       type( C_ptr ), value :: this
+       real ( C_double ) :: C_kvs_Timer_sec
+     end function C_kvs_Timer_sec
+  end interface
 
 contains
 

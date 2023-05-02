@@ -3,8 +3,8 @@ module kvs_RayCastingRenderer_m
   use kvs_TransferFunction_m
   implicit none
 
-  private
-  include "kvs_RayCastingRenderer_c.f90"
+!  private
+!  include "kvs_RayCastingRenderer_c.f90"
 
   ! Class definition
   public :: kvs_RayCastingRenderer
@@ -22,6 +22,30 @@ module kvs_RayCastingRenderer_m
   interface kvs_RayCastingRenderer
      procedure kvs_RayCastingRenderer_new
   end interface kvs_RayCastingRenderer
+
+  ! C interfaces
+  private
+  interface
+     function C_kvs_RayCastingRenderer_new( glsl )&
+          bind( C, name="RayCastingRenderer_new" )
+       import
+       type( C_ptr ) :: C_kvs_RayCastingRenderer_new
+       logical :: glsl
+     end function C_kvs_RayCastingRenderer_new
+
+     subroutine C_kvs_RayCastingRenderer_delete( this )&
+          bind( C, name="RayCastingRenderer_delete" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_RayCastingRenderer_delete
+
+     subroutine C_kvs_RayCastingRenderer_setTransferFunction( this, tfunc )&
+          bind( C, name="RayCastingRenderer_setTransferFunction" )
+       import
+       type( C_ptr ), value :: this
+       type( C_ptr ), value :: tfunc
+     end subroutine C_kvs_RayCastingRenderer_setTransferFunction
+  end interface
 
 contains
 

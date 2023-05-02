@@ -2,8 +2,8 @@ module kvs_PolygonRenderer_m
   use iso_c_binding
   implicit none
 
-  private
-  include "kvs_PolygonRenderer_c.f90"
+!  private
+!  include "kvs_PolygonRenderer_c.f90"
 
   ! Class definition
   public :: kvs_PolygonRenderer
@@ -22,6 +22,37 @@ module kvs_PolygonRenderer_m
   interface kvs_PolygonRenderer
      procedure kvs_PolygonRenderer_new
   end interface kvs_PolygonRenderer
+
+  ! C interfaces
+  private
+  interface
+     function C_kvs_PolygonRenderer_new( glsl )&
+          bind( C, name="PolygonRenderer_new" )
+       import
+       type( C_ptr ) :: C_kvs_PolygonRenderer_new
+       logical :: glsl
+     end function C_kvs_PolygonRenderer_new
+
+     subroutine C_kvs_PolygonRenderer_delete( this )&
+          bind( C, name="PolygonRenderer_delete" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_PolygonRenderer_delete
+
+     subroutine C_kvs_PolygonRenderer_setAntiAliasingEnabled( this, enable )&
+          bind( C, name="PolygonRenderer_setAntiAliasingEnabled" )
+       import
+       type( C_ptr ), value :: this
+       logical, value :: enable
+     end subroutine C_kvs_PolygonRenderer_setAntiAliasingEnabled
+
+     subroutine C_kvs_PolygonRenderer_setTwoSideLightingEnabled( this, enable )&
+          bind( C, name="PolygonRenderer_setTwoSideLightingEnabled" )
+       import
+       type( C_ptr ), value :: this
+       logical, value :: enable
+     end subroutine C_kvs_PolygonRenderer_setTwoSideLightingEnabled
+  end interface
 
 contains
 

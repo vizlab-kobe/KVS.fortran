@@ -2,10 +2,7 @@ module kvs_Application_m
   use iso_c_binding
   implicit none
 
-  private
-  include "kvs_Application_c.f90"
-
-  ! Class definition
+  !> Class definition
   public :: kvs_Application
   type kvs_Application
      private
@@ -18,14 +15,42 @@ module kvs_Application_m
      procedure :: quit => kvs_Application_quit
   end type kvs_Application
 
-  ! Constructor
+  !> Constructor
   interface kvs_Application
      procedure kvs_Application_new
   end interface kvs_Application
 
+  ! Private C interfaces
+  private
+  interface
+     function C_kvs_Application_new()&
+          bind( C, name="Application_new" )
+       import
+       type( C_ptr ) :: C_kvs_Application_new
+     end function C_kvs_Application_new
+
+     subroutine C_kvs_Application_delete( this )&
+          bind( C, name="Application_delete" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_Application_delete
+
+     subroutine C_kvs_Application_run( this )&
+          bind( C, name="Application_run" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_Application_run
+
+     subroutine C_kvs_Application_quit( this )&
+          bind( C, name="Application_quit" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_Application_quit
+  end interface
+
 contains
 
-  ! Destructor
+  !> Destructor
   subroutine kvs_Application_destroy( this )
     implicit none
     type( kvs_Application ) :: this
@@ -35,6 +60,7 @@ contains
     endif
   end subroutine kvs_Application_destroy
 
+  !> Returns pointer to the application class
   function kvs_Application_get( this )
     implicit none
     class( kvs_Application ) :: this

@@ -6,8 +6,8 @@ module kvs_Isosurface_m
   use kvs_TransferFunction_m
   implicit none
 
-  private
-  include "kvs_Isosurface_c.f90"
+!  private
+!  include "kvs_Isosurface_c.f90"
 
   ! Class definition
   public :: kvs_Isosurface
@@ -25,6 +25,44 @@ module kvs_Isosurface_m
   interface kvs_Isosurface
      procedure kvs_Isosurface_new
   end interface kvs_Isosurface
+
+  ! C interfaces
+  private
+    interface
+     function C_kvs_Isosurface_new()&
+          bind( C, name="Isosurface_new" )
+       import
+       type( C_ptr ) :: C_kvs_Isosurface_new
+     end function C_kvs_Isosurface_new
+
+     subroutine C_kvs_Isosurface_delete( this )&
+          bind( C, name="Isosurface_delete" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_Isosurface_delete
+
+     subroutine C_kvs_Isosurface_setIsolevel( this, isolevel )&
+          bind( C, name="Isosurface_setIsolevel" )
+       import
+       type( C_ptr ), value :: this
+       real( C_float ), value :: isolevel
+     end subroutine C_kvs_Isosurface_setIsolevel
+
+     subroutine C_kvs_Isosurface_setTransferFunction( this, tfunc )&
+          bind( C, name="Isosurface_setIsolevel" )
+       import
+       type( C_ptr ), value :: this
+       type( C_ptr ), value :: tfunc
+     end subroutine C_kvs_Isosurface_setTransferFunction
+
+     function C_kvs_Isosurface_exec( this, volume )&
+          bind( C, name="Isosurface_exec" )
+       import
+       type( C_ptr ), value :: this
+       type( C_ptr ), value :: volume
+       type( C_ptr ) :: C_kvs_Isosurface_exec
+     end function C_kvs_Isosurface_exec
+  end interface
 
 contains
 

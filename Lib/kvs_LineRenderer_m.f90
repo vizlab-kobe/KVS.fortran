@@ -2,8 +2,8 @@ module kvs_LineRenderer_m
   use iso_c_binding
   implicit none
 
-  private
-  include "kvs_LineRenderer_c.f90"
+!  private
+!  include "kvs_LineRenderer_c.f90"
 
   ! Class definition
   public :: kvs_LineRenderer
@@ -21,6 +21,30 @@ module kvs_LineRenderer_m
   interface kvs_LineRenderer
      procedure kvs_LineRenderer_new
   end interface kvs_LineRenderer
+
+  ! C interfaces
+  private
+    interface
+     function C_kvs_LineRenderer_new( glsl )&
+          bind( C, name="LineRenderer_new" )
+       import
+       type( C_ptr ) :: C_kvs_LineRenderer_new
+       logical :: glsl
+     end function C_kvs_LineRenderer_new
+
+     subroutine C_kvs_LineRenderer_delete( this )&
+          bind( C, name="LineRenderer_delete" )
+       import
+       type( C_ptr ), value :: this
+     end subroutine C_kvs_LineRenderer_delete
+
+     subroutine C_kvs_LineRenderer_setAntiAliasingEnabled( this, enable )&
+          bind( C, name="LineRenderer_setAntiAliasingEnabled" )
+       import
+       type( C_ptr ), value :: this
+       logical, value :: enable
+     end subroutine C_kvs_LineRenderer_setAntiAliasingEnabled
+  end interface
 
 contains
 
