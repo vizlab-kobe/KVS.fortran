@@ -4,6 +4,7 @@
 #include <kvs/ColorImage>
 #include <kvs/Message>
 #include <kvs/IgnoreUnusedVariable>
+#include <string>
 
 
 extern "C"
@@ -19,7 +20,10 @@ void OffScreen_delete( kvs::OffScreen* self )
     if ( self ) delete self;
 }
 
-void OffScreen_registerObject( kvs::OffScreen* self, kvs::ObjectBase* object, kvs::RendererBase* renderer )
+void OffScreen_registerObject(
+    kvs::OffScreen* self,
+    kvs::ObjectBase* object,
+    kvs::RendererBase* renderer )
 {
 #if defined( KVS_SUPPORT_OSMESA ) || defined( KVS_SUPPORT_EGL )
     self->registerObject( object, renderer );
@@ -27,6 +31,22 @@ void OffScreen_registerObject( kvs::OffScreen* self, kvs::ObjectBase* object, kv
     kvs::IgnoreUnusedVariable( self );
     kvs::IgnoreUnusedVariable( object );
     kvs::IgnoreUnusedVariable( renderer );
+#endif
+}
+
+void OffScreen_replaceObject(
+    kvs::OffScreen* self,
+    std::string name,
+    kvs::ObjectBase* object,
+    bool delete_object = true )
+{
+#if defined( KVS_SUPPORT_OSMESA ) || defined( KVS_SUPPORT_EGL )
+    self->scene()->replaceObject( name, object, delete_object );
+#else
+    kvs::IgnoreUnusedVariable( self );
+    kvs::IgnoreUnusedVariable( name );
+    kvs::IgnoreUnusedVariable( object );
+    kvs::IgnoreUnusedVariable( delete_object );
 #endif
 }
 

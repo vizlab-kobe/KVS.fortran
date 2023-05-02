@@ -13,6 +13,7 @@ module kvs_OffScreen_m
      procedure :: get => kvs_OffScreen_get
      procedure :: delete => kvs_OffScreen_delete
      procedure :: registerObject => kvs_OffScreen_registerObject
+     procedure :: replaceObject => kvs_OffScreen_replaceObject
      procedure :: create => kvs_OffScreen_create
      procedure :: show => kvs_OffScreen_show
      procedure :: hide => kvs_OffScreen_hide
@@ -47,6 +48,15 @@ module kvs_OffScreen_m
        type( C_ptr ), value :: object
        type( C_ptr ), value :: renderer
      end subroutine C_kvs_OffScreen_registerObject
+
+     subroutine C_kvs_OffScreen_replaceObject( this, name, object, delete_object )&
+          bind( C, name="OffScreen_replaceObject" )
+       import
+       type( C_ptr ), value :: this
+       character( len=*, kind=C_char ), intent( in ) :: name
+       type( C_ptr ), value :: object
+       logical, value :: delete_object
+     end subroutine C_kvs_OffScreen_replaceObject
 
      subroutine C_kvs_OffScreen_create( this )&
           bind( C, name="OffScreen_create" )
@@ -123,6 +133,19 @@ contains
        call C_kvs_OffScreen_registerObject( this % ptr, object, C_NULL_ptr );
     end if
   end subroutine kvs_OffScreen_registerObject
+
+  subroutine kvs_OffScreen_replaceObject( this, name, object, delete_object )
+    implicit none
+    class( kvs_OffScreen ), intent( in ) :: this
+    character( len=*, kind=C_char ), intent( in ) :: name
+    type( C_ptr ), intent( in ) :: object
+    logical, intent( in ), optional :: delete_object
+    if ( present( delete_object ) ) then
+       call C_kvs_OffScreen_replaceObject( this % ptr, name // C_NULL_char, object, delete_object )
+    else
+       call C_kvs_OffScreen_replaceObject( this % ptr, name // C_NULL_char, object, .true. );
+    end if
+  end subroutine kvs_OffScreen_replaceObject
 
   subroutine kvs_OffScreen_create( this )
     implicit none

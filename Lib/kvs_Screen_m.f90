@@ -14,6 +14,7 @@ module kvs_Screen_m
      procedure :: get => kvs_Screen_get
      procedure :: delete => kvs_Screen_delete
      procedure :: registerObject => kvs_Screen_registerObject
+     procedure :: replaceObject => kvs_Screen_replaceObject
      procedure :: create => kvs_Screen_create
      procedure :: show => kvs_Screen_show
      procedure :: hide => kvs_Screen_hide
@@ -49,6 +50,15 @@ module kvs_Screen_m
        type( C_ptr ), value :: object
        type( C_ptr ), value :: renderer
      end subroutine C_kvs_Screen_registerObject
+
+     subroutine C_kvs_Screen_replaceObject( this, name, object, delete_object )&
+          bind( C, name="Screen_replaceObject" )
+       import
+       type( C_ptr ), value :: this
+       character( len=*, kind=C_char ), intent( in ) :: name
+       type( C_ptr ), value :: object
+       logical, value :: delete_object
+     end subroutine C_kvs_Screen_replaceObject
 
      subroutine C_kvs_Screen_create( this )&
           bind( C, name="Screen_create" )
@@ -126,6 +136,19 @@ contains
        call C_kvs_Screen_registerObject( this % ptr, object, C_NULL_ptr );
     end if
   end subroutine kvs_Screen_registerObject
+
+  subroutine kvs_Screen_replaceObject( this, name, object, delete_object )
+    implicit none
+    class( kvs_Screen ), intent( in ) :: this
+    character( len=*, kind=C_char ), intent( in ) :: name
+    type( C_ptr ), intent( in ) :: object
+    logical, intent( in ), optional :: delete_object
+    if ( present( delete_object ) ) then
+       call C_kvs_Screen_replaceObject( this % ptr, name // C_NULL_char, object, delete_object )
+    else
+       call C_kvs_Screen_replaceObject( this % ptr, name // C_NULL_char, object, .true. );
+    end if
+  end subroutine kvs_Screen_replaceObject
 
   subroutine kvs_Screen_create( this )
     implicit none
