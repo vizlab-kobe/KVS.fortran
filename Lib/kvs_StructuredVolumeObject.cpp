@@ -1,5 +1,6 @@
 #include <kvs/StructuredVolumeObject>
 #include <kvs/Message>
+#include <string>
 
 
 extern "C"
@@ -22,6 +23,11 @@ void StructuredVolumeObject_delete( kvs::StructuredVolumeObject* self )
     if ( self ) delete self;
 }
 
+void StructuredVolumeObject_setName( kvs::StructuredVolumeObject* self, char* name )
+{
+    self->setName( std::string( name ) );
+}
+
 void StructuredVolumeObject_setGridTypeToUniform( kvs::StructuredVolumeObject* self )
 {
     self->setGridTypeToUniform();
@@ -37,9 +43,9 @@ void StructuredVolumeObject_setVeclen( kvs::StructuredVolumeObject* self, int ve
     self->setVeclen( veclen );
 }
 
-void StructuredVolumeObject_setValues( kvs::StructuredVolumeObject* self, float* values, int nvalues )
+void StructuredVolumeObject_setValues( kvs::StructuredVolumeObject* self, double* values, int nvalues )
 {
-    self->setValues( kvs::ValueArray<float>( values, nvalues ) );
+    self->setValues( kvs::ValueArray<double>( values, nvalues ) );
 }
 
 void StructuredVolumeObject_updateMinMaxCoords( kvs::StructuredVolumeObject* self )

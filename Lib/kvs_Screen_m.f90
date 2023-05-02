@@ -55,7 +55,7 @@ module kvs_Screen_m
           bind( C, name="Screen_replaceObject" )
        import
        type( C_ptr ), value :: this
-       character( len=*, kind=C_char ), intent( in ) :: name
+       character( len=1, kind=C_char ), intent( in ) :: name(*)
        type( C_ptr ), value :: object
        logical, value :: delete_object
      end subroutine C_kvs_Screen_replaceObject

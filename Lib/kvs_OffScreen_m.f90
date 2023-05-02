@@ -1,6 +1,7 @@
 module kvs_OffScreen_m
   use iso_c_binding
   use kvs_ColorImage_m
+  use kvs_Vec3_m
   implicit none
 
   ! Class definition
@@ -14,6 +15,9 @@ module kvs_OffScreen_m
      procedure :: delete => kvs_OffScreen_delete
      procedure :: registerObject => kvs_OffScreen_registerObject
      procedure :: replaceObject => kvs_OffScreen_replaceObject
+     procedure :: hasObject => kvs_OffScreen_hasObject
+     procedure :: setLightPosition => kvs_OffScreen_setLightPosition
+     procedure :: setCameraPosition => kvs_OffScreen_setCameraPosition
      procedure :: create => kvs_OffScreen_create
      procedure :: show => kvs_OffScreen_show
      procedure :: hide => kvs_OffScreen_hide
@@ -53,10 +57,46 @@ module kvs_OffScreen_m
           bind( C, name="OffScreen_replaceObject" )
        import
        type( C_ptr ), value :: this
-       character( len=*, kind=C_char ), intent( in ) :: name
+       character( len=1, kind=C_char ), intent( in ) :: name(*)
        type( C_ptr ), value :: object
        logical, value :: delete_object
      end subroutine C_kvs_OffScreen_replaceObject
+
+     function C_kvs_OffScreen_hasObject( this, name )&
+          bind( C, name="OffScreen_hasObject" )
+       import
+       type( C_ptr ), value :: this
+       character( len=1, kind=C_char ), intent( in ) :: name(*)
+       logical :: C_kvs_OffScreen_hasObject
+     end function C_kvs_OffScreen_hasObject
+
+     subroutine C_kvs_OffScreen_setLightPosition( this, x, y, z )&
+          bind( C, name="OffScreen_setLightPosition" )
+       import
+       type( C_ptr ), value :: this
+       real( C_float ), value :: x, y, z
+     end subroutine C_kvs_OffScreen_setLightPosition
+
+     subroutine C_kvs_OffScreen_setCameraPosition( this, x, y, z )&
+          bind( C, name="OffScreen_setCameraPosition" )
+       import
+       type( C_ptr ), value :: this
+       real( C_float ), value :: x, y, z
+     end subroutine C_kvs_OffScreen_setCameraPosition
+
+     subroutine C_kvs_OffScreen_setCameraLookAt( this, x, y, z )&
+          bind( C, name="OffScreen_setCameraLookAt" )
+       import
+       type( C_ptr ), value :: this
+       real( C_float ), value :: x, y, z
+     end subroutine C_kvs_OffScreen_setCameraLookAt
+
+     subroutine C_kvs_OffScreen_setCameraUpVector( this, x, y, z )&
+          bind( C, name="OffScreen_setCameraUpVector" )
+       import
+       type( C_ptr ), value :: this
+       real( C_float ), value :: x, y, z
+     end subroutine C_kvs_OffScreen_setCameraUpVector
 
      subroutine C_kvs_OffScreen_create( this )&
           bind( C, name="OffScreen_create" )
@@ -146,6 +186,34 @@ contains
        call C_kvs_OffScreen_replaceObject( this % ptr, name // C_NULL_char, object, .true. );
     end if
   end subroutine kvs_OffScreen_replaceObject
+
+  logical function kvs_OffScreen_hasObject( this, name )
+    implicit none
+    class( kvs_OffScreen ) :: this
+    character( len=*, kind=C_char ), intent( in ) :: name
+    kvs_OffScreen_hasObject = C_kvs_OffScreen_hasObject( this % ptr, name )
+  end function kvs_OffScreen_hasObject
+
+  subroutine kvs_OffScreen_setLightPosition( this, position )
+    implicit none
+    class( kvs_OffScreen ), intent( in ) :: this
+    class( kvs_Vec3 ), intent( in ) :: position
+    call C_kvs_OffScreen_setLightPosition( this % ptr, position % x, position % y, position % z )
+  end subroutine kvs_OffScreen_setLightPosition
+
+  subroutine kvs_OffScreen_setCameraPosition( this, position, look_at, up_vector )
+    implicit none
+    class( kvs_OffScreen ), intent( in ) :: this
+    class( kvs_Vec3 ), intent( in ) :: position
+    class( kvs_Vec3 ), intent( in ), optional :: look_at, up_vector
+    call C_kvs_OffScreen_setCameraPosition( this % ptr, position % x, position % y, position % z )
+    if ( present( look_at ) ) then
+       call C_kvs_OffScreen_setCameraLookAt( this % ptr, look_at % x, look_at % y, look_at % z )
+    end if
+    if ( present( up_vector ) ) then
+       call C_kvs_OffScreen_setCameraUpVector( this % ptr, up_vector % x, up_vector % y, up_vector % z )
+    end if
+  end subroutine kvs_OffScreen_setCameraPosition
 
   subroutine kvs_OffScreen_create( this )
     implicit none

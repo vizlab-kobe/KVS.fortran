@@ -2,6 +2,9 @@
 #include <kvs/ObjectBase>
 #include <kvs/RendererBase>
 #include <kvs/ColorImage>
+#include <kvs/Light>
+#include <kvs/Camera>
+#include <kvs/Vector3>
 #include <kvs/Message>
 #include <kvs/IgnoreUnusedVariable>
 #include <string>
@@ -36,17 +39,76 @@ void OffScreen_registerObject(
 
 void OffScreen_replaceObject(
     kvs::OffScreen* self,
-    std::string name,
+    char* name,
     kvs::ObjectBase* object,
     bool delete_object = true )
 {
 #if defined( KVS_SUPPORT_OSMESA ) || defined( KVS_SUPPORT_EGL )
-    self->scene()->replaceObject( name, object, delete_object );
+    self->scene()->replaceObject( std::string(name), object, delete_object );
 #else
     kvs::IgnoreUnusedVariable( self );
     kvs::IgnoreUnusedVariable( name );
     kvs::IgnoreUnusedVariable( object );
     kvs::IgnoreUnusedVariable( delete_object );
+#endif
+}
+
+bool OffScreen_hasObject( kvs::OffScreen* self, const char* name )
+{
+#if defined( KVS_SUPPORT_OSMESA ) || defined( KVS_SUPPORT_EGL )
+    return self->scene()->hasObject( std::string( name ) );
+#else
+    kvs::IgnoreUnusedVariable( self );
+    kvs::IgnoreUnusedVariable( name );
+    return false;
+#endif
+}
+
+void OffScreen_setLightPosition( kvs::OffScreen* self, float x, float y, float z )
+{
+#if defined( KVS_SUPPORT_OSMESA ) || defined( KVS_SUPPORT_EGL )
+    self->scene()->light()->setPosition( kvs::Vec3( x, y, z ) );
+#else
+    kvs::IgnoreUnusedVariable( self );
+    kvs::IgnoreUnusedVariable( x );
+    kvs::IgnoreUnusedVariable( y );
+    kvs::IgnoreUnusedVariable( z );
+#endif
+}
+
+void OffScreen_setCameraPosition( kvs::OffScreen* self, float x, float y, float z )
+{
+#if defined( KVS_SUPPORT_OSMESA ) || defined( KVS_SUPPORT_EGL )
+    self->scene()->camera()->setPosition( kvs::Vec3( x, y, z ) );
+#else
+    kvs::IgnoreUnusedVariable( self );
+    kvs::IgnoreUnusedVariable( x );
+    kvs::IgnoreUnusedVariable( y );
+    kvs::IgnoreUnusedVariable( z );
+#endif
+}
+
+void OffScreen_setCameraLookAt( kvs::OffScreen* self, float x, float y, float z )
+{
+#if defined( KVS_SUPPORT_OSMESA ) || defined( KVS_SUPPORT_EGL )
+    self->scene()->camera()->setLookAt( kvs::Vec3( x, y, z ) );
+#else
+    kvs::IgnoreUnusedVariable( self );
+    kvs::IgnoreUnusedVariable( x );
+    kvs::IgnoreUnusedVariable( y );
+    kvs::IgnoreUnusedVariable( z );
+#endif
+}
+
+void OffScreen_setCameraUpVector( kvs::OffScreen* self, float x, float y, float z )
+{
+#if defined( KVS_SUPPORT_OSMESA ) || defined( KVS_SUPPORT_EGL )
+    self->scene()->camera()->setUpVector( kvs::Vec3( x, y, z ) );
+#else
+    kvs::IgnoreUnusedVariable( self );
+    kvs::IgnoreUnusedVariable( x );
+    kvs::IgnoreUnusedVariable( y );
+    kvs::IgnoreUnusedVariable( z );
 #endif
 }
 

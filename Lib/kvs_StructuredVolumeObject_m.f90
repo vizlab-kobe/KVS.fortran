@@ -12,6 +12,7 @@ module kvs_StructuredVolumeObject_m
      final :: kvs_StructuredVolumeObject_destroy ! Destructor
      procedure :: get => kvs_StructuredVolumeObject_get
      procedure :: delete => kvs_StructuredVolumeObject_delete
+     procedure :: setName => kvs_StructuredVolumeObject_setName
      procedure :: setGridTypeToUniform => kvs_StructuredVolumeObject_setGridTypeToUniform
      procedure :: setResolution => kvs_StructuredVolumeObject_setResolution
      procedure :: setVeclen => kvs_StructuredVolumeObject_setVeclen
@@ -21,6 +22,7 @@ module kvs_StructuredVolumeObject_m
      procedure :: print => kvs_StructuredVolumeObject_print
      procedure :: read => kvs_StructuredVolumeObject_read
      procedure :: write => kvs_StructuredVolumeObject_write
+     procedure :: numberOfNodes => kvs_StructuredVolumeObject_numberOfNodes
   end type kvs_StructuredVolumeObject
 
   ! Constructor
@@ -50,6 +52,13 @@ module kvs_StructuredVolumeObject_m
        type( C_ptr ), value :: this
      end subroutine C_kvs_StructuredVolumeObject_delete
 
+     subroutine C_kvs_StructuredVolumeObject_setName( this, name )&
+          bind( C, name="StructuredVolumeObject_setName" )
+       import
+       type( C_ptr ), value :: this
+       character( len=1, kind=C_char ), intent( in ) :: name(*)
+     end subroutine C_kvs_StructuredVolumeObject_setName
+
      subroutine C_kvs_StructuredVolumeObject_setGridTypeToUniform( this )&
           bind( C, name="StructuredVolumeObject_setGridTypeToUniform" )
        import
@@ -76,7 +85,7 @@ module kvs_StructuredVolumeObject_m
           bind( C, name="StructuredVolumeObject_setValues" )
        import
        type( C_ptr ), value :: this
-       real( C_float ) :: values(nvalues)
+       real( C_double ) :: values(nvalues)
        integer( C_int ), value :: nvalues
      end subroutine C_kvs_StructuredVolumeObject_setValues
 
@@ -157,6 +166,13 @@ contains
     this % ptr = C_NULL_ptr
   end subroutine kvs_StructuredVolumeObject_delete
 
+  subroutine kvs_StructuredVolumeObject_setName( this, name )
+    implicit none
+    class( kvs_StructuredVolumeObject ) :: this
+    character( len=*, kind=C_char ), intent( in ) :: name
+    call C_kvs_StructuredVolumeObject_setName( this % ptr, name // C_null_char )
+  end subroutine kvs_StructuredVolumeObject_setName
+
   subroutine kvs_StructuredVolumeObject_setGridTypeToUniform( this )
     implicit none
     class( kvs_StructuredVolumeObject ), intent( in ) :: this
@@ -180,7 +196,7 @@ contains
   subroutine kvs_StructuredVolumeObject_setValues( this, values, nvalues )
     implicit none
     class( kvs_StructuredVolumeObject ), intent( in ) :: this
-    real( C_float ), intent( in ) :: values(nvalues)
+    real( C_double ), intent( in ) :: values(nvalues)
     integer( C_int ), intent( in ) :: nvalues
     call C_kvs_StructuredVolumeObject_setValues( this % ptr, values, nvalues )
   end subroutine kvs_StructuredVolumeObject_setValues

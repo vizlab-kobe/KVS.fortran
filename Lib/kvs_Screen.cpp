@@ -41,12 +41,12 @@ void Screen_registerObject(
 
 void Screen_replaceObject(
     kvs::Screen* self,
-    std::string name,
+    char* name,
     kvs::ObjectBase* object,
     bool delete_object = true )
 {
 #if defined( KVS_SUPPORT_GLUT ) || defined( KVS_SUPPORT_GLFW ) || defined( KVS_SUPPORT_QT )
-    self->scene()->replaceObject( name, object, delete_object );
+    self->scene()->replaceObject( std::string(name), object, delete_object );
 #else
     kvs::IgnoreUnusedVariable( self );
     kvs::IgnoreUnusedVariable( name );
