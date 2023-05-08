@@ -23,6 +23,8 @@ module kvs_StructuredVolumeObject_m
      procedure :: read => kvs_StructuredVolumeObject_read
      procedure :: write => kvs_StructuredVolumeObject_write
      procedure :: numberOfNodes => kvs_StructuredVolumeObject_numberOfNodes
+     procedure :: minValue => kvs_StructuredVolumeObject_minValue
+     procedure :: maxValue => kvs_StructuredVolumeObject_maxValue
   end type kvs_StructuredVolumeObject
 
   ! Constructor
@@ -39,11 +41,12 @@ module kvs_StructuredVolumeObject_m
        type( C_ptr ) :: C_kvs_StructuredVolumeObject_new
      end function C_kvs_StructuredVolumeObject_new
 
-     function C_kvs_StructuredVolumeObject_copy( other )&
+     function C_kvs_StructuredVolumeObject_copy( other, move )&
           bind( C, name="StructuredVolumeObject_copy" )
        import
        type( C_ptr ) :: C_kvs_StructuredVolumeObject_copy
        type( C_ptr ), value :: other
+       logical, optional :: move
      end function C_kvs_StructuredVolumeObject_copy
 
      subroutine C_kvs_StructuredVolumeObject_delete ( this )&
@@ -65,7 +68,7 @@ module kvs_StructuredVolumeObject_m
        type( C_ptr ), value :: this
      end subroutine C_kvs_StructuredVolumeObject_setGridTypeToUniform
 
-     subroutine C_kvs_StructuredVolumeObject_setResolution ( this, dimx, dimy, dimz )&
+     subroutine C_kvs_StructuredVolumeObject_setResolution( this, dimx, dimy, dimz )&
           bind( C, name="StructuredVolumeObject_setResolution" )
        import
        type( C_ptr ), value :: this
@@ -74,14 +77,14 @@ module kvs_StructuredVolumeObject_m
        integer( C_int ), value :: dimz
      end subroutine C_kvs_StructuredVolumeObject_setResolution
 
-     subroutine C_kvs_StructuredVolumeObject_setVeclen ( this, veclen )&
+     subroutine C_kvs_StructuredVolumeObject_setVeclen( this, veclen )&
           bind( C, name="StructuredVolumeObject_setVeclen" )
        import
        type( C_ptr ), value :: this
        integer( C_int ), value :: veclen
      end subroutine C_kvs_StructuredVolumeObject_setVeclen
 
-     subroutine C_kvs_StructuredVolumeObject_setValues ( this, values, nvalues )&
+     subroutine C_kvs_StructuredVolumeObject_setValues( this, values, nvalues )&
           bind( C, name="StructuredVolumeObject_setValues" )
        import
        type( C_ptr ), value :: this
@@ -89,19 +92,19 @@ module kvs_StructuredVolumeObject_m
        integer( C_int ), value :: nvalues
      end subroutine C_kvs_StructuredVolumeObject_setValues
 
-     subroutine C_kvs_StructuredVolumeObject_updateMinMaxCoords ( this )&
+     subroutine C_kvs_StructuredVolumeObject_updateMinMaxCoords( this )&
           bind( C, name="StructuredVolumeObject_updateMinMaxCoords" )
        import
        type( C_ptr ), value :: this
      end subroutine C_kvs_StructuredVolumeObject_updateMinMaxCoords
 
-     subroutine C_kvs_StructuredVolumeObject_updateMinMaxValues ( this )&
+     subroutine C_kvs_StructuredVolumeObject_updateMinMaxValues( this )&
           bind( C, name="StructuredVolumeObject_updateMinMaxValues" )
        import
        type( C_ptr ), value :: this
      end subroutine C_kvs_StructuredVolumeObject_updateMinMaxValues
 
-     subroutine C_kvs_StructuredVolumeObject_print ( this )&
+     subroutine C_kvs_StructuredVolumeObject_print( this )&
           bind( C, name="StructuredVolumeObject_print" )
        import
        type( C_ptr ), value :: this
@@ -127,6 +130,20 @@ module kvs_StructuredVolumeObject_m
        type( C_ptr ), value :: this
        integer( C_size_t ) :: C_kvs_StructuredVolumeObject_numberOfNodes
      end function C_kvs_StructuredVolumeObject_numberOfNodes
+
+     function C_kvs_StructuredVolumeObject_minValue( this )&
+          bind( C, name="StructuredVolumeObject_minValue" )
+       import
+       type( C_ptr ), value :: this
+       real( C_double ) :: C_kvs_StructuredVolumeObject_minValue
+     end function C_kvs_StructuredVolumeObject_minValue
+
+     function C_kvs_StructuredVolumeObject_maxValue( this )&
+          bind( C, name="StructuredVolumeObject_maxValue" )
+       import
+       type( C_ptr ), value :: this
+       real( C_double ) :: C_kvs_StructuredVolumeObject_maxValue
+     end function C_kvs_StructuredVolumeObject_maxValue
   end interface
 
 contains
@@ -148,12 +165,18 @@ contains
     kvs_StructuredVolumeObject_get = this % ptr
   end function kvs_StructuredVolumeObject_get
 
-  function kvs_StructuredVolumeObject_new( other )
+  function kvs_StructuredVolumeObject_new( other, move )
     implicit none
     type( kvs_StructuredVolumeObject ) :: kvs_StructuredVolumeObject_new
     type( C_ptr ), optional :: other
+    logical, optional :: move
     if ( present( other ) ) then
-       kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_copy( other )
+       if ( present( move ) ) then
+          kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_copy( other, move )
+          if ( move ) other = C_NULL_ptr
+       else
+          kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_copy( other, .false. )
+       endif
     else
        kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_new()
     end if
@@ -238,5 +261,17 @@ contains
     class( kvs_StructuredVolumeObject ) :: this
     kvs_StructuredVolumeObject_numberOfNodes = C_kvs_StructuredVolumeObject_numberOfNodes( this % ptr )
   end function kvs_StructuredVolumeObject_numberOfNodes
+
+  real( C_double ) function kvs_StructuredVolumeObject_minValue( this )
+    implicit none
+    class( kvs_StructuredVolumeObject ) :: this
+    kvs_StructuredVolumeObject_minValue = C_kvs_StructuredVolumeObject_minValue( this % ptr )
+  end function kvs_StructuredVolumeObject_minValue
+
+  real( C_double ) function kvs_StructuredVolumeObject_maxValue( this )
+    implicit none
+    class( kvs_StructuredVolumeObject ) :: this
+    kvs_StructuredVolumeObject_maxValue = C_kvs_StructuredVolumeObject_maxValue( this % ptr )
+  end function kvs_StructuredVolumeObject_maxValue
 
 end module kvs_StructuredVolumeObject_m

@@ -11,13 +11,6 @@ kvs::HydrogenVolumeData* HydrogenVolumeData_new()
     return new kvs::HydrogenVolumeData();
 }
 
-kvs::HydrogenVolumeData* HydrogenVolumeData_copy( kvs::HydrogenVolumeData* other )
-{
-    auto* data = new kvs::HydrogenVolumeData();
-    data->shallowCopy( *other );
-    return data;
-}
-
 void HydrogenVolumeData_delete( kvs::HydrogenVolumeData* self )
 {
     if ( self ) delete self;

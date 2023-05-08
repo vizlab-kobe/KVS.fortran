@@ -70,7 +70,7 @@ module kvs_TransferFunction_m
           bind( C, name="TransferFunction_setRange" )
        import
        type( C_ptr ),   value :: this
-       real( C_float ), value :: min_value, max_value
+       real( C_double ), value :: min_value, max_value
      end subroutine C_kvs_TransferFunction_setRange
   end interface
 
@@ -123,7 +123,7 @@ contains
   subroutine kvs_TransferFunction_setRange( this, min_value, max_value )
     implicit none
     class( kvs_TransferFunction ), intent( in ) :: this
-    real( C_float ), intent( in ) :: min_value, max_value
+    real( C_double ), intent( in ) :: min_value, max_value
     call C_kvs_TransferFunction_setRange( this % ptr, min_value, max_value )
   end subroutine kvs_TransferFunction_setRange
 

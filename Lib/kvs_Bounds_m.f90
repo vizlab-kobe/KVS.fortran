@@ -20,6 +20,7 @@ module kvs_Bounds_m
      procedure :: disableAntiAliasing => kvs_Bounds_disableAntiAliasing
      procedure :: show => kvs_Bounds_show
      procedure :: hide => kvs_Bounds_hide
+     procedure :: outputLineObject => kvs_Bounds_outputLineObject
      ! RendererBase
      procedure :: enableShading => kvs_Bounds_enableShading
      procedure :: disableShading => kvs_Bounds_disableShading

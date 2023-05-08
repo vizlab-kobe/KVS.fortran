@@ -181,9 +181,9 @@ contains
     type( C_ptr ), intent( in ) :: object
     logical, intent( in ), optional :: delete_object
     if ( present( delete_object ) ) then
-       call C_kvs_OffScreen_replaceObject( this % ptr, name // C_NULL_char, object, delete_object )
+       call C_kvs_OffScreen_replaceObject( this % ptr, name, object, delete_object )
     else
-       call C_kvs_OffScreen_replaceObject( this % ptr, name // C_NULL_char, object, .true. );
+       call C_kvs_OffScreen_replaceObject( this % ptr, name, object, .true. );
     end if
   end subroutine kvs_OffScreen_replaceObject
 
@@ -243,7 +243,7 @@ contains
     implicit none
     class( kvs_OffScreen ), intent( in ) :: this
     type( kvs_ColorImage ) :: kvs_OffScreen_capture
-    kvs_OffScreen_capture = kvs_ColorImage( C_kvs_OffScreen_capture( this % ptr ) )
+    kvs_OffScreen_capture = kvs_ColorImage( C_kvs_OffScreen_capture( this % ptr ), .true. )
   end function kvs_OffScreen_capture
 
 end module kvs_OffScreen_m

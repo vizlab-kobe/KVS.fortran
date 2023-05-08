@@ -11,6 +11,7 @@ module kvs_LineObject_m
      final :: kvs_LineObject_destroy ! Destructor
      procedure :: get => kvs_LineObject_get
      procedure :: delete => kvs_LineObject_delete
+     procedure :: setName => kvs_LineObject_setName
      procedure :: setSize => kvs_LineObject_setSize
   end type kvs_LineObject
 
@@ -28,11 +29,12 @@ module kvs_LineObject_m
        type( C_ptr ) :: this
      end function C_kvs_LineObject_new
 
-     function C_kvs_LineObject_copy( other )&
+     function C_kvs_LineObject_copy( other, move )&
           bind( C, name="LineObject_copy" )
        import
        type( C_ptr ) :: C_kvs_LineObject_copy
        type( C_ptr ), value :: other
+       logical, optional :: move
      end function C_kvs_LineObject_copy
 
      subroutine C_kvs_LineObject_delete ( this )&
@@ -40,6 +42,13 @@ module kvs_LineObject_m
        import
        type( C_ptr ), value :: this
      end subroutine C_kvs_LineObject_delete
+
+     subroutine C_kvs_LineObject_setName( this, name )&
+          bind( C, name="LineObject_setName" )
+       import
+       type( C_ptr ), value :: this
+       character( len=1, kind=C_char ), intent( in ) :: name(*)
+     end subroutine C_kvs_LineObject_setName
 
      subroutine C_kvs_LineObject_print( this )&
           bind( C, name="LineObject_print" )
@@ -61,7 +70,7 @@ module kvs_LineObject_m
        character( len=1, kind=C_char ), intent( in ) :: filename(*)
      end subroutine C_kvs_LineObject_write
 
-     subroutine C_kvs_LineObject_setSize ( this, line_size )&
+     subroutine C_kvs_LineObject_setSize( this, line_size )&
           bind( C, name="LineObject_setSize" )
        import
        type( C_ptr ), value :: this
@@ -88,12 +97,18 @@ contains
     kvs_LineObject_get = this % ptr
   end function kvs_LineObject_get
 
-  function kvs_LineObject_new( other )
+  function kvs_LineObject_new( other, move )
     implicit none
     type( kvs_LineObject ) :: kvs_LineObject_new
     type( C_ptr ), optional :: other
+    logical, optional :: move
     if ( present( other ) ) then
-       kvs_LineObject_new % ptr = C_kvs_LineObject_copy( other )
+       if ( present( move ) ) then
+          kvs_LineObject_new % ptr = C_kvs_LineObject_copy( other, move )
+          if ( move ) other = C_NULL_ptr
+       else
+          kvs_LineObject_new % ptr = C_kvs_LineObject_copy( other, .false. )
+       endif
     else
        kvs_LineObject_new % ptr = C_kvs_LineObject_new()
     end if
@@ -105,6 +120,13 @@ contains
     call C_kvs_LineObject_delete( this % ptr )
     this % ptr = C_NULL_ptr
   end subroutine kvs_LineObject_delete
+
+  subroutine kvs_LineObject_setName( this, name )
+    implicit none
+    class( kvs_LineObject ) :: this
+    character( len=*, kind=C_char ), intent( in ) :: name
+    call C_kvs_LineObject_setName( this % ptr, name // C_null_char )
+  end subroutine kvs_LineObject_setName
 
   subroutine kvs_LineObject_print( this )
     implicit none

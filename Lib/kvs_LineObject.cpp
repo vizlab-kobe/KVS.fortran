@@ -9,8 +9,11 @@ kvs::LineObject* LineObject_new()
     return new kvs::LineObject();
 }
 
-kvs::LineObject* LineObject_copy( kvs::LineObject* other )
+kvs::LineObject* LineObject_copy( kvs::LineObject* other, bool move = false )
 {
+    if ( move ) { return other; }
+
+    // Shallow copy
     auto* line = new kvs::LineObject();
     line->shallowCopy( *other );
     return line;
@@ -18,7 +21,12 @@ kvs::LineObject* LineObject_copy( kvs::LineObject* other )
 
 void LineObject_delete( kvs::LineObject* self )
 {
-    if ( self ) delete self;
+    if ( self ) { delete self; }
+}
+
+void LineObject_setName( kvs::LineObject* self, char* name )
+{
+    self->setName( std::string( name ) );
 }
 
 void LineObject_print( kvs::LineObject* self )

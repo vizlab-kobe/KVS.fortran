@@ -29,11 +29,12 @@ module kvs_PolygonObject_m
        type( C_ptr ) :: C_kvs_PolygonObject_new
      end function C_kvs_PolygonObject_new
 
-     function C_kvs_PolygonObject_copy( other )&
+     function C_kvs_PolygonObject_copy( other, move )&
           bind( C, name="PolygonObject_copy" )
        import
        type( C_ptr ) :: C_kvs_PolygonObject_copy
        type( C_ptr ), value :: other
+       logical, optional :: move
      end function C_kvs_PolygonObject_copy
 
      subroutine C_kvs_PolygonObject_delete( this )&
@@ -82,12 +83,18 @@ contains
     kvs_PolygonObject_get = this % ptr
   end function kvs_PolygonObject_get
 
-  function kvs_PolygonObject_new( other )
+  function kvs_PolygonObject_new( other, move )
     implicit none
     type( kvs_PolygonObject ) :: kvs_PolygonObject_new
     type( C_ptr ), optional :: other
+    logical, optional :: move
     if ( present( other ) ) then
-       kvs_PolygonObject_new % ptr = C_kvs_PolygonObject_copy( other )
+       if ( present( move ) ) then
+          kvs_PolygonObject_new % ptr = C_kvs_PolygonObject_copy( other, move )
+          if ( move ) other = C_NULL_ptr
+       else
+          kvs_PolygonObject_new % ptr = C_kvs_PolygonObject_copy( other, .false. )
+       endif
     else
        kvs_PolygonObject_new % ptr = C_kvs_PolygonObject_new()
     end if

@@ -10,8 +10,11 @@ kvs::PolygonObject* PolygonObject_new()
     return new kvs::PolygonObject();
 }
 
-kvs::PolygonObject* PolygonObject_copy( kvs::PolygonObject* other )
+kvs::PolygonObject* PolygonObject_copy( kvs::PolygonObject* other, bool move = false )
 {
+    if ( move ) { return other; }
+
+    // Shallow copy
     auto* polygon = new kvs::PolygonObject();
     polygon->shallowCopy( *other );
     return polygon;

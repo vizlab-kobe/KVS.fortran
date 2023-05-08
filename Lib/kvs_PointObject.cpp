@@ -10,8 +10,10 @@ kvs::PointObject* PointObject_new()
     return new kvs::PointObject();
 }
 
-kvs::PointObject* PointObject_copy( kvs::PointObject* other )
+kvs::PointObject* PointObject_copy( kvs::PointObject* other, bool move = false )
 {
+    if ( move ) { return other; }
+
     auto* point = new kvs::PointObject();
     point->shallowCopy( *other );
     return point;

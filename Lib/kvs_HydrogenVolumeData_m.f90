@@ -30,13 +30,6 @@ module kvs_HydrogenVolumeData_m
        type( C_ptr ) :: C_kvs_HydrogenVolumeData_new
      end function C_kvs_HydrogenVolumeData_new
 
-     function C_kvs_HydrogenVolumeData_copy( other )&
-          bind( C, name="HydrogenVolumeData_copy" )
-       import
-       type( C_ptr ) :: C_kvs_HydrogenVolumeData_copy
-       type( C_ptr ), value :: other
-     end function C_kvs_HydrogenVolumeData_copy
-
      subroutine C_kvs_HydrogenVolumeData_delete ( this )&
           bind( C, name="HydrogenVolumeData_delete" )
        import
@@ -70,15 +63,10 @@ contains
     end if
   end subroutine kvs_HydrogenVolumeData_destroy
 
-  function kvs_HydrogenVolumeData_new( other )
+  function kvs_HydrogenVolumeData_new()
     implicit none
     type( kvs_HydrogenVolumeData ) :: kvs_HydrogenVolumeData_new
-    type( C_ptr ), optional :: other
-    if ( present( other ) ) then
-       kvs_HydrogenVolumeData_new % ptr = C_kvs_HydrogenVolumeData_copy( other )
-    else
-       kvs_HydrogenVolumeData_new % ptr = C_kvs_HydrogenVolumeData_new()
-    end if
+    kvs_HydrogenVolumeData_new % ptr = C_kvs_HydrogenVolumeData_new()
   end function kvs_HydrogenVolumeData_new
 
   subroutine kvs_HydrogenVolumeData_delete( this )

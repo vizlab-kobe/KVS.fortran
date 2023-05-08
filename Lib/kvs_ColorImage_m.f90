@@ -28,11 +28,12 @@ module kvs_ColorImage_m
        type( C_ptr ) :: C_kvs_ColorImage_new
      end function C_kvs_ColorImage_new
 
-     function C_kvs_ColorImage_copy( other )&
+     function C_kvs_ColorImage_copy( other, move )&
           bind( C, name="ColorImage_copy" )
        import
        type( C_ptr ) :: C_kvs_ColorImage_copy
        type( C_ptr ), value :: other
+       logical, value :: move
      end function C_kvs_ColorImage_copy
 
      subroutine C_kvs_ColorImage_delete( this )&
@@ -68,12 +69,18 @@ contains
     endif
   end subroutine kvs_ColorImage_destroy
 
-  function kvs_ColorImage_new( other )
+  function kvs_ColorImage_new( other, move )
     implicit none
     type( kvs_ColorImage ) :: kvs_ColorImage_new
     type( C_ptr ), optional :: other
+    logical, optional :: move
     if ( present( other ) ) then
-       kvs_ColorImage_new % ptr = C_kvs_ColorImage_copy( other )
+       if ( present( move ) ) then
+          kvs_ColorImage_new % ptr = C_kvs_ColorImage_copy( other, move )
+          if ( move ) other = C_NULL_ptr
+       else
+          kvs_ColorImage_new % ptr = C_kvs_ColorImage_copy( other, .false. )
+       endif
     else
        kvs_ColorImage_new % ptr = C_kvs_ColorImage_new()
     end if

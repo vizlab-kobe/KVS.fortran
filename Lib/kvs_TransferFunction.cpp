@@ -38,10 +38,10 @@ void TransferFunction_setOpacityMap( kvs::TransferFunction* self, const kvs::Opa
 
 void TransferFunction_setRange(
     kvs::TransferFunction* self,
-    const float min_value,
-    const float max_value )
+    const double min_value,
+    const double max_value )
 {
-    self->setRange( min_value, max_value );
+    self->setRange( static_cast<float>( min_value ), static_cast<float>( max_value ) );
 }
 
 } // end of extern "C"

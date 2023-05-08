@@ -11,8 +11,11 @@ kvs::StructuredVolumeObject* StructuredVolumeObject_new()
     return new kvs::StructuredVolumeObject();
 }
 
-kvs::StructuredVolumeObject* StructuredVolumeObject_copy( kvs::StructuredVolumeObject* other )
+kvs::StructuredVolumeObject* StructuredVolumeObject_copy( kvs::StructuredVolumeObject* other, bool move = false )
 {
+    if ( move ) { return other; }
+
+    // Shallow copy
     auto* volume = new kvs::StructuredVolumeObject();
     volume->shallowCopy( *other );
     return volume;
@@ -78,6 +81,16 @@ void StructuredVolumeObject_write( kvs::StructuredVolumeObject* self, const char
 size_t StructuredVolumeObject_numberOfNodes( kvs::StructuredVolumeObject* self )
 {
     return self->numberOfNodes();
+}
+
+double StructuredVolumeObject_minValue( kvs::StructuredVolumeObject* self )
+{
+    return self->minValue();
+}
+
+double StructuredVolumeObject_maxValue( kvs::StructuredVolumeObject* self )
+{
+    return self->maxValue();
 }
 
 } // end of extern "C"

@@ -1,6 +1,13 @@
 #include <kvs/OffScreen>
 #include <kvs/ObjectBase>
 #include <kvs/RendererBase>
+#include <kvs/PointObject>
+#include <kvs/LineObject>
+#include <kvs/PolygonObject>
+#include <kvs/StructuredVolumeObject>
+#include <kvs/UnstructuredVolumeObject>
+#include <kvs/ImageObject>
+#include <kvs/TableObject>
 #include <kvs/ColorImage>
 #include <kvs/Light>
 #include <kvs/Camera>
@@ -20,7 +27,7 @@ kvs::OffScreen* OffScreen_new()
 
 void OffScreen_delete( kvs::OffScreen* self )
 {
-    if ( self ) delete self;
+    if ( self ) { delete self; }
 }
 
 void OffScreen_registerObject(
@@ -41,10 +48,10 @@ void OffScreen_replaceObject(
     kvs::OffScreen* self,
     char* name,
     kvs::ObjectBase* object,
-    bool delete_object = true )
+    bool delete_object )
 {
 #if defined( KVS_SUPPORT_OSMESA ) || defined( KVS_SUPPORT_EGL )
-    self->scene()->replaceObject( std::string(name), object, delete_object );
+    self->scene()->replaceObject( std::string( name ), object, delete_object );
 #else
     kvs::IgnoreUnusedVariable( self );
     kvs::IgnoreUnusedVariable( name );

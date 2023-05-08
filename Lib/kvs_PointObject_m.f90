@@ -30,11 +30,12 @@ module kvs_PointObject_m
        type( C_ptr ) :: C_kvs_PointObject_new
      end function C_kvs_PointObject_new
 
-     function C_kvs_PointObject_copy( other )&
+     function C_kvs_PointObject_copy( other, move )&
           bind( C, name="PointObject_copy" )
        import
        type( C_ptr ) :: C_kvs_PointObject_copy
        type( C_ptr ), value :: other
+       logical, value :: move
      end function C_kvs_PointObject_copy
 
      subroutine C_kvs_PointObject_delete( this )&
@@ -91,12 +92,18 @@ contains
     kvs_PointObject_get = this % ptr
   end function kvs_PointObject_get
 
-  function kvs_PointObject_new( other )
+  function kvs_PointObject_new( other, move )
     implicit none
     type( kvs_PointObject ) :: kvs_PointObject_new
     type( C_ptr ), optional :: other
+    logical, optional :: move
     if ( present( other ) ) then
-       kvs_PointObject_new % ptr = C_kvs_PointObject_copy( other )
+       if ( present( move ) ) then
+          kvs_PointObject_new % ptr = C_kvs_PointObject_copy( other, move )
+          if ( move ) other = C_NULL_ptr
+       else
+          kvs_PointObject_new % ptr = C_kvs_PointObject_copy( other, .false. )
+       endif
     else
        kvs_PointObject_new % ptr = C_kvs_PointObject_new()
     end if
