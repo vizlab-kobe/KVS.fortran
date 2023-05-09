@@ -17,6 +17,7 @@ module kvs_StructuredVolumeObject_m
      procedure :: setResolution => kvs_StructuredVolumeObject_setResolution
      procedure :: setVeclen => kvs_StructuredVolumeObject_setVeclen
      procedure :: setValues => kvs_StructuredVolumeObject_setValues
+     procedure :: setMinMaxValues => kvs_StructuredVolumeObject_setMinMaxValues
      procedure :: updateMinMaxCoords => kvs_StructuredVolumeObject_updateMinMaxCoords
      procedure :: updateMinMaxValues => kvs_StructuredVolumeObject_updateMinMaxValues
      procedure :: print => kvs_StructuredVolumeObject_print
@@ -91,6 +92,13 @@ module kvs_StructuredVolumeObject_m
        real( C_double ) :: values(nvalues)
        integer( C_int ), value :: nvalues
      end subroutine C_kvs_StructuredVolumeObject_setValues
+
+     subroutine C_kvs_StructuredVolumeObject_setMinMaxValues( this, min_value, max_value )&
+          bind( C, name="StructuredVolumeObject_setMinMaxValues" )
+       import
+       type( C_ptr ), value :: this
+       real( C_double ), value :: min_value, max_value
+     end subroutine C_kvs_StructuredVolumeObject_setMinMaxValues
 
      subroutine C_kvs_StructuredVolumeObject_updateMinMaxCoords( this )&
           bind( C, name="StructuredVolumeObject_updateMinMaxCoords" )
@@ -223,6 +231,13 @@ contains
     integer( C_int ), intent( in ) :: nvalues
     call C_kvs_StructuredVolumeObject_setValues( this % ptr, values, nvalues )
   end subroutine kvs_StructuredVolumeObject_setValues
+
+  subroutine kvs_StructuredVolumeObject_setMinMaxValues( this, min_value, max_value )
+    implicit none
+    class( kvs_StructuredVolumeObject ), intent( in ) :: this
+    real( C_double ), intent( in ) :: min_value, max_value
+    call C_kvs_StructuredVolumeObject_setMinMaxValues( this % ptr, min_value, max_value )
+  end subroutine kvs_StructuredVolumeObject_setMinMaxValues
 
   subroutine kvs_StructuredVolumeObject_updateMinMaxCoords( this )
     implicit none

@@ -51,6 +51,11 @@ void StructuredVolumeObject_setValues( kvs::StructuredVolumeObject* self, double
     self->setValues( kvs::ValueArray<double>( values, nvalues ) );
 }
 
+void StructuredVolumeObject_setMinMaxValues( kvs::StructuredVolumeObject* self, double min_value, double max_value )
+{
+    self->setMinMaxValues( min_value, max_value );
+}
+
 void StructuredVolumeObject_updateMinMaxCoords( kvs::StructuredVolumeObject* self )
 {
     self->updateMinMaxCoords();
