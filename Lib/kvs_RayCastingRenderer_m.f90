@@ -27,7 +27,7 @@ module kvs_RayCastingRenderer_m
           bind( C, name="RayCastingRenderer_new" )
        import
        type( C_ptr ) :: C_kvs_RayCastingRenderer_new
-       logical :: glsl
+       logical, value :: glsl
      end function C_kvs_RayCastingRenderer_new
 
      subroutine C_kvs_RayCastingRenderer_delete( this )&
