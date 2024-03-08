@@ -10,7 +10,6 @@ module kvs_TornadoVolumeData_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_TornadoVolumeData_destroy ! Destructor
      procedure :: delete => kvs_TornadoVolumeData_delete
      procedure :: setResolution => kvs_TornadoVolumeData_setResolution
      procedure :: setTime => kvs_TornadoVolumeData_setTime
@@ -67,16 +66,6 @@ module kvs_TornadoVolumeData_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_TornadoVolumeData_destroy( this )
-    implicit none
-    type( kvs_TornadoVolumeData ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_TornadoVolumeData_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_TornadoVolumeData_destroy
 
   function kvs_TornadoVolumeData_new( other )
     implicit none

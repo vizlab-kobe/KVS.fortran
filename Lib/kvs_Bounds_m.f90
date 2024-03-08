@@ -9,7 +9,6 @@ module kvs_Bounds_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_Bounds_destroy ! Destructor
      procedure :: delete => kvs_Bounds_delete
      procedure :: get => kvs_Bounds_get
      procedure :: setType => kvs_Bounds_setType
@@ -125,16 +124,6 @@ module kvs_Bounds_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_Bounds_destroy( this )
-    implicit none
-    type( kvs_Bounds ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_Bounds_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_Bounds_destroy
 
   function kvs_Bounds_get( this )
     implicit none

@@ -8,7 +8,6 @@ module kvs_Application_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_Application_destroy ! Destructor
      procedure :: get => kvs_Application_get
      procedure :: delete => kvs_Application_delete
      procedure :: run => kvs_Application_run
@@ -49,16 +48,6 @@ module kvs_Application_m
   end interface
 
 contains
-
-  !> Destructor
-  subroutine kvs_Application_destroy( this )
-    implicit none
-    type( kvs_Application ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_Application_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_Application_destroy
 
   !> Returns pointer to the application class
   function kvs_Application_get( this )

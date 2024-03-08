@@ -9,7 +9,6 @@ module kvs_RayCastingRenderer_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_RayCastingRenderer_destroy ! Destructor
      procedure :: delete => kvs_RayCastingRenderer_delete
      procedure :: get => kvs_RayCastingRenderer_get
      procedure :: setTransferFunction => kvs_RayCastingRenderer_setTransferFunction
@@ -17,7 +16,7 @@ module kvs_RayCastingRenderer_m
 
   ! Constructor
   interface kvs_RayCastingRenderer
-     procedure kvs_RayCastingRenderer_new
+     module procedure kvs_RayCastingRenderer_new
   end interface kvs_RayCastingRenderer
 
   ! C interfaces
@@ -27,7 +26,7 @@ module kvs_RayCastingRenderer_m
           bind( C, name="RayCastingRenderer_new" )
        import
        type( C_ptr ) :: C_kvs_RayCastingRenderer_new
-       logical, value :: glsl
+       logical( C_bool ), value :: glsl
      end function C_kvs_RayCastingRenderer_new
 
      subroutine C_kvs_RayCastingRenderer_delete( this )&
@@ -46,16 +45,6 @@ module kvs_RayCastingRenderer_m
 
 contains
 
-  ! Destructor
-  subroutine kvs_RayCastingRenderer_destroy( this )
-    implicit none
-    type( kvs_RayCastingRenderer ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_RayCastingRenderer_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_RayCastingRenderer_destroy
-
   function kvs_RayCastingRenderer_get( this )
     implicit none
     class( kvs_RayCastingRenderer ) :: this
@@ -68,9 +57,9 @@ contains
     type( kvs_RayCastingRenderer ) :: kvs_RayCastingRenderer_new
     logical, optional :: glsl
     if ( present( glsl ) ) then
-       kvs_RayCastingRenderer_new % ptr = C_kvs_RayCastingRenderer_new( glsl )
+       kvs_RayCastingRenderer_new % ptr = C_kvs_RayCastingRenderer_new( logical( glsl, kind=c_bool ) )
     else
-       kvs_RayCastingRenderer_new % ptr = C_kvs_RayCastingRenderer_new( .true. )
+       kvs_RayCastingRenderer_new % ptr = C_kvs_RayCastingRenderer_new( .true._c_bool )
     end if
   end function kvs_RayCastingRenderer_new
 

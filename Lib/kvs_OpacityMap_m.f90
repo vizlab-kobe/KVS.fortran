@@ -8,7 +8,6 @@ module kvs_OpacityMap_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_OpacityMap_destroy ! Destructor
      procedure :: get => kvs_OpacityMap_get
      procedure :: delete => kvs_OpacityMap_delete
      procedure :: setRange => kvs_OpacityMap_setRange
@@ -76,16 +75,6 @@ module kvs_OpacityMap_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_OpacityMap_destroy( this )
-    implicit none
-    type( kvs_OpacityMap ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_OpacityMap_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_OpacityMap_destroy
 
   function kvs_OpacityMap_get( this )
     implicit none

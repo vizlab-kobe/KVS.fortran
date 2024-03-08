@@ -8,7 +8,6 @@ module kvs_PolygonRenderer_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_PolygonRenderer_destroy ! Destructor
      procedure :: delete => kvs_PolygonRenderer_delete
      procedure :: get => kvs_PolygonRenderer_get
      procedure :: setAntiAliasingEnabled => kvs_PolygonRenderer_setAntiAliasingEnabled
@@ -27,7 +26,7 @@ module kvs_PolygonRenderer_m
           bind( C, name="PolygonRenderer_new" )
        import
        type( C_ptr ) :: C_kvs_PolygonRenderer_new
-       logical :: glsl
+       logical( C_bool ) :: glsl
      end function C_kvs_PolygonRenderer_new
 
      subroutine C_kvs_PolygonRenderer_delete( this )&
@@ -40,28 +39,18 @@ module kvs_PolygonRenderer_m
           bind( C, name="PolygonRenderer_setAntiAliasingEnabled" )
        import
        type( C_ptr ), value :: this
-       logical, value :: enable
+       logical( C_bool ), value :: enable
      end subroutine C_kvs_PolygonRenderer_setAntiAliasingEnabled
 
      subroutine C_kvs_PolygonRenderer_setTwoSideLightingEnabled( this, enable )&
           bind( C, name="PolygonRenderer_setTwoSideLightingEnabled" )
        import
        type( C_ptr ), value :: this
-       logical, value :: enable
+       logical( C_bool ), value :: enable
      end subroutine C_kvs_PolygonRenderer_setTwoSideLightingEnabled
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_PolygonRenderer_destroy( this )
-    implicit none
-    type( kvs_PolygonRenderer ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_PolygonRenderer_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_PolygonRenderer_destroy
 
   function kvs_PolygonRenderer_get( this )
     implicit none
@@ -75,9 +64,9 @@ contains
     type( kvs_PolygonRenderer ) :: kvs_PolygonRenderer_new
     logical, optional :: glsl
     if ( present( glsl ) ) then
-       kvs_PolygonRenderer_new % ptr = C_kvs_PolygonRenderer_new( glsl )
+       kvs_PolygonRenderer_new % ptr = C_kvs_PolygonRenderer_new( logical( glsl, kind=c_bool ) )
     else
-       kvs_PolygonRenderer_new % ptr = C_kvs_PolygonRenderer_new( .true. )
+       kvs_PolygonRenderer_new % ptr = C_kvs_PolygonRenderer_new( .true._c_bool )
     end if
   end function kvs_PolygonRenderer_new
 
@@ -92,14 +81,14 @@ contains
     implicit none
     class( kvs_PolygonRenderer ), intent( in ) :: this
     logical, intent( in ) :: enable
-    call C_kvs_PolygonRenderer_setAntiAliasingEnabled( this % ptr, enable )
+    call C_kvs_PolygonRenderer_setAntiAliasingEnabled( this % ptr, logical( enable, kind=c_bool ) )
   end subroutine kvs_PolygonRenderer_setAntiAliasingEnabled
 
   subroutine kvs_PolygonRenderer_setTwoSideLightingEnabled( this, enable )
     implicit none
     class( kvs_PolygonRenderer ), intent( in ) :: this
     logical, intent( in ) :: enable
-    call C_kvs_PolygonRenderer_setTwoSideLightingEnabled( this % ptr, enable )
+    call C_kvs_PolygonRenderer_setTwoSideLightingEnabled( this % ptr, logical( enable, kind=c_bool ) )
   end subroutine kvs_PolygonRenderer_setTwoSideLightingEnabled
 
 end module kvs_PolygonRenderer_m

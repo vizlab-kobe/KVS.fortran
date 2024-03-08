@@ -8,7 +8,6 @@ module kvs_Timer_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_Timer_destroy ! Destructor
      procedure :: get => kvs_Timer_get
      procedure :: delete => kvs_Timer_delete
      procedure :: start => kvs_Timer_start
@@ -57,16 +56,6 @@ module kvs_Timer_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_Timer_destroy( this )
-    implicit none
-    type( kvs_Timer ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_Timer_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_Timer_destroy
 
   function kvs_Timer_get( this )
     implicit none

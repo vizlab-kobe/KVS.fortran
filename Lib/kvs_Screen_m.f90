@@ -10,7 +10,6 @@ module kvs_Screen_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_Screen_destroy ! Destructor
      procedure :: get => kvs_Screen_get
      procedure :: delete => kvs_Screen_delete
      procedure :: registerObject => kvs_Screen_registerObject
@@ -57,7 +56,7 @@ module kvs_Screen_m
        type( C_ptr ), value :: this
        character( len=1, kind=C_char ), intent( in ) :: name(*)
        type( C_ptr ), value :: object
-       logical, value :: delete_object
+       logical( C_bool ), value :: delete_object
      end subroutine C_kvs_Screen_replaceObject
 
      subroutine C_kvs_Screen_create( this )&
@@ -93,16 +92,6 @@ module kvs_Screen_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_Screen_destroy( this )
-    implicit none
-    type( kvs_Screen ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_Screen_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_Screen_destroy
 
   function kvs_Screen_get( this )
     implicit none
@@ -144,9 +133,9 @@ contains
     type( C_ptr ), intent( in ) :: object
     logical, intent( in ), optional :: delete_object
     if ( present( delete_object ) ) then
-       call C_kvs_Screen_replaceObject( this % ptr, name // C_NULL_char, object, delete_object )
+       call C_kvs_Screen_replaceObject( this % ptr, name // C_NULL_char, object, logical( delete_object, kind=C_bool ) )
     else
-       call C_kvs_Screen_replaceObject( this % ptr, name // C_NULL_char, object, .true. );
+       call C_kvs_Screen_replaceObject( this % ptr, name // C_NULL_char, object, .true._c_bool );
     end if
   end subroutine kvs_Screen_replaceObject
 

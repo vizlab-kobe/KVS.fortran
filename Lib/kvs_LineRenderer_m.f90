@@ -8,7 +8,6 @@ module kvs_LineRenderer_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_LineRenderer_destroy ! Destructor
      procedure :: delete => kvs_LineRenderer_delete
      procedure :: get => kvs_LineRenderer_get
      procedure :: setAntiAliasingEnabled => kvs_LineRenderer_setAntiAliasingEnabled
@@ -26,7 +25,7 @@ module kvs_LineRenderer_m
           bind( C, name="LineRenderer_new" )
        import
        type( C_ptr ) :: C_kvs_LineRenderer_new
-       logical :: glsl
+       logical( C_bool ) :: glsl
      end function C_kvs_LineRenderer_new
 
      subroutine C_kvs_LineRenderer_delete( this )&
@@ -39,21 +38,11 @@ module kvs_LineRenderer_m
           bind( C, name="LineRenderer_setAntiAliasingEnabled" )
        import
        type( C_ptr ), value :: this
-       logical, value :: enable
+       logical( C_bool ), value :: enable
      end subroutine C_kvs_LineRenderer_setAntiAliasingEnabled
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_LineRenderer_destroy( this )
-    implicit none
-    type( kvs_LineRenderer ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_LineRenderer_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_LineRenderer_destroy
 
   function kvs_LineRenderer_get( this )
     implicit none
@@ -67,9 +56,9 @@ contains
     type( kvs_LineRenderer ) :: kvs_LineRenderer_new
     logical, optional :: glsl
     if ( present( glsl ) ) then
-       kvs_LineRenderer_new % ptr = C_kvs_LineRenderer_new( glsl )
+       kvs_LineRenderer_new % ptr = C_kvs_LineRenderer_new( logical( glsl, kind=c_bool ) )
     else
-       kvs_LineRenderer_new % ptr = C_kvs_LineRenderer_new( .true. )
+       kvs_LineRenderer_new % ptr = C_kvs_LineRenderer_new( .true._c_bool )
     end if
   end function kvs_LineRenderer_new
 
@@ -83,7 +72,7 @@ contains
   subroutine kvs_LineRenderer_setAntiAliasingEnabled( this, enable )
     implicit none
     class( kvs_LineRenderer ), intent( in ) :: this
-    logical, intent( in ) :: enable
+    logical( C_bool ), intent( in ) :: enable
     call C_kvs_LineRenderer_setAntiAliasingEnabled( this % ptr, enable )
   end subroutine kvs_LineRenderer_setAntiAliasingEnabled
 

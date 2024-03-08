@@ -9,7 +9,6 @@ module kvs_StructuredVolumeObject_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_StructuredVolumeObject_destroy ! Destructor
      procedure :: get => kvs_StructuredVolumeObject_get
      procedure :: delete => kvs_StructuredVolumeObject_delete
      procedure :: setName => kvs_StructuredVolumeObject_setName
@@ -47,7 +46,7 @@ module kvs_StructuredVolumeObject_m
        import
        type( C_ptr ) :: C_kvs_StructuredVolumeObject_copy
        type( C_ptr ), value :: other
-       logical, optional :: move
+       logical( C_bool ), optional :: move
      end function C_kvs_StructuredVolumeObject_copy
 
      subroutine C_kvs_StructuredVolumeObject_delete ( this )&
@@ -156,16 +155,6 @@ module kvs_StructuredVolumeObject_m
 
 contains
 
-  ! Destructor
-  subroutine kvs_StructuredVolumeObject_destroy( this )
-    implicit none
-    type( kvs_StructuredVolumeObject ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_StructuredVolumeObject_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_StructuredVolumeObject_destroy
-
   function kvs_StructuredVolumeObject_get( this )
     implicit none
     class( kvs_StructuredVolumeObject ) :: this
@@ -180,10 +169,10 @@ contains
     logical, optional :: move
     if ( present( other ) ) then
        if ( present( move ) ) then
-          kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_copy( other, move )
+          kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_copy( other, logical( move, kind=C_bool ) )
           if ( move ) other = C_NULL_ptr
        else
-          kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_copy( other, .false. )
+          kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_copy( other, .false._c_bool )
        endif
     else
        kvs_StructuredVolumeObject_new % ptr = C_kvs_StructuredVolumeObject_new()

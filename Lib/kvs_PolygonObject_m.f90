@@ -8,7 +8,6 @@ module kvs_PolygonObject_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_PolygonObject_destroy ! Destructor
      procedure :: get => kvs_PolygonObject_get
      procedure :: delete => kvs_PolygonObject_delete
      procedure :: print => kvs_PolygonObject_print
@@ -34,7 +33,7 @@ module kvs_PolygonObject_m
        import
        type( C_ptr ) :: C_kvs_PolygonObject_copy
        type( C_ptr ), value :: other
-       logical, optional :: move
+       logical( C_bool ), optional :: move
      end function C_kvs_PolygonObject_copy
 
      subroutine C_kvs_PolygonObject_delete( this )&
@@ -66,16 +65,6 @@ module kvs_PolygonObject_m
 
 contains
 
-  ! Destructor
-  subroutine kvs_PolygonObject_destroy( this )
-    implicit none
-    type( kvs_PolygonObject ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_PolygonObject_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_PolygonObject_destroy
-
   function kvs_PolygonObject_get( this )
     implicit none
     class( kvs_PolygonObject ) :: this
@@ -90,10 +79,10 @@ contains
     logical, optional :: move
     if ( present( other ) ) then
        if ( present( move ) ) then
-          kvs_PolygonObject_new % ptr = C_kvs_PolygonObject_copy( other, move )
+          kvs_PolygonObject_new % ptr = C_kvs_PolygonObject_copy( other, logical( move, kind=c_bool ) )
           if ( move ) other = C_NULL_ptr
        else
-          kvs_PolygonObject_new % ptr = C_kvs_PolygonObject_copy( other, .false. )
+          kvs_PolygonObject_new % ptr = C_kvs_PolygonObject_copy( other, .false._c_bool )
        endif
     else
        kvs_PolygonObject_new % ptr = C_kvs_PolygonObject_new()

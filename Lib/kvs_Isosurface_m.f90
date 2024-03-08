@@ -12,7 +12,6 @@ module kvs_Isosurface_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_Isosurface_destroy ! Destructor
      procedure :: delete => kvs_Isosurface_delete
      procedure :: setIsolevel => kvs_Isosurface_setIsolevel
      procedure :: exec => kvs_Isosurface_exec
@@ -62,16 +61,6 @@ module kvs_Isosurface_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_Isosurface_destroy( this )
-    implicit none
-    type( kvs_Isosurface ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_Isosurface_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_Isosurface_destroy
 
   function kvs_Isosurface_new()
     implicit none

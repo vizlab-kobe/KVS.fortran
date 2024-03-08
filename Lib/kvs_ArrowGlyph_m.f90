@@ -9,7 +9,6 @@ module kvs_ArrowGlyph_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_ArrowGlyph_destroy
      procedure :: delete => kvs_ArrowGlyph_delete
      procedure :: get => kvs_ArrowGlyph_get
      procedure :: setArrowType => kvs_ArrowGlyph_setArrowType
@@ -174,16 +173,6 @@ module kvs_ArrowGlyph_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_ArrowGlyph_destroy( this )
-    implicit none
-    type( kvs_ArrowGlyph ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_ArrowGlyph_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_ArrowGlyph_destroy
 
   function kvs_ArrowGlyph_get( this )
     implicit none

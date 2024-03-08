@@ -12,7 +12,6 @@ module kvs_Streamline_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_Streamline_destroy ! Destructor
      procedure :: get => kvs_Streamline_get
      procedure :: delete => kvs_Streamline_delete
      procedure :: setSeedPoints => kvs_Streamline_setSeedPoints
@@ -71,16 +70,6 @@ module kvs_Streamline_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_Streamline_destroy( this )
-    implicit none
-    type( kvs_Streamline ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_Streamline_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_Streamline_destroy
 
   function kvs_Streamline_get( this )
     implicit none

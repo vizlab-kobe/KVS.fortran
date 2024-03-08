@@ -12,7 +12,6 @@ module kvs_OrthoSlice_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_OrthoSlice_destroy ! Destructor
      procedure :: delete => kvs_OrthoSlice_delete
      procedure :: setPlane => kvs_OrthoSlice_setPlane
      procedure :: setTransferFunction => kvs_OrthoSlice_setTransferFunction
@@ -64,16 +63,6 @@ module kvs_OrthoSlice_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_OrthoSlice_destroy( this )
-    implicit none
-    type( kvs_OrthoSlice ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_OrthoSlice_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_OrthoSlice_destroy
 
   function kvs_OrthoSlice_new()
     implicit none

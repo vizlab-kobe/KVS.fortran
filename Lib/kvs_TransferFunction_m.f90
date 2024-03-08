@@ -10,7 +10,6 @@ module kvs_TransferFunction_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_TransferFunction_destroy ! Destructor
      procedure :: get => kvs_TransferFunction_get
      procedure :: delete => kvs_TransferFunction_delete
      procedure :: setColorMap => kvs_TransferFunction_setColorMap
@@ -75,16 +74,6 @@ module kvs_TransferFunction_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_TransferFunction_destroy( this )
-    implicit none
-    type( kvs_TransferFunction ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_TransferFunction_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_TransferFunction_destroy
 
   function kvs_TransferFunction_get( this )
     implicit none

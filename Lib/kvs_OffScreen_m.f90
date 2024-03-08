@@ -10,7 +10,6 @@ module kvs_OffScreen_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_OffScreen_destroy ! Destructor
      procedure :: get => kvs_OffScreen_get
      procedure :: delete => kvs_OffScreen_delete
      procedure :: registerObject => kvs_OffScreen_registerObject
@@ -59,7 +58,7 @@ module kvs_OffScreen_m
        type( C_ptr ), value :: this
        character( len=1, kind=C_char ), intent( in ) :: name(*)
        type( C_ptr ), value :: object
-       logical, value :: delete_object
+       logical( C_bool ), value :: delete_object
      end subroutine C_kvs_OffScreen_replaceObject
 
      function C_kvs_OffScreen_hasObject( this, name )&
@@ -67,7 +66,7 @@ module kvs_OffScreen_m
        import
        type( C_ptr ), value :: this
        character( len=1, kind=C_char ), intent( in ) :: name(*)
-       logical :: C_kvs_OffScreen_hasObject
+       logical( C_bool ) :: C_kvs_OffScreen_hasObject
      end function C_kvs_OffScreen_hasObject
 
      subroutine C_kvs_OffScreen_setLightPosition( this, x, y, z )&
@@ -132,16 +131,6 @@ module kvs_OffScreen_m
 
 contains
 
-  ! Destructor
-  subroutine kvs_OffScreen_destroy( this )
-    implicit none
-    type( kvs_OffScreen ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_OffScreen_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_OffScreen_destroy
-
   function kvs_OffScreen_get( this )
     implicit none
     class( kvs_OffScreen ) :: this
@@ -181,9 +170,9 @@ contains
     type( C_ptr ), intent( in ) :: object
     logical, intent( in ), optional :: delete_object
     if ( present( delete_object ) ) then
-       call C_kvs_OffScreen_replaceObject( this % ptr, name, object, delete_object )
+       call C_kvs_OffScreen_replaceObject( this % ptr, name, object, logical( delete_object, kind=c_bool ) )
     else
-       call C_kvs_OffScreen_replaceObject( this % ptr, name, object, .true. );
+       call C_kvs_OffScreen_replaceObject( this % ptr, name, object, .true._c_bool );
     end if
   end subroutine kvs_OffScreen_replaceObject
 
@@ -191,7 +180,7 @@ contains
     implicit none
     class( kvs_OffScreen ) :: this
     character( len=*, kind=C_char ), intent( in ) :: name
-    kvs_OffScreen_hasObject = C_kvs_OffScreen_hasObject( this % ptr, name )
+    kvs_OffScreen_hasObject = logical( C_kvs_OffScreen_hasObject( this % ptr, name ), kind=4 )
   end function kvs_OffScreen_hasObject
 
   subroutine kvs_OffScreen_setLightPosition( this, position )

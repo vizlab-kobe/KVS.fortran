@@ -8,7 +8,6 @@ module kvs_ColorMap_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_ColorMap_destroy ! Destructor
      procedure :: get => kvs_ColorMap_get
      procedure :: delete => kvs_ColorMap_delete
      procedure :: setRange => kvs_ColorMap_setRange
@@ -189,16 +188,6 @@ module kvs_ColorMap_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_ColorMap_destroy( this )
-    implicit none
-    type( kvs_ColorMap ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_ColorMap_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_ColorMap_destroy
 
   function kvs_ColorMap_get( this )
     implicit none

@@ -8,7 +8,6 @@ module kvs_ColorImage_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_ColorImage_destroy ! Destructor
      procedure :: delete => kvs_ColorImage_delete
      procedure :: read => kvs_ColorImage_read
      procedure :: write => kvs_ColorImage_write
@@ -33,7 +32,7 @@ module kvs_ColorImage_m
        import
        type( C_ptr ) :: C_kvs_ColorImage_copy
        type( C_ptr ), value :: other
-       logical, value :: move
+       logical( C_bool ), value :: move
      end function C_kvs_ColorImage_copy
 
      subroutine C_kvs_ColorImage_delete( this )&
@@ -59,16 +58,6 @@ module kvs_ColorImage_m
 
 contains
 
-  ! Destructor
-  subroutine kvs_ColorImage_destroy( this )
-    implicit none
-    type( kvs_ColorImage ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_ColorImage_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_ColorImage_destroy
-
   function kvs_ColorImage_new( other, move )
     implicit none
     type( kvs_ColorImage ) :: kvs_ColorImage_new
@@ -76,10 +65,10 @@ contains
     logical, optional :: move
     if ( present( other ) ) then
        if ( present( move ) ) then
-          kvs_ColorImage_new % ptr = C_kvs_ColorImage_copy( other, move )
+          kvs_ColorImage_new % ptr = C_kvs_ColorImage_copy( other, logical( move, kind=c_bool ) )
           if ( move ) other = C_NULL_ptr
        else
-          kvs_ColorImage_new % ptr = C_kvs_ColorImage_copy( other, .false. )
+          kvs_ColorImage_new % ptr = C_kvs_ColorImage_copy( other, .false._c_bool )
        endif
     else
        kvs_ColorImage_new % ptr = C_kvs_ColorImage_new()

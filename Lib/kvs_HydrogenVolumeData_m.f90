@@ -10,7 +10,6 @@ module kvs_HydrogenVolumeData_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_HydrogenVolumeData_destroy ! Destructor
      procedure :: delete => kvs_HydrogenVolumeData_delete
      procedure :: setResolution => kvs_HydrogenVolumeData_setResolution
      procedure :: exec => kvs_HydrogenVolumeData_exec
@@ -52,16 +51,6 @@ module kvs_HydrogenVolumeData_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_HydrogenVolumeData_destroy( this )
-    implicit none
-    type( kvs_HydrogenVolumeData ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_HydrogenVolumeData_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_HydrogenVolumeData_destroy
 
   function kvs_HydrogenVolumeData_new()
     implicit none

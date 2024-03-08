@@ -12,7 +12,6 @@ module kvs_SlicePlane_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_SlicePlane_destroy ! Destructor
      procedure :: delete => kvs_SlicePlane_delete
      procedure :: setPlane => kvs_SlicePlane_setPlane
      procedure :: exec => kvs_SlicePlane_exec
@@ -63,16 +62,6 @@ module kvs_SlicePlane_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_SlicePlane_destroy( this )
-    implicit none
-    type( kvs_SlicePlane ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_SlicePlane_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_SlicePlane_destroy
 
   function kvs_SlicePlane_new()
     implicit none

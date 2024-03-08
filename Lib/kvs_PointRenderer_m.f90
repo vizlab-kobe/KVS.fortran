@@ -8,7 +8,6 @@ module kvs_PointRenderer_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_PointRenderer_destroy ! Destructor
      procedure :: delete => kvs_PointRenderer_delete
      procedure :: get => kvs_PointRenderer_get
      procedure :: setAntiAliasingEnabled => kvs_PointRenderer_setAntiAliasingEnabled
@@ -27,7 +26,7 @@ module kvs_PointRenderer_m
           bind( C, name="PointRenderer_new" )
        import
        type( C_ptr ) :: C_kvs_PointRenderer_new
-       logical :: glsl
+       logical( C_bool ) :: glsl
      end function C_kvs_PointRenderer_new
 
      subroutine C_kvs_PointRenderer_delete( this )&
@@ -40,28 +39,18 @@ module kvs_PointRenderer_m
           bind( C, name="PointRenderer_setAntiAliasingEnabled" )
        import
        type( C_ptr ), value :: this
-       logical, value :: enable
+       logical( C_bool ), value :: enable
      end subroutine C_kvs_PointRenderer_setAntiAliasingEnabled
 
      subroutine C_kvs_PointRenderer_setTwoSideLightingEnabled( this, enable )&
           bind( C, name="PointRenderer_setTwoSideLightingEnabled" )
        import
        type( C_ptr ), value :: this
-       logical, value :: enable
+       logical( C_bool ), value :: enable
      end subroutine C_kvs_PointRenderer_setTwoSideLightingEnabled
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_PointRenderer_destroy( this )
-    implicit none
-    type( kvs_PointRenderer ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_PointRenderer_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    endif
-  end subroutine kvs_PointRenderer_destroy
 
   function kvs_PointRenderer_get( this )
     implicit none
@@ -75,9 +64,9 @@ contains
     type( kvs_PointRenderer ) :: kvs_PointRenderer_new
     logical, optional :: glsl
     if ( present( glsl ) ) then
-       kvs_PointRenderer_new % ptr = C_kvs_PointRenderer_new( glsl )
+       kvs_PointRenderer_new % ptr = C_kvs_PointRenderer_new( logical( glsl, kind=c_bool ) )
     else
-       kvs_PointRenderer_new % ptr = C_kvs_PointRenderer_new( .true. )
+       kvs_PointRenderer_new % ptr = C_kvs_PointRenderer_new( .true._c_bool )
     end if
   end function kvs_PointRenderer_new
 
@@ -92,14 +81,14 @@ contains
     implicit none
     class( kvs_PointRenderer ), intent( in ) :: this
     logical, intent( in ) :: enable
-    call C_kvs_PointRenderer_setAntiAliasingEnabled( this % ptr, enable )
+    call C_kvs_PointRenderer_setAntiAliasingEnabled( this % ptr, logical( enable, kind=c_bool ) )
   end subroutine kvs_PointRenderer_setAntiAliasingEnabled
 
   subroutine kvs_PointRenderer_setTwoSideLightingEnabled( this, enable )
     implicit none
     class( kvs_PointRenderer ), intent( in ) :: this
     logical, intent( in ) :: enable
-    call C_kvs_PointRenderer_setTwoSideLightingEnabled( this % ptr, enable )
+    call C_kvs_PointRenderer_setTwoSideLightingEnabled( this % ptr, logical( enable, kind=c_bool ) )
   end subroutine kvs_PointRenderer_setTwoSideLightingEnabled
 
 end module kvs_PointRenderer_m

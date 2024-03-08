@@ -10,7 +10,6 @@ module kvs_Tubeline_m
      private
      type( C_ptr ) :: ptr = C_NULL_ptr
    contains
-     final :: kvs_Tubeline_destroy ! Destructor
      procedure :: get => kvs_Tubeline_get
      procedure :: delete => kvs_Tubeline_delete
      procedure :: exec => kvs_Tubeline_exec
@@ -60,16 +59,6 @@ module kvs_Tubeline_m
   end interface
 
 contains
-
-  ! Destructor
-  subroutine kvs_Tubeline_destroy( this )
-    implicit none
-    type( kvs_Tubeline ) :: this
-    if ( c_associated( this % ptr ) ) then
-       call C_kvs_Tubeline_delete( this % ptr )
-       this % ptr = C_NULL_ptr
-    end if
-  end subroutine kvs_Tubeline_destroy
 
   function kvs_Tubeline_get( this )
     implicit none
